@@ -2,38 +2,39 @@
 <html lang="eu">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Euskara Libreta</title>
-    <!-- Usamos el CDN de Cloudflare que es el más estable para GitHub Pages -->
-    <script src="https://cdnjs.cloudflare.com"></script>
+    <!-- Cargamos la librería con "defer" para asegurar que el DOM esté listo -->
+    <script defer src="https://cdn.jsdelivr.net"></script>
     <style>
         :root { --paper: #fffef0; --line: #e1e9ef; --margin: #ffadad; --primary: #264653; --success: #2a9d8f; --error: #e76f51; --accent: #e9c46a; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { margin: 0; background: #d1d8e0; font-family: sans-serif; height: 100dvh; overflow: hidden; display: flex; justify-content: center; }
         .hidden { display: none !important; }
 
-        /* LIBRETA */
-        #notebook { background: var(--paper); background-image: linear-gradient(var(--line) 1px, transparent 1px); background-size: 100% 30px; width: 100%; max-width: 500px; height: 100%; position: relative; padding: 60px 20px 40px 60px; overflow-y: auto; }
+        /* DISEÑO LIBRETA */
+        #notebook { background: var(--paper); background-image: linear-gradient(var(--line) 1px, transparent 1px); background-size: 100% 30px; width: 100%; max-width: 500px; height: 100%; position: relative; padding: 60px 20px 40px 60px; overflow-y: auto; box-shadow: 0 0 40px rgba(0,0,0,0.2); }
         #notebook::before { content: ''; position: absolute; left: 50px; top: 0; bottom: 0; width: 2px; background: var(--margin); }
 
-        /* MENÚ */
-        #tab-btn { position: fixed; top: 20px; right: 0; background: var(--primary); color: white; padding: 12px 20px; border-radius: 15px 0 0 15px; border: none; font-weight: bold; z-index: 1000; cursor: pointer; }
-        #sidebar { position: fixed; top: 0; right: 0; width: 280px; height: 100%; background: white; z-index: 2000; transform: translateX(100%); transition: 0.3s; padding: 25px; box-shadow: -10px 0 30px rgba(0,0,0,0.2); }
+        /* INTERFAZ */
+        #tab-btn { position: fixed; top: 20px; right: 0; background: var(--primary); color: white; padding: 12px 20px; border-radius: 15px 0 0 15px; border: none; font-weight: 800; z-index: 100; cursor: pointer; }
+        #sidebar { position: fixed; top: 0; right: 0; width: 280px; height: 100%; background: white; z-index: 200; transform: translateX(100%); transition: 0.3s; padding: 25px; box-shadow: -10px 0 30px rgba(0,0,0,0.1); }
         #sidebar.open { transform: translateX(0); }
-        .link-item { padding: 15px; border-bottom: 1px solid #eee; cursor: pointer; color: var(--primary); font-weight: bold; }
 
-        /* ELEMENTOS */
         h1 { font-family: cursive; color: var(--primary); border-bottom: 2px solid var(--accent); display: inline-block; margin-top: 0; }
         .post-it { background: #fff3a0; padding: 20px; transform: rotate(-2deg); box-shadow: 5px 5px 15px rgba(0,0,0,0.1); display: inline-block; cursor: pointer; font-weight: 800; border: none; margin-top: 20px; }
+        
+        /* MODAL */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .exam-sheet { background: white; width: 90%; max-width: 420px; padding: 25px; border-radius: 15px; position: relative; max-height: 90vh; overflow-y: auto; text-align: center; }
 
-        /* MODAL Y JUEGO */
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 3000; padding: 15px; }
-        .exam-sheet { background: white; width: 100%; max-width: 400px; padding: 25px; border-radius: 15px; position: relative; text-align: center; }
-        .drag-box { min-height: 110px; background: #f1f2f6; border: 2px dashed #999; border-radius: 10px; padding: 10px; margin: 10px 0; }
-        .draggable-card { background: white; padding: 12px; margin: 8px auto; border-radius: 8px; border: 1px solid #ddd; cursor: grab; font-weight: bold; touch-action: none; }
-        .pool-zone { background: #fff3a0; border-radius: 10px; padding: 15px; min-height: 80px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
-        .opt-btn { width: 100%; padding: 15px; margin: 8px 0; border: 2px solid #eee; border-radius: 12px; background: white; font-weight: bold; cursor: pointer; }
+        /* ARRASTRE */
+        .drag-box { min-height: 100px; background: #f1f2f6; border: 2px dashed #999; border-radius: 10px; padding: 10px; margin-top: 5px; }
+        .draggable-card { background: white; padding: 12px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: grab; font-weight: 700; border: 1px solid #ddd; margin: 8px 0; touch-action: none; }
+        .pool-zone { background: #fff3a0; border-radius: 10px; padding: 15px; min-height: 80px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 10px; }
+        .opt-btn { width: 100%; padding: 15px; margin: 8px 0; border: 2px solid #eee; border-radius: 12px; background: white; font-weight: bold; cursor: pointer; color: var(--primary); }
         .btn-check { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 10px; width: 100%; font-weight: 800; margin-top: 20px; cursor: pointer; }
+        .ghost { opacity: 0.2; background: var(--accent) !important; }
     </style>
 </head>
 <body>
@@ -49,7 +50,7 @@
     <main id="notebook">
         <div id="page-content">
             <h1>Ongi etorri!</h1>
-            <p>Hau zure libreta da. Ireki aurkibidea gai bat hasteko.</p>
+            <p>Aukeratu gai bat aurkibidean hasteko.</p>
         </div>
         <div id="action-area"></div>
     </main>
@@ -73,53 +74,50 @@
     </div>
 
 <script>
-    // Todo envuelto para que no haya fugas de memoria o errores de carga
-    (function() {
+    // Usamos el evento 'load' para asegurar que TODO (incluida la librería) se haya bajado
+    window.addEventListener('load', () => {
         const libroData = [
             {
-                id: "tema1",
+                id: "1",
                 titulo: "1. Artikulua (-A)",
-                texto: "Euskaran artikulua 'a' da. <br> Adibidez: Mendi + a = Mendia.",
+                texto: "Euskaran ez dago 'el/la'. Hitzaren amaieran <b>-a</b> jartzen dugu.<br>Adibidez: Mendi + a = Mendia.",
                 tipo: "choice",
                 pregunta: "¿Cómo es 'La casa'?",
                 opciones: ["Etxe", "Etxea", "Etxek"],
                 correcta: "Etxea"
             },
             {
-                id: "tema2",
+                id: "2",
                 titulo: "2. Plurala (-AK)",
-                texto: "Plurala egiteko 'ak' erabiltzen dugu. <br> Adibidez: Etxea -> Etxeak.",
+                texto: "Plurala egiteko 'ak' erabiltzen dugu.<br>Adibidez: Etxea -> Etxeak.",
                 tipo: "drag",
                 pregunta: "Sailkatu hitzak:",
                 items: [{t:"Mendia", c:"sing"}, {t:"Etxeak", c:"plu"}, {t:"Gizonak", c:"plu"}, {t:"Neska", c:"sing"}]
             }
         ];
 
-        // Referencias
-        const sidebar = document.getElementById('sidebar');
+        // Rellenar índice
         const linksCont = document.getElementById('links-container');
-        const overlay = document.getElementById('exercise-overlay');
-
-        // Función Menú
-        document.getElementById('tab-btn').onclick = () => sidebar.classList.add('open');
-        document.getElementById('close-sidebar').onclick = () => sidebar.classList.remove('open');
-
-        // Generar Índice
-        libroData.forEach((t, index) => {
+        libroData.forEach(t => {
             const el = document.createElement('div');
-            el.className = 'link-item';
+            el.style = "padding:15px; border-bottom:1px solid #eee; cursor:pointer; font-weight:bold; color:#264653;";
             el.innerText = t.titulo;
             el.onclick = () => {
                 document.getElementById('page-content').innerHTML = `<h1>${t.titulo}</h1><p>${t.texto}</p>`;
-                document.getElementById('action-area').innerHTML = `<button class="post-it" id="btn-ex-${index}">📝 ARIKETA EGIN</button>`;
-                document.getElementById(`btn-ex-${index}`).onclick = () => openEx(t);
-                sidebar.classList.remove('open');
+                document.getElementById('action-area').innerHTML = `<button class="post-it" onclick="openEx('${t.id}')">📝 ARIKETA EGIN</button>`;
+                document.getElementById('sidebar').classList.remove('open');
             };
             linksCont.appendChild(el);
         });
 
-        function openEx(tema) {
-            overlay.style.display = 'flex';
+        // Menú lateral
+        document.getElementById('tab-btn').onclick = () => document.getElementById('sidebar').classList.add('open');
+        document.getElementById('close-sidebar').onclick = () => document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('close-ex').onclick = () => document.getElementById('exercise-overlay').style.display = 'none';
+
+        window.openEx = function(id) {
+            const tema = libroData.find(t => t.id === id);
+            document.getElementById('exercise-overlay').style.display = 'flex';
             document.getElementById('ex-title').innerText = tema.pregunta;
             document.getElementById('layer-drag').classList.add('hidden');
             document.getElementById('layer-choice').classList.add('hidden');
@@ -133,8 +131,8 @@
                     b.className = 'opt-btn';
                     b.innerText = o;
                     b.onclick = () => {
-                        if(o === tema.correcta) { alert("Oso ondo!"); overlay.style.display = 'none'; }
-                        else alert("Saiatu berriro...");
+                        if(o === tema.correcta) { alert("Oso ondo! ✨"); document.getElementById('exercise-overlay').style.display = 'none'; }
+                        else alert("Saiatu berriro... ❌");
                     };
                     optCont.appendChild(b);
                 });
@@ -145,27 +143,31 @@
                 const pool = document.getElementById('pool');
                 pool.innerHTML = "";
                 tema.items.forEach(it => {
-                    pool.innerHTML += `<div class="draggable-card" data-cat="${it.c}">${it.t}</div>`;
+                    pool.innerHTML += `<div class="draggable-card" data-cat="${it.it ? it.it.c : it.c}">${it.t}</div>`;
                 });
-                
-                // Reiniciar Sortable cada vez que se abre
-                const cfg = { group: 'shared', animation: 150, forceFallback: true };
-                Sortable.create(pool, cfg);
-                Sortable.create(document.getElementById('box-sing'), cfg);
-                Sortable.create(document.getElementById('box-plu'), cfg);
+
+                // VERIFICACIÓN DE SEGURIDAD: Solo inicializa si Sortable existe
+                if(typeof Sortable !== 'undefined') {
+                    const cfg = { group: 'shared', animation: 150, forceFallback: true };
+                    Sortable.create(pool, cfg);
+                    Sortable.create(document.getElementById('box-sing'), cfg);
+                    Sortable.create(document.getElementById('box-plu'), cfg);
+                } else {
+                    alert("Error: No se pudo cargar el motor de arrastre. Reintenta.");
+                }
             }
-        }
+        };
 
         window.checkDrag = function() {
             const s = document.querySelectorAll('#box-sing .draggable-card');
             const p = document.querySelectorAll('#box-plu .draggable-card');
             let err = Array.from(s).some(i => i.dataset.cat !== 'sing') || Array.from(p).some(i => i.dataset.cat !== 'plu');
-            if(!err && (s.length + p.length === 4)) { alert("Biba zu!"); overlay.style.display = 'none'; }
-            else alert("Zerbait gaizki dago...");
+            if(!err && (s.length + p.length === 4)) {
+                alert("Biba zu! 🌟");
+                document.getElementById('exercise-overlay').style.display = 'none';
+            } else { alert("Zerbait gaizki dago... ❌"); }
         };
-
-        document.getElementById('close-ex').onclick = () => overlay.style.display = 'none';
-    })();
+    });
 </script>
 </body>
 </html>
