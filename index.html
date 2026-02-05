@@ -2,12 +2,12 @@
 <html lang="eu">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Euskara Libreta</title>
-    <!-- Librería cargada de forma prioritaria -->
+    <!-- Cargamos SortableJS desde el CDN más estable -->
     <script src="https://cdn.jsdelivr.net"></script>
     <style>
-        :root { --paper: #fffef0; --line: #e1e9ef; --margin: #ffadad; --primary: #264653; --accent: #e9c46a; }
+        :root { --paper: #fffef0; --line: #e1e9ef; --margin: #ffadad; --primary: #264653; --success: #2a9d8f; --error: #e76f51; --accent: #e9c46a; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { margin: 0; background: #d1d8e0; font-family: sans-serif; height: 100dvh; overflow: hidden; display: flex; justify-content: center; }
 
@@ -15,32 +15,29 @@
         #notebook { background: var(--paper); background-image: linear-gradient(var(--line) 1px, transparent 1px); background-size: 100% 30px; width: 100%; max-width: 500px; height: 100%; position: relative; padding: 60px 20px 40px 60px; overflow-y: auto; box-shadow: 0 0 40px rgba(0,0,0,0.2); }
         #notebook::before { content: ''; position: absolute; left: 50px; top: 0; bottom: 0; width: 2px; background: var(--margin); }
 
-        /* INTERFAZ */
-        #tab-btn { position: fixed; top: 20px; right: 0; background: var(--primary); color: white; padding: 10px 15px; border-radius: 15px 0 0 15px; border: none; font-weight: 800; z-index: 100; cursor: pointer; }
+        /* MENÚ E INTERFAZ */
+        #tab-btn { position: fixed; top: 20px; right: 0; background: var(--primary); color: white; padding: 10px 15px; border-radius: 15px 0 0 15px; border: none; font-weight: 800; z-index: 100; }
         #sidebar { position: fixed; top: 0; right: 0; width: 280px; height: 100%; background: white; z-index: 200; transform: translateX(100%); transition: 0.3s; padding: 25px; box-shadow: -10px 0 30px rgba(0,0,0,0.1); }
         #sidebar.open { transform: translateX(0); }
 
         /* CONTENIDO */
         h1 { font-family: cursive; color: var(--primary); border-bottom: 2px solid var(--accent); display: inline-block; margin-top: 0; }
+        p { line-height: 30px; color: #333; }
         .post-it { background: #fff3a0; padding: 20px; transform: rotate(-2deg); box-shadow: 5px 5px 15px rgba(0,0,0,0.1); display: inline-block; cursor: pointer; font-weight: 800; border: none; margin-top: 20px; }
-        
-        /* MODAL EXAMEN */
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; }
-        .exam-sheet { background: white; width: 90%; max-width: 420px; padding: 25px; border-radius: 15px; position: relative; max-height: 90vh; overflow-y: auto; }
+
+        /* MODAL DE EJERCICIO */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 15px; }
+        .exam-sheet { background: white; width: 100%; max-width: 420px; padding: 25px; border-radius: 15px; position: relative; max-height: 90vh; overflow-y: auto; }
 
         /* ZONAS DE ARRASTRE */
-        .drag-box { min-height: 100px; background: #f1f2f6; border: 2px dashed #999; border-radius: 10px; padding: 10px; margin-top: 5px; }
-        .draggable-card { 
-            background: white; padding: 12px; margin: 8px auto; border-radius: 8px; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: grab; font-weight: 700; 
-            text-align: center; border: 1px solid #ddd; width: 100%;
-            touch-action: none; /* Bloquea el scroll al arrastrar en móvil */
-        }
-        .bubble-pool { display: flex; flex-wrap: wrap; gap: 8px; padding: 10px; background: #f8f9fa; border-radius: 10px; min-height: 80px; justify-content: center; margin-top: 10px; }
-        .drag-label { font-size: 0.7rem; font-weight: 900; color: var(--primary); text-align: center; margin-top: 10px; }
+        .drag-container { display: flex; gap: 10px; margin-top: 15px; }
+        .drag-box { min-height: 120px; background: #f1f2f6; border: 2px dashed #999; border-radius: 10px; padding: 10px; flex: 1; }
+        .draggable-card { background: white; padding: 12px; margin: 8px 0; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: grab; font-weight: 700; text-align: center; border: 1px solid #ddd; touch-action: none; }
+        .pool-zone { background: #fff3a0; border-radius: 10px; padding: 15px; margin-top: 15px; min-height: 80px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+        .label { font-size: 0.7rem; font-weight: 900; color: var(--primary); text-align: center; margin-bottom: 5px; }
 
         .btn-check { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 10px; width: 100%; font-weight: 800; margin-top: 20px; cursor: pointer; }
-        .ghost { opacity: 0.2; background: var(--accent) !important; }
+        .ghost { opacity: 0.3; background: var(--accent); }
     </style>
 </head>
 <body>
@@ -48,7 +45,7 @@
     <button id="tab-btn" onclick="toggleMenu()">GAIAK</button>
 
     <nav id="sidebar">
-        <h2>Aurkibidea</h2>
+        <h2>Gaiak</h2>
         <div id="links-container"></div>
         <button onclick="toggleMenu()" class="btn-check" style="background:#666">Itxi</button>
     </nav>
@@ -56,16 +53,27 @@
     <main id="notebook">
         <article id="page-content">
             <h1>Ongi etorri!</h1>
-            <p>Hau zure libreta da. Aukeratu gai bat hasteko.</p>
+            <p>Hau zure libreta da. Aukeratu gai bat aurkibidean hasteko.</p>
         </article>
         <div id="action-area"></div>
     </main>
 
+    <!-- EL MODAL SE MANTIENE CON ESTRUCTURA FIJA PARA EVITAR FALLOS -->
     <div id="exercise-overlay" class="overlay">
         <div class="exam-sheet">
-            <span onclick="closeEx()" style="position:absolute; top:15px; right:15px; font-weight:900; cursor:pointer; font-size: 1.5rem;">✕</span>
-            <div id="ex-body"></div>
-            <div id="ex-footer"></div>
+            <span onclick="closeEx()" style="position:absolute; top:15px; right:15px; font-weight:900; cursor:pointer; font-size:1.5rem;">✕</span>
+            <h3 id="ex-title">Ariketa</h3>
+            
+            <div id="drag-game">
+                <div class="drag-container">
+                    <div><div class="label">SINGULARRA</div><div id="box-sing" class="drag-box"></div></div>
+                    <div><div class="label">PLURALA</div><div id="box-plu" class="drag-box"></div></div>
+                </div>
+                <div class="label" style="margin-top:15px">AUKERAK</div>
+                <div id="pool" class="pool-zone"></div>
+            </div>
+
+            <button class="btn-check" onclick="checkExercise()">EGIAZTATU</button>
         </div>
     </div>
 
@@ -75,14 +83,18 @@
             id: "plurala",
             titulo: "Plurala (-AK)",
             texto: "Euskaran plurala egiteko <b>-ak</b> erabiltzen dugu.<br>Mendia (singular) -> Mendiak (plural).",
-            tipo: "drag",
-            pregunta: "Sailkatu hitzak (Arrastra):",
             items: [
                 {t: "Etxea", c: "sing"}, {t: "Mendiak", c: "plu"},
                 {t: "Gizonak", c: "plu"}, {t: "Neska", c: "sing"}
             ]
         }
     ];
+
+    // INICIALIZACIÓN ÚNICA DE SORTABLE (Fuera de las funciones para que no se duplique)
+    const config = { group: 'euskara', animation: 150, ghostClass: 'ghost', forceFallback: true };
+    const s1 = Sortable.create(document.getElementById('pool'), config);
+    const s2 = Sortable.create(document.getElementById('box-sing'), config);
+    const s3 = Sortable.create(document.getElementById('box-plu'), config);
 
     function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); }
 
@@ -95,55 +107,33 @@
 
     function openEx(id) {
         const tema = libroData.find(t => t.id === id);
-        const overlay = document.getElementById('exercise-overlay');
-        const body = document.getElementById('ex-body');
-        const footer = document.getElementById('ex-footer');
+        document.getElementById('exercise-overlay').style.display = 'flex';
         
-        // 1. Mostrar el modal primero
-        overlay.style.display = 'flex';
-        body.innerHTML = `<h3>${tema.pregunta}</h3>`;
-
-        if(tema.tipo === 'drag') {
-            body.innerHTML += `
-                <div style="display:flex; gap:10px;">
-                    <div style="flex:1"><div class="drag-label">SINGULARRA</div><div id="box-sing" class="drag-box"></div></div>
-                    <div style="flex:1"><div class="drag-label">PLURALA</div><div id="box-plu" class="drag-box"></div></div>
-                </div>
-                <div class="drag-label">AUKERAK</div>
-                <div id="pool" class="bubble-pool"></div>
-            `;
-            
-            const pool = document.getElementById('pool');
-            tema.items.forEach((it, i) => {
-                pool.innerHTML += `<div class="draggable-card" data-cat="${it.c}">${it.t}</div>`;
-            });
-
-            // 2. Esperar un instante para inicializar el arrastre
-            setTimeout(() => {
-                const config = {
-                    group: 'shared',
-                    animation: 150,
-                    ghostClass: 'ghost',
-                    forceFallback: true // Clave para PC y Móvil
-                };
-                
-                Sortable.create(document.getElementById('pool'), config);
-                Sortable.create(document.getElementById('box-sing'), config);
-                Sortable.create(document.getElementById('box-plu'), config);
-            }, 50);
-
-            footer.innerHTML = `<button class="btn-check" onclick="checkDrag()">EGIAZTATU</button>`;
-        }
+        // Limpiamos cajas y llenamos el pool
+        document.getElementById('box-sing').innerHTML = "";
+        document.getElementById('box-plu').innerHTML = "";
+        const pool = document.getElementById('pool');
+        pool.innerHTML = "";
+        
+        tema.items.forEach(it => {
+            pool.innerHTML += `<div class="draggable-card" data-cat="${it.c}">${it.t}</div>`;
+        });
     }
 
-    function checkDrag() {
+    function checkExercise() {
         const s = document.querySelectorAll('#box-sing .draggable-card');
         const p = document.querySelectorAll('#box-plu .draggable-card');
         let err = false;
+        
         s.forEach(i => { if(i.dataset.cat !== 'sing') err = true; });
         p.forEach(i => { if(i.dataset.cat !== 'plu') err = true; });
-        if(!err && (s.length + p.length === 4)) alert("Biba zu! ✨");
-        else alert("Zerbait gaizki dago... ❌");
+        
+        if(!err && (s.length + p.length === 4)) {
+            alert("Oso ondo! ✨");
+            closeEx();
+        } else {
+            alert("Zerbait ez dago ondo... ❌");
+        }
     }
 
     function closeEx() { document.getElementById('exercise-overlay').style.display = 'none'; }
