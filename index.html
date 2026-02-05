@@ -3,190 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Euskara Laborategia</title>
+    <title>Euskara Libreta</title>
+    <!-- Librería cargada de forma prioritaria -->
+    <script src="https://cdn.jsdelivr.net"></script>
     <style>
-        :root { --paper: #fffef0; --primary: #264653; --accent: #e9c46a; --error: #e76f51; --success: #2a9d8f; }
-        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: #d1d8e0; display: flex; justify-content: center; align-items: center; height: 100dvh; }
+        :root { --paper: #fffef0; --line: #e1e9ef; --margin: #ffadad; --primary: #264653; --accent: #e9c46a; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; background: #d1d8e0; font-family: sans-serif; height: 100dvh; overflow: hidden; display: flex; justify-content: center; }
+
+        /* DISEÑO LIBRETA */
+        #notebook { background: var(--paper); background-image: linear-gradient(var(--line) 1px, transparent 1px); background-size: 100% 30px; width: 100%; max-width: 500px; height: 100%; position: relative; padding: 60px 20px 40px 60px; overflow-y: auto; box-shadow: 0 0 40px rgba(0,0,0,0.2); }
+        #notebook::before { content: ''; position: absolute; left: 50px; top: 0; bottom: 0; width: 2px; background: var(--margin); }
+
+        /* INTERFAZ */
+        #tab-btn { position: fixed; top: 20px; right: 0; background: var(--primary); color: white; padding: 10px 15px; border-radius: 15px 0 0 15px; border: none; font-weight: 800; z-index: 100; cursor: pointer; }
+        #sidebar { position: fixed; top: 0; right: 0; width: 280px; height: 100%; background: white; z-index: 200; transform: translateX(100%); transition: 0.3s; padding: 25px; box-shadow: -10px 0 30px rgba(0,0,0,0.1); }
+        #sidebar.open { transform: translateX(0); }
+
+        /* CONTENIDO */
+        h1 { font-family: cursive; color: var(--primary); border-bottom: 2px solid var(--accent); display: inline-block; margin-top: 0; }
+        .post-it { background: #fff3a0; padding: 20px; transform: rotate(-2deg); box-shadow: 5px 5px 15px rgba(0,0,0,0.1); display: inline-block; cursor: pointer; font-weight: 800; border: none; margin-top: 20px; }
         
-        .exam-sheet { 
-            background: white; width: 95%; max-width: 450px; height: 90dvh; 
-            border-radius: 15px; padding: 25px; display: flex; flex-direction: column;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2); position: relative; overflow-y: auto;
+        /* MODAL EXAMEN */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .exam-sheet { background: white; width: 90%; max-width: 420px; padding: 25px; border-radius: 15px; position: relative; max-height: 90vh; overflow-y: auto; }
+
+        /* ZONAS DE ARRASTRE */
+        .drag-box { min-height: 100px; background: #f1f2f6; border: 2px dashed #999; border-radius: 10px; padding: 10px; margin-top: 5px; }
+        .draggable-card { 
+            background: white; padding: 12px; margin: 8px auto; border-radius: 8px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: grab; font-weight: 700; 
+            text-align: center; border: 1px solid #ddd; width: 100%;
+            touch-action: none; /* Bloquea el scroll al arrastrar en móvil */
         }
+        .bubble-pool { display: flex; flex-wrap: wrap; gap: 8px; padding: 10px; background: #f8f9fa; border-radius: 10px; min-height: 80px; justify-content: center; margin-top: 10px; }
+        .drag-label { font-size: 0.7rem; font-weight: 900; color: var(--primary); text-align: center; margin-top: 10px; }
 
-        h2 { color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 10px; margin-top: 0; }
-        .instruction { font-style: italic; color: #666; margin-bottom: 20px; font-size: 0.9rem; }
-
-        /* 1. SELECCIÓN MÚLTIPLE (CHECKS) */
-        .check-item { display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid #eee; border-radius: 10px; margin-bottom: 8px; cursor: pointer; }
-        .check-item input { width: 20px; height: 20px; }
-
-        /* 2. ORDENAR FRASE (BUBBLES) */
-        .word-pool { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; min-height: 50px; padding: 10px; background: #f8f9fa; border-radius: 10px; }
-        .word-bubble { background: var(--primary); color: white; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; }
-        .word-bubble.used { opacity: 0.3; pointer-events: none; }
-        .sentence-drop { border-bottom: 2px dashed var(--primary); min-height: 40px; padding: 10px; display: flex; flex-wrap: wrap; gap: 5px; }
-
-        /* 3. ARRASTRAR (DRAG & DROP) */
-        .drag-container { display: flex; justify-content: space-between; margin-top: 20px; }
-        .drag-box { width: 45%; background: #f1f2f6; border-radius: 10px; padding: 10px; min-height: 150px; border: 2px dashed #ccc; }
-        .draggable { background: white; border: 1px solid #ddd; padding: 8px; margin-bottom: 5px; border-radius: 5px; text-align: center; font-size: 0.8rem; box-shadow: 0 2px 5px rgba(0,0,0,0.1); touch-action: none; }
-        .drag-title { text-align: center; font-weight: 800; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 10px; color: var(--primary); }
-
-        /* BOTONES */
-        .nav-btn { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; margin-top: auto; width: 100%; cursor: pointer; }
-        .feedback { margin-top: 10px; font-weight: bold; text-align: center; min-height: 24px; }
+        .btn-check { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 10px; width: 100%; font-weight: 800; margin-top: 20px; cursor: pointer; }
+        .ghost { opacity: 0.2; background: var(--accent) !important; }
     </style>
 </head>
 <body>
 
-<div class="exam-sheet">
-    <h2 id="ex-title">Ariketa</h2>
-    <p id="ex-instr" class="instruction"></p>
-    
-    <div id="game-area"></div>
-    
-    <div id="feedback" class="feedback"></div>
-    <button onclick="checkExercise()" class="nav-btn">EGIAZTATU (Comprobar)</button>
-    <button onclick="nextEx()" id="next-btn" class="nav-btn" style="display:none; background:var(--success); margin-top:10px;">HURRENGOA (Siguiente)</button>
-</div>
+    <button id="tab-btn" onclick="toggleMenu()">GAIAK</button>
+
+    <nav id="sidebar">
+        <h2>Aurkibidea</h2>
+        <div id="links-container"></div>
+        <button onclick="toggleMenu()" class="btn-check" style="background:#666">Itxi</button>
+    </nav>
+
+    <main id="notebook">
+        <article id="page-content">
+            <h1>Ongi etorri!</h1>
+            <p>Hau zure libreta da. Aukeratu gai bat hasteko.</p>
+        </article>
+        <div id="action-area"></div>
+    </main>
+
+    <div id="exercise-overlay" class="overlay">
+        <div class="exam-sheet">
+            <span onclick="closeEx()" style="position:absolute; top:15px; right:15px; font-weight:900; cursor:pointer; font-size: 1.5rem;">✕</span>
+            <div id="ex-body"></div>
+            <div id="ex-footer"></div>
+        </div>
+    </div>
 
 <script>
-    let currentEx = 0;
-    let userOrder = [];
-
-    const db = [
+    const libroData = [
         {
-            tipo: "check",
-            titulo: "Multi-Check",
-            instr: "Hautatu fruta diren hitzak (Selecciona las frutas):",
-            opciones: ["Sagarra", "Mendi", "Madaria", "Etxe", "Platanoa"],
-            correctas: ["Sagarra", "Madaria", "Platanoa"]
-        },
-        {
-            tipo: "order",
-            titulo: "Esaldia Ordenatu",
-            instr: "Ordenatu esaldia (Ordena la frase):",
-            palabras: ["ni", "etxean", "nago"],
-            correcta: "ni etxean nago"
-        },
-        {
+            id: "plurala",
+            titulo: "Plurala (-AK)",
+            texto: "Euskaran plurala egiteko <b>-ak</b> erabiltzen dugu.<br>Mendia (singular) -> Mendiak (plural).",
             tipo: "drag",
-            titulo: "Sailkatu (Clasificar)",
-            instr: "Arrastra cada palabra a su categoría:",
-            categorias: ["Singularra", "Plurala"],
+            pregunta: "Sailkatu hitzak (Arrastra):",
             items: [
-                {t: "Mendia", c: "Singularra"},
-                {t: "Etxeak", c: "Plurala"},
-                {t: "Gizonak", c: "Plurala"},
-                {t: "Oia", c: "Singularra"}
+                {t: "Etxea", c: "sing"}, {t: "Mendiak", c: "plu"},
+                {t: "Gizonak", c: "plu"}, {t: "Neska", c: "sing"}
             ]
         }
     ];
 
-    function loadEx() {
-        const ex = db[currentEx];
-        document.getElementById('ex-title').innerText = ex.titulo;
-        document.getElementById('ex-instr').innerText = ex.instr;
-        const area = document.getElementById('game-area');
-        area.innerHTML = "";
-        document.getElementById('feedback').innerText = "";
-        document.getElementById('next-btn').style.display = "none";
+    function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); }
 
-        if(ex.tipo === "check") {
-            ex.opciones.forEach(o => {
-                area.innerHTML += `
-                    <label class="check-item">
-                        <input type="checkbox" value="${o}"> ${o}
-                    </label>
-                `;
+    function loadTema(id) {
+        const tema = libroData.find(t => t.id === id);
+        document.getElementById('page-content').innerHTML = `<h1>${tema.titulo}</h1><p>${tema.texto}</p>`;
+        document.getElementById('action-area').innerHTML = `<button class="post-it" onclick="openEx('${tema.id}')">📝 ARIKETA EGIN</button>`;
+        if(document.getElementById('sidebar').classList.contains('open')) toggleMenu();
+    }
+
+    function openEx(id) {
+        const tema = libroData.find(t => t.id === id);
+        const overlay = document.getElementById('exercise-overlay');
+        const body = document.getElementById('ex-body');
+        const footer = document.getElementById('ex-footer');
+        
+        // 1. Mostrar el modal primero
+        overlay.style.display = 'flex';
+        body.innerHTML = `<h3>${tema.pregunta}</h3>`;
+
+        if(tema.tipo === 'drag') {
+            body.innerHTML += `
+                <div style="display:flex; gap:10px;">
+                    <div style="flex:1"><div class="drag-label">SINGULARRA</div><div id="box-sing" class="drag-box"></div></div>
+                    <div style="flex:1"><div class="drag-label">PLURALA</div><div id="box-plu" class="drag-box"></div></div>
+                </div>
+                <div class="drag-label">AUKERAK</div>
+                <div id="pool" class="bubble-pool"></div>
+            `;
+            
+            const pool = document.getElementById('pool');
+            tema.items.forEach((it, i) => {
+                pool.innerHTML += `<div class="draggable-card" data-cat="${it.c}">${it.t}</div>`;
             });
-        } 
-        else if(ex.tipo === "order") {
-            userOrder = [];
-            area.innerHTML = `<div class="sentence-drop" id="drop-zone"></div><div class="word-pool" id="pool"></div>`;
-            ex.palabras.sort(() => Math.random() - 0.5).forEach(w => {
-                const b = document.createElement('div');
-                b.className = 'word-bubble';
-                b.innerText = w;
-                b.onclick = () => {
-                    if(!b.classList.contains('used')) {
-                        b.classList.add('used');
-                        const clone = b.cloneNode(true);
-                        clone.onclick = () => { b.classList.remove('used'); clone.remove(); userOrder = userOrder.filter(x => x !== w); };
-                        document.getElementById('drop-zone').appendChild(clone);
-                        userOrder.push(w);
-                    }
+
+            // 2. Esperar un instante para inicializar el arrastre
+            setTimeout(() => {
+                const config = {
+                    group: 'shared',
+                    animation: 150,
+                    ghostClass: 'ghost',
+                    forceFallback: true // Clave para PC y Móvil
                 };
-                document.getElementById('pool').appendChild(b);
-            });
-        }
-        else if(ex.tipo === "drag") {
-            area.innerHTML = `<div class="drag-container">
-                <div class="drag-box" id="box-0" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="drag-title">${ex.categorias[0]}</div></div>
-                <div class="drag-box" id="box-1" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="drag-title">${ex.categorias[1]}</div></div>
-            </div>
-            <div class="word-pool" id="drag-pool" ondrop="drop(event)" ondragover="allowDrop(event)"></div>`;
-            
-            ex.items.forEach((it, i) => {
-                const d = document.createElement('div');
-                d.className = 'draggable';
-                d.innerText = it.t;
-                d.id = "item-" + i;
-                d.draggable = true;
-                d.ondragstart = (ev) => ev.dataTransfer.setData("text", ev.target.id);
-                document.getElementById('drag-pool').appendChild(d);
-            });
+                
+                Sortable.create(document.getElementById('pool'), config);
+                Sortable.create(document.getElementById('box-sing'), config);
+                Sortable.create(document.getElementById('box-plu'), config);
+            }, 50);
+
+            footer.innerHTML = `<button class="btn-check" onclick="checkDrag()">EGIAZTATU</button>`;
         }
     }
 
-    function checkExercise() {
-        const ex = db[currentEx];
-        const f = document.getElementById('feedback');
-        let ok = false;
-
-        if(ex.tipo === "check") {
-            const checks = Array.from(document.querySelectorAll('input:checked')).map(i => i.value);
-            ok = checks.length === ex.correctas.length && checks.every(v => ex.correctas.includes(v));
-        } 
-        else if(ex.tipo === "order") {
-            ok = userOrder.join(' ') === ex.correcta;
-        }
-        else if(ex.tipo === "drag") {
-            const box0 = Array.from(document.getElementById('box-0').querySelectorAll('.draggable')).map(e => e.innerText);
-            const box1 = Array.from(document.getElementById('box-1').querySelectorAll('.draggable')).map(e => e.innerText);
-            
-            const bad0 = box0.some(t => ex.items.find(i => i.t === t).c !== ex.categorias[0]);
-            const bad1 = box1.some(t => ex.items.find(i => i.t === t).c !== ex.categorias[1]);
-            const total = box0.length + box1.length;
-            
-            ok = !bad0 && !bad1 && total === ex.items.length;
-        }
-
-        if(ok) {
-            f.innerText = "bikain! ✨"; f.style.color = "var(--success)";
-            document.getElementById('next-btn').style.display = "block";
-        } else {
-            f.innerText = "Saiatu berriro... ❌"; f.style.color = "var(--error)";
-        }
+    function checkDrag() {
+        const s = document.querySelectorAll('#box-sing .draggable-card');
+        const p = document.querySelectorAll('#box-plu .draggable-card');
+        let err = false;
+        s.forEach(i => { if(i.dataset.cat !== 'sing') err = true; });
+        p.forEach(i => { if(i.dataset.cat !== 'plu') err = true; });
+        if(!err && (s.length + p.length === 4)) alert("Biba zu! ✨");
+        else alert("Zerbait gaizki dago... ❌");
     }
 
-    function nextEx() {
-        currentEx = (currentEx + 1) % db.length;
-        loadEx();
-    }
+    function closeEx() { document.getElementById('exercise-overlay').style.display = 'none'; }
 
-    // Funciones básicas de Drag & Drop para navegador
-    function allowDrop(ev) { ev.preventDefault(); }
-    function drop(ev) {
-        ev.preventDefault();
-        const data = ev.dataTransfer.getData("text");
-        const target = ev.target.closest('.drag-box') || ev.target.closest('.word-pool');
-        if(target) target.appendChild(document.getElementById(data));
-    }
-
-    loadEx();
+    // Generar Índice
+    const container = document.getElementById('links-container');
+    libroData.forEach(t => {
+        const item = document.createElement('div');
+        item.style = "padding:15px; border-bottom:1px solid #eee; font-weight:bold; cursor:pointer;";
+        item.innerText = t.titulo;
+        item.onclick = () => loadTema(t.id);
+        container.appendChild(item);
+    });
 </script>
-
 </body>
 </html>
