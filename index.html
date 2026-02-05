@@ -3,40 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>E1</title>
-    <!-- Cargamos SortableJS desde el CDN más estable -->
+    <title>Euskara Libreta</title>
     <script src="https://cdn.jsdelivr.net"></script>
     <style>
         :root { --paper: #fffef0; --line: #e1e9ef; --margin: #ffadad; --primary: #264653; --success: #2a9d8f; --error: #e76f51; --accent: #e9c46a; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { margin: 0; background: #d1d8e0; font-family: sans-serif; height: 100dvh; overflow: hidden; display: flex; justify-content: center; }
+        .hidden { display: none !important; }
 
         /* DISEÑO LIBRETA */
         #notebook { background: var(--paper); background-image: linear-gradient(var(--line) 1px, transparent 1px); background-size: 100% 30px; width: 100%; max-width: 500px; height: 100%; position: relative; padding: 60px 20px 40px 60px; overflow-y: auto; box-shadow: 0 0 40px rgba(0,0,0,0.2); }
         #notebook::before { content: ''; position: absolute; left: 50px; top: 0; bottom: 0; width: 2px; background: var(--margin); }
 
-        /* MENÚ E INTERFAZ */
-        #tab-btn { position: fixed; top: 20px; right: 0; background: var(--primary); color: white; padding: 10px 15px; border-radius: 15px 0 0 15px; border: none; font-weight: 800; z-index: 100; }
+        /* INTERFAZ */
+        #tab-btn { position: fixed; top: 20px; right: 0; background: var(--primary); color: white; padding: 10px 15px; border-radius: 15px 0 0 15px; border: none; font-weight: 800; z-index: 100; cursor: pointer; }
         #sidebar { position: fixed; top: 0; right: 0; width: 280px; height: 100%; background: white; z-index: 200; transform: translateX(100%); transition: 0.3s; padding: 25px; box-shadow: -10px 0 30px rgba(0,0,0,0.1); }
         #sidebar.open { transform: translateX(0); }
 
-        /* CONTENIDO */
         h1 { font-family: cursive; color: var(--primary); border-bottom: 2px solid var(--accent); display: inline-block; margin-top: 0; }
-        p { line-height: 30px; color: #333; }
         .post-it { background: #fff3a0; padding: 20px; transform: rotate(-2deg); box-shadow: 5px 5px 15px rgba(0,0,0,0.1); display: inline-block; cursor: pointer; font-weight: 800; border: none; margin-top: 20px; }
 
-        /* MODAL DE EJERCICIO */
+        /* MODAL */
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 15px; }
-        .exam-sheet { background: white; width: 100%; max-width: 420px; padding: 25px; border-radius: 15px; position: relative; max-height: 90vh; overflow-y: auto; }
+        .exam-sheet { background: white; width: 100%; max-width: 420px; padding: 25px; border-radius: 15px; position: relative; max-height: 90vh; overflow-y: auto; text-align: center; }
 
-        /* ZONAS DE ARRASTRE */
+        /* ARRASTRE */
         .drag-container { display: flex; gap: 10px; margin-top: 15px; }
-        .drag-box { min-height: 120px; background: #f1f2f6; border: 2px dashed #999; border-radius: 10px; padding: 10px; flex: 1; }
-        .draggable-card { background: white; padding: 12px; margin: 8px 0; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: grab; font-weight: 700; text-align: center; border: 1px solid #ddd; touch-action: none; }
+        .drag-box { min-height: 100px; background: #f1f2f6; border: 2px dashed #999; border-radius: 10px; padding: 10px; flex: 1; }
+        .draggable-card { background: white; padding: 12px; margin: 8px 0; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: grab; font-weight: 700; border: 1px solid #ddd; touch-action: none; }
         .pool-zone { background: #fff3a0; border-radius: 10px; padding: 15px; margin-top: 15px; min-height: 80px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
-        .label { font-size: 0.7rem; font-weight: 900; color: var(--primary); text-align: center; margin-bottom: 5px; }
+        
+        /* SELECCIÓN */
+        .opt-btn { width: 100%; padding: 15px; margin: 8px 0; border: 2px solid #eee; border-radius: 12px; background: white; font-weight: 700; cursor: pointer; color: var(--primary); }
 
         .btn-check { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 10px; width: 100%; font-weight: 800; margin-top: 20px; cursor: pointer; }
+        .label { font-size: 0.7rem; font-weight: 900; color: var(--primary); margin-bottom: 5px; }
         .ghost { opacity: 0.3; background: var(--accent); }
     </style>
 </head>
@@ -45,7 +46,7 @@
     <button id="tab-btn" onclick="toggleMenu()">GAIAK</button>
 
     <nav id="sidebar">
-        <h2>Gaiak</h2>
+        <h2>Aurkibidea</h2>
         <div id="links-container"></div>
         <button onclick="toggleMenu()" class="btn-check" style="background:#666">Itxi</button>
     </nav>
@@ -53,48 +54,60 @@
     <main id="notebook">
         <article id="page-content">
             <h1>Ongi etorri!</h1>
-            <p>Hau zure libreta da. Aukeratu gai bat aurkibidean hasteko.</p>
+            <p>Aukeratu gai bat aurkibidean zure ariketak hasteko.</p>
         </article>
         <div id="action-area"></div>
     </main>
 
-    <!-- EL MODAL SE MANTIENE CON ESTRUCTURA FIJA PARA EVITAR FALLOS -->
     <div id="exercise-overlay" class="overlay">
         <div class="exam-sheet">
             <span onclick="closeEx()" style="position:absolute; top:15px; right:15px; font-weight:900; cursor:pointer; font-size:1.5rem;">✕</span>
             <h3 id="ex-title">Ariketa</h3>
             
-            <div id="drag-game">
+            <!-- CAPA 1: ARRASTRE -->
+            <div id="layer-drag" class="hidden">
                 <div class="drag-container">
                     <div><div class="label">SINGULARRA</div><div id="box-sing" class="drag-box"></div></div>
                     <div><div class="label">PLURALA</div><div id="box-plu" class="drag-box"></div></div>
                 </div>
                 <div class="label" style="margin-top:15px">AUKERAK</div>
                 <div id="pool" class="pool-zone"></div>
+                <button class="btn-check" onclick="checkDrag()">EGIAZTATU</button>
             </div>
 
-            <button class="btn-check" onclick="checkExercise()">EGIAZTATU</button>
+            <!-- CAPA 2: SELECCIÓN -->
+            <div id="layer-choice" class="hidden">
+                <div id="choice-options"></div>
+            </div>
         </div>
     </div>
 
 <script>
     const libroData = [
         {
+            id: "artikulua",
+            titulo: "1. Artikulua (-A)",
+            texto: "Euskaran ez dago 'el/la'. Hitzaren amaieran <b>-a</b> jartzen dugu.<br>Etxe (casa) -> Etxe<b>a</b> (la casa).",
+            tipo: "choice",
+            pregunta: "¿Cómo se dice 'El monte' (Mendi)?",
+            opciones: ["Mendi", "Mendia", "Mendik"],
+            correcta: "Mendia"
+        },
+        {
             id: "plurala",
-            titulo: "Plurala (-AK)",
-            texto: "Euskaran plurala egiteko <b>-ak</b> erabiltzen dugu.<br>Mendia (singular) -> Mendiak (plural).",
-            items: [
-                {t: "Etxea", c: "sing"}, {t: "Mendiak", c: "plu"},
-                {t: "Gizonak", c: "plu"}, {t: "Neska", c: "sing"}
-            ]
+            titulo: "2. Plurala (-AK)",
+            texto: "Plurala egiteko <b>-ak</b> jartzen dugu amaieran.<br>Lagun (amigo) -> Lagun<b>ak</b> (amigos/as).",
+            tipo: "drag",
+            pregunta: "Sailkatu hitzak:",
+            items: [ {t: "Etxea", c: "sing"}, {t: "Mendiak", c: "plu"}, {t: "Gizonak", c: "plu"}, {t: "Neska", c: "sing"} ]
         }
     ];
 
-    // INICIALIZACIÓN ÚNICA DE SORTABLE (Fuera de las funciones para que no se duplique)
-    const config = { group: 'euskara', animation: 150, ghostClass: 'ghost', forceFallback: true };
-    const s1 = Sortable.create(document.getElementById('pool'), config);
-    const s2 = Sortable.create(document.getElementById('box-sing'), config);
-    const s3 = Sortable.create(document.getElementById('box-plu'), config);
+    // Inicializar Sortable solo una vez
+    const sortConfig = { group: 'euskara', animation: 150, ghostClass: 'ghost', forceFallback: true };
+    Sortable.create(document.getElementById('pool'), sortConfig);
+    Sortable.create(document.getElementById('box-sing'), sortConfig);
+    Sortable.create(document.getElementById('box-plu'), sortConfig);
 
     function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); }
 
@@ -108,32 +121,45 @@
     function openEx(id) {
         const tema = libroData.find(t => t.id === id);
         document.getElementById('exercise-overlay').style.display = 'flex';
-        
-        // Limpiamos cajas y llenamos el pool
-        document.getElementById('box-sing').innerHTML = "";
-        document.getElementById('box-plu').innerHTML = "";
-        const pool = document.getElementById('pool');
-        pool.innerHTML = "";
-        
-        tema.items.forEach(it => {
-            pool.innerHTML += `<div class="draggable-card" data-cat="${it.c}">${it.t}</div>`;
-        });
+        document.getElementById('ex-title').innerText = tema.pregunta;
+
+        // Ocultar todas las capas
+        document.getElementById('layer-drag').classList.add('hidden');
+        document.getElementById('layer-choice').classList.add('hidden');
+
+        if(tema.tipo === 'choice') {
+            document.getElementById('layer-choice').classList.remove('hidden');
+            const container = document.getElementById('choice-options');
+            container.innerHTML = "";
+            tema.opciones.forEach(o => {
+                container.innerHTML += `<button class="opt-btn" onclick="validateChoice('${o}','${tema.correcta}')">${o}</button>`;
+            });
+        } 
+        else if(tema.tipo === 'drag') {
+            document.getElementById('layer-drag').classList.remove('hidden');
+            document.getElementById('box-sing').innerHTML = "";
+            document.getElementById('box-plu').innerHTML = "";
+            const pool = document.getElementById('pool');
+            pool.innerHTML = "";
+            tema.items.forEach(it => {
+                pool.innerHTML += `<div class="draggable-card" data-cat="${it.c}">${it.t}</div>`;
+            });
+        }
     }
 
-    function checkExercise() {
+    function validateChoice(val, corr) {
+        if(val === corr) { alert("Biba zu! ✨"); closeEx(); }
+        else alert("Saiatu berriro... ❌");
+    }
+
+    function checkDrag() {
         const s = document.querySelectorAll('#box-sing .draggable-card');
         const p = document.querySelectorAll('#box-plu .draggable-card');
         let err = false;
-        
         s.forEach(i => { if(i.dataset.cat !== 'sing') err = true; });
         p.forEach(i => { if(i.dataset.cat !== 'plu') err = true; });
-        
-        if(!err && (s.length + p.length === 4)) {
-            alert("Oso ondo! ✨");
-            closeEx();
-        } else {
-            alert("Zerbait ez dago ondo... ❌");
-        }
+        if(!err && (s.length + p.length === 4)) { alert("Oso ondo! ✨"); closeEx(); }
+        else alert("Zerbait gaizki dago... ❌");
     }
 
     function closeEx() { document.getElementById('exercise-overlay').style.display = 'none'; }
@@ -142,7 +168,7 @@
     const container = document.getElementById('links-container');
     libroData.forEach(t => {
         const item = document.createElement('div');
-        item.style = "padding:15px; border-bottom:1px solid #eee; font-weight:bold; cursor:pointer;";
+        item.style = "padding:15px; border-bottom:1px solid #eee; font-weight:bold; cursor:pointer; color: #264653;";
         item.innerText = t.titulo;
         item.onclick = () => loadTema(t.id);
         container.appendChild(item);
