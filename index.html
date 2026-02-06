@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Euskara Libreta</title>
     <style>
-        :root { --paper: #fffef0; --line: #e1e9ef; --margin: #ffadad; --primary: #264653; --accent: #e9c46a; --success: #2a9d8f; }
+        :root { 
+            --paper: #fffef0; --line: #e1e9ef; --margin: #ffadad; 
+            --primary: #264653; --success: #2a9d8f; --error: #e76f51; --accent: #e9c46a; 
+        }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { margin: 0; background: #d1d8e0; font-family: system-ui, sans-serif; height: 100dvh; overflow: hidden; display: flex; justify-content: center; }
         .hidden { display: none !important; }
@@ -14,26 +17,32 @@
         #notebook { background: var(--paper); background-image: linear-gradient(var(--line) 1px, transparent 1px); background-size: 100% 30px; width: 100%; max-width: 500px; height: 100%; position: relative; padding: 60px 20px 40px 60px; overflow-y: auto; box-shadow: 0 0 40px rgba(0,0,0,0.2); }
         #notebook::before { content: ''; position: absolute; left: 50px; top: 0; bottom: 0; width: 2px; background: var(--margin); }
 
-        /* INTERFAZ */
+        /* MENÚ */
         #tab-btn { position: fixed; top: 20px; right: 0; background: var(--primary); color: white; padding: 12px 20px; border-radius: 15px 0 0 15px; border: none; font-weight: 800; z-index: 100; cursor: pointer; }
         #sidebar { position: fixed; top: 0; right: 0; width: 280px; height: 100%; background: white; z-index: 200; transform: translateX(100%); transition: 0.3s; padding: 25px; box-shadow: -10px 0 30px rgba(0,0,0,0.1); }
         #sidebar.open { transform: translateX(0); }
         .link-item { padding: 15px; border-bottom: 1px solid #eee; cursor: pointer; font-weight: bold; color: var(--primary); }
 
         h1 { font-family: cursive; color: var(--primary); border-bottom: 2px solid var(--accent); display: inline-block; margin-top: 0; }
+        p { line-height: 30px; color: #333; }
         .post-it { background: #fff3a0; padding: 20px; transform: rotate(-2deg); box-shadow: 5px 5px 15px rgba(0,0,0,0.1); display: inline-block; cursor: pointer; font-weight: 800; border: none; margin-top: 20px; }
 
         /* MODAL EXAMEN */
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 1000; }
         .exam-sheet { background: white; width: 92%; max-width: 420px; padding: 25px; border-radius: 20px; position: relative; text-align: center; }
 
-        /* EJERCICIO TÁCTIL (Sustituye al arrastre) */
-        .target-box { min-height: 80px; background: #f1f2f6; border: 2px dashed #999; border-radius: 12px; padding: 10px; margin: 10px 0; display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; }
-        .target-box.active { border-color: var(--accent); background: #fef9e7; }
-        .token { background: white; padding: 8px 12px; border-radius: 8px; border: 1px solid #ddd; font-weight: 700; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .token.selected { background: var(--accent); border-color: orange; }
+        /* ZONAS DE CLIC GARANTIZADO */
+        .column-wrapper { flex: 1; display: flex; flex-direction: column; cursor: pointer; }
+        .column-wrapper small { background: var(--primary); color: white; padding: 6px; border-radius: 8px 8px 0 0; font-weight: 800; font-size: 0.65rem; }
 
-        .pool-zone { background: #fff3a0; padding: 15px; border-radius: 12px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; min-height: 60px; }
+        .target-box { min-height: 120px; background: #f1f2f6; border: 2px dashed #999; border-radius: 0 0 12px 12px; padding: 10px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-content: flex-start; transition: 0.2s; }
+        .target-box.can-drop { background: #fdfae7; border-color: var(--accent); }
+
+        /* FICHAS */
+        .token { background: white; padding: 8px 12px; border-radius: 8px; border: 1px solid #ddd; font-weight: 700; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 0.9rem; }
+        .token.selected { background: var(--accent); border-color: orange; transform: scale(1.1); }
+
+        .pool-zone { background: #fff3a0; padding: 15px; border-radius: 12px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; min-height: 80px; margin-top: 10px; }
         .opt-btn { width: 100%; padding: 15px; margin: 8px 0; border: 2px solid #eee; border-radius: 12px; background: white; font-weight: 700; }
         .btn-check { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 800; margin-top: 15px; cursor: pointer; }
     </style>
@@ -61,16 +70,23 @@
         <span onclick="closeEx()" style="position:absolute; top:10px; right:15px; font-weight:900; cursor:pointer; font-size:1.5rem;">✕</span>
         <h3 id="ex-title">Ariketa</h3>
         
+        <!-- ACTIVIDAD ARRASTRE (TÁCTIL) -->
         <div id="layer-drag" class="hidden">
             <div style="display:flex; gap:10px;">
-                <div style="flex:1" onclick="moveToBox('sing')"><small>SINGULARRA</small><div id="box-sing" class="target-box"></div></div>
-                <div style="flex:1" onclick="moveToBox('plu')"><small>PLURALA</small><div id="box-plu" class="target-box"></div></div>
+                <div class="column-wrapper" onclick="moveToBox('sing')">
+                    <small>SINGULARRA</small>
+                    <div id="box-sing" class="target-box"></div>
+                </div>
+                <div class="column-wrapper" onclick="moveToBox('plu')">
+                    <small>PLURALA</small>
+                    <div id="box-plu" class="target-box"></div>
+                </div>
             </div>
-            <small>AUKERATU ETA SARTU KAXAN:</small>
-            <div id="pool" class="pool-zone"></div>
+            <div id="pool" class="pool-zone" onclick="moveToPool()"></div>
             <button class="btn-check" onclick="checkDrag()">EGIAZTATU</button>
         </div>
 
+        <!-- ACTIVIDAD ELECCIÓN -->
         <div id="layer-choice" class="hidden">
             <div id="choice-options"></div>
         </div>
@@ -80,12 +96,12 @@
 <script>
     const libroData = [
         { id: "1", titulo: "1. Artikulua (-A)", texto: "Euskaran artikulua 'a' da. <br> Mendi + a = Mendia.", tipo: "choice", pregunta: "¿Cómo es 'La casa'?", opciones: ["Etxe", "Etxea", "Etxek"], correcta: "Etxea" },
-        { id: "2", titulo: "2. Plurala (-AK)", texto: "Plurala egiteko 'ak' erabiltzen dugu. <br> Etxea -> Etxeak.", tipo: "drag", pregunta: "Sailkatu hitzak (Toca palabra + Toca caja):", items: [{t:"Mendia", c:"sing"}, {t:"Etxeak", c:"plu"}, {t:"Gizonak", c:"plu"}, {t:"Neska", c:"sing"}] }
+        { id: "2", titulo: "2. Plurala (-AK)", texto: "Plurala egiteko 'ak' erabiltzen dugu. <br> Etxea -> Etxeak.", tipo: "drag", pregunta: "Sailkatu hitzak:", items: [{t:"Mendia", c:"sing"}, {t:"Etxeak", c:"plu"}, {t:"Gizonak", c:"plu"}, {t:"Neska", c:"sing"}] }
     ];
 
     let selectedToken = null;
 
-    // Generar Índice Inmediato
+    // Generar Índice
     const container = document.getElementById('links-container');
     libroData.forEach(t => {
         const div = document.createElement('div');
@@ -119,16 +135,24 @@
             document.getElementById('box-plu').innerHTML = "";
             const pool = document.getElementById('pool');
             pool.innerHTML = "";
-            tema.items.forEach((it, i) => {
+            tema.items.forEach(it => {
                 const span = document.createElement('div');
                 span.className = 'token';
                 span.innerText = it.t;
                 span.dataset.cat = it.c;
                 span.onclick = (e) => {
                     e.stopPropagation();
-                    document.querySelectorAll('.token').forEach(t => t.classList.remove('selected'));
-                    span.classList.add('selected');
-                    selectedToken = span;
+                    if(span.parentElement.id === 'pool') {
+                        document.querySelectorAll('.token').forEach(t => t.classList.remove('selected'));
+                        document.querySelectorAll('.target-box').forEach(b => b.classList.add('can-drop'));
+                        span.classList.add('selected');
+                        selectedToken = span;
+                    } else {
+                        // Devolver al pool si ya está en una caja
+                        document.getElementById('pool').appendChild(span);
+                        span.classList.remove('selected');
+                        selectedToken = null;
+                    }
                 };
                 pool.appendChild(span);
             });
@@ -139,6 +163,15 @@
         if(!selectedToken) return;
         document.getElementById('box-' + boxId).appendChild(selectedToken);
         selectedToken.classList.remove('selected');
+        document.querySelectorAll('.target-box').forEach(b => b.classList.remove('can-drop'));
+        selectedToken = null;
+    }
+
+    function moveToPool() {
+        if(!selectedToken) return;
+        document.getElementById('pool').appendChild(selectedToken);
+        selectedToken.classList.remove('selected');
+        document.querySelectorAll('.target-box').forEach(b => b.classList.remove('can-drop'));
         selectedToken = null;
     }
 
@@ -155,7 +188,7 @@
         else alert("Saiatu berriro... ❌");
     }
 
-    function closeEx() { document.getElementById('exercise-overlay').style.display = 'none'; }
+    function closeEx() { document.getElementById('exercise-overlay').style.display = 'none'; selectedToken = null; }
 </script>
 </body>
 </html>
