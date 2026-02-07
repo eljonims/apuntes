@@ -1,23 +1,36 @@
 <!DOCTYPE html>
 <html lang="eu">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Euskara Apunteak</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com" rel="stylesheet">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
 
 
 </head>
+
 <body>
     <button id="tab-btn" onclick="toggleMenu()">GAIAK</button>
 
     <nav id="sidebar">
         <h2>Aurkibidea</h2>
         <input type="text" id="search-bar" placeholder="Bilatu..." oninput="filtrarTemas()">
+
+        <!-- BARRA DE HERRAMIENTAS FIJA -->
+        <div id="sidebar-tools" style="display:flex; gap:5px; margin: 10px 0; flex-shrink:0;">
+            <button class="btn-check" style="padding:5px; font-size:0.7rem; flex:1;"
+                onclick="expandirTodo(true)">Expandir</button>
+            <button class="btn-check" style="padding:5px; font-size:0.7rem; background:#888; flex:1;"
+                onclick="expandirTodo(false)">Contraer</button>
+        </div>
+
         <div id="links-container"></div>
-        <button class="btn-check" style="background:#666; margin-top:20px;" onclick="toggleMenu()">Itxi</button>
+        <button class="btn-check" style="background:#666; margin-top:15px;" onclick="toggleMenu()">Itxi</button>
     </nav>
 
     <main id="notebook">
@@ -36,8 +49,10 @@
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script> <!-- Librería de confeti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <!-- Librería de confeti -->
     <script src="data.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>
