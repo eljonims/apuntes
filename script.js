@@ -40,20 +40,26 @@ function abrirRamasHastaTema(targetId, lista = libroData) {
 
 // Recuperamos el estado de las carpetas o creamos uno nuevo
 let carpetaStates = JSON.parse(localStorage.getItem('carpetaStates')) || {};
+
+
+
 function renderIndice(filtro = "") {
     const container = document.getElementById('links-container');
-    container.innerHTML = `
-        <div style="display:flex; gap:5px; margin-bottom:15px; position: sticky; top: 0; background: white; z-index: 10; padding-bottom: 10px;">
-            <button class="btn-check" style="padding:5px; font-size:0.7rem;" onclick="expandirTodo(true)">Expandir</button>
-            <button class="btn-check" style="padding:5px; font-size:0.7rem; background:#888;" onclick="expandirTodo(false)">Contraer</button>
-        </div>
-    `;
+    if (!container) return;
+
+    // Ahora solo limpiamos los enlaces, los botones de arriba están a salvo
+    container.innerHTML = "";
 
     libroData.forEach(tema => {
         const nodo = crearNodo(tema, 0, filtro);
         if (nodo) container.appendChild(nodo);
     });
+    // Si después de filtrar no hay nada, avisamos
+    if (container.innerHTML === "" && filtro !== "") {
+        container.innerHTML = "<div style='padding:10px; color:gray;'>Ez da emaitzarik aurkitu...</div>";
+    }
 }
+
 
 function crearNodo(tema, nivel = 0, filtro = "") {
     const visibleSubtemas = tema.hijos ? tema.hijos.map(h => crearNodo(h, nivel + 1, filtro)).filter(n => n !== null) : [];
@@ -143,7 +149,6 @@ function encontrarTemaProfundo(id, lista = libroData) {
 }
 
 // Modifica tu loadTema para que use esta nueva búsqueda
-
 function loadTema(id) {
     const tema = encontrarTemaProfundo(id); // <--- Cambio clave
     if (!tema) return;
@@ -216,6 +221,7 @@ function lanzarSiguiente() {
     if (ex.tipo === 'drag') renderDrag(ex, body);
     else if (ex.tipo === 'choice') renderChoice(ex, body);
     else if (ex.tipo === 'input') renderInput(ex, body);
+    else if (ex.tipo === 'sort') renderSort(ex, body);
 }
 
 function prepararSiguiente() {
@@ -284,18 +290,18 @@ function renderChoice(ex, container) {
         const btn = document.createElement('button');
         btn.className = 'token';
         btn.innerText = opt;
-        
+
         btn.onclick = () => {
             // 1. Visual en botones
             document.querySelectorAll('.token').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
-            
+
             // 2. ESCRIBIR EN EL HUECO (Esta es la parte que faltaba)
             selectedToken = opt;
             liveText.innerText = opt;
             liveText.style.color = "var(--primary)";
             liveText.style.background = "rgba(0,0,0,0.04)";
-            
+
             playSound('tick');
         };
         optGrid.appendChild(btn);
@@ -329,8 +335,8 @@ function renderChoice(ex, container) {
 function renderInput(ex, container) {
     const area = document.createElement('div'); area.style = "text-align:center; padding:20px; flex-grow:1; display:flex; flex-direction:column; justify-content:center;";
     const fraseProc = ex.frase.replace(/(\S+)___/, (match, p1) => {
-    return `<span class="palabra-con-sufijo">${p1}<span id="live-text" class="lapiz-sufijo" style="background:rgba(0,0,0,0.08); padding:0 2px; border-radius:3px; min-width:1.5rem; display:inline;">___</span></span>`;
-});
+        return `<span class="palabra-con-sufijo">${p1}<span id="live-text" class="lapiz-sufijo" style="background:rgba(0,0,0,0.08); padding:0 2px; border-radius:3px; min-width:1.5rem; display:inline;">___</span></span>`;
+    });
     area.innerHTML = `<p style="font-size:1.5rem; margin-bottom:30px; line-height:1; letter-spacing:-0.5px; white-space:nowrap;">${fraseProc}</p><input type="text" id="hidden-input" style="position:absolute; opacity:0; pointer-events:none;" autocomplete="off"><p style="color:#666; font-style:italic; font-size:0.9rem;">${ex.ayuda || "Osatu..."}</p>`;
     container.appendChild(area);
     const input = document.getElementById('hidden-input'); const live = document.getElementById('live-text');
@@ -365,6 +371,57 @@ function renderInput(ex, container) {
                 msg.innerText = "";
                 inputField.focus();
             }, 1200);
+        }
+    };
+}
+function renderSort(ex, container) {
+    const area = document.createElement('div');
+    area.style = "text-align:center; padding:10px; flex:1; display:flex; flex-direction:column;";
+
+    // Carril de respuesta (donde aterrizan las palabras)
+    const carril = document.createElement('div');
+    carril.className = "pool-zone";
+    carril.style = "min-height:80px; background:rgba(255,255,255,0.7); border:2px dashed var(--line); margin-bottom:20px; display:flex; flex-wrap:wrap; justify-content:center; align-items:center; padding:10px; gap:8px;";
+
+    // Zona de opciones (palabras desordenadas)
+    const opciones = document.createElement('div');
+    opciones.style = "display:flex; flex-wrap:wrap; justify-content:center; gap:8px;";
+
+    const palabrasCorrectas = ex.fraseCorrecta.split(" ");
+    const palabrasMezcladas = [...palabrasCorrectas].sort(() => Math.random() - 0.5);
+
+    palabrasMezcladas.forEach(p => {
+        const token = document.createElement('div');
+        token.className = 'token';
+        token.innerText = p;
+        token.onclick = () => {
+            // Si está abajo, sube al carril. Si está en el carril, baja a opciones.
+            if (token.parentElement === opciones) carril.appendChild(token);
+            else opciones.appendChild(token);
+            playSound('tick');
+        };
+        opciones.appendChild(token);
+    });
+
+    area.appendChild(carril);
+    area.appendChild(opciones);
+    container.appendChild(area);
+
+    document.getElementById('btn-main-action').onclick = () => {
+        const msg = document.getElementById('ex-message');
+        const respuesta = Array.from(carril.children).map(t => t.innerText).join(" ");
+
+        if (respuesta === ex.fraseCorrecta) {
+            msg.innerText = "✨ Oso ondo!";
+            msg.style.color = "var(--success)";
+            playSound('success');
+            prepararSiguiente();
+        } else {
+            msg.innerText = "❌ Ordena ez da zuzena";
+            msg.style.color = "var(--error)";
+            playSound('error');
+            carril.classList.add('shake');
+            setTimeout(() => carril.classList.remove('shake'), 300);
         }
     };
 }
