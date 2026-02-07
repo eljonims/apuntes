@@ -509,3 +509,28 @@ body {
     color: var(--primary) !important;
     border-left: 4px solid var(--primary) !important;
 }
+.nav-pagination {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--line);
+    gap: 10px;
+}
+
+.btn-nav {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Gochi Hand', cursive;
+    font-size: 0.9rem;
+    color: var(--primary);
+    transition: all 0.2s;
+}
+
+.btn-nav:hover {
+    background: var(--accent);
+    transform: translateY(-2px);
+}
