@@ -106,7 +106,20 @@ body {
     flex-grow: 1;
     overflow: hidden;
 }
+/* Ajuste para que las frases largas no se corten */
+#ex-body p {
+    white-space: normal !important; /* Permite saltos de línea normales */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-align: center;
+    padding: 0 10px;
+}
 
+/* Mantenemos el no-wrap SOLO para la palabra que tiene el sufijo */
+.palabra-con-sufijo {
+    display: inline-block;
+    white-space: nowrap; /* Esto evita que el sufijo se separe de su raíz */
+}
 .drag-grid {
     display: flex;
     gap: 10px;
