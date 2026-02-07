@@ -7,14 +7,14 @@ window.onload = () => {
     if (typeof libroData !== 'undefined') {
         // 1. Recuperamos el ID guardado
         const ultimoTema = localStorage.getItem('ultimoTemaVisitado');
-        
+
         // 2. Si existe, forzamos la apertura de sus carpetas antes de renderizar
         if (ultimoTema) {
             abrirRamasHastaTema(ultimoTema);
         }
-        
+
         renderIndice();
-        
+
         // 3. Cargamos el contenido en el cuaderno
         if (ultimoTema && encontrarTemaProfundo(ultimoTema)) {
             loadTema(ultimoTema);
@@ -58,19 +58,19 @@ function renderIndice(filtro = "") {
 function crearNodo(tema, nivel = 0, filtro = "") {
     const visibleSubtemas = tema.hijos ? tema.hijos.map(h => crearNodo(h, nivel + 1, filtro)).filter(n => n !== null) : [];
     const coincidePropio = tema.titulo.toLowerCase().includes(filtro);
-    
+
     if (filtro && !coincidePropio && visibleSubtemas.length === 0) return null;
 
     const div = document.createElement('div');
     div.style.marginLeft = `${nivel * 12}px`;
-    
+
     if (tema.hijos) {
         // --- LÓGICA DE CARPETA ---
         const isExp = carpetaStates[tema.id] || false;
         div.innerHTML = `<div class="link-item folder ${isExp ? 'open' : ''}">${tema.titulo}</div>`;
         const childContainer = document.createElement('div');
         childContainer.style.display = isExp ? 'block' : 'none';
-        
+
         div.firstChild.onclick = () => {
             const nowOpen = childContainer.style.display === 'none';
             childContainer.style.display = nowOpen ? 'block' : 'none';
@@ -78,20 +78,20 @@ function crearNodo(tema, nivel = 0, filtro = "") {
             carpetaStates[tema.id] = nowOpen;
             localStorage.setItem('carpetaStates', JSON.stringify(carpetaStates));
         };
-        
+
         visibleSubtemas.forEach(nodoHijo => childContainer.appendChild(nodoHijo));
         div.appendChild(childContainer);
     } else {
         // --- LÓGICA DE ARCHIVO (Aquí van las líneas) ---
         const idActual = localStorage.getItem('ultimoTemaVisitado'); // 1. Recuperamos el ID
         const claseActiva = (tema.id === idActual) ? 'active-tema' : ''; // 2. Comparamos
-        
+
         div.innerHTML = `<div class="link-item file ${claseActiva}">${tema.titulo}</div>`;
-        
+
         div.firstChild.onclick = () => {
             loadTema(tema.id);
             // Al hacer clic, redibujamos el índice para que el resaltado cambie de sitio
-            renderIndice(document.getElementById('search-bar').value); 
+            renderIndice(document.getElementById('search-bar').value);
             if (window.innerWidth < 768) toggleMenu();
         };
     }
@@ -264,25 +264,73 @@ function renderDrag(ex, container) {
 }
 
 function renderChoice(ex, container) {
-    const area = document.createElement('div'); area.className = "choice-area";
-    const fraseProc = ex.frase.replace("___", `<span id="live-text" class="lapiz-sufijo" style="background:rgba(0,0,0,0.08); padding:0 2px; border-radius:3px; min-width:1.5rem; display:inline;">___</span>`);
-    area.innerHTML = `<p style="font-size:1.5rem; margin-bottom:30px; line-height:1; letter-spacing:-0.5px; white-space:nowrap;">${fraseProc}</p><div id="opt-grid" style="display:grid; gap:10px; grid-template-columns:repeat(auto-fit, minmax(100px, 1fr));"></div>`;
+    const area = document.createElement('div');
+    area.className = "choice-area";
+    area.style = "text-align:center; padding:20px; flex-grow:1; display:flex; flex-direction:column; justify-content:center;";
+
+    // Usamos el Regex para asegurar la "unión atómica" sin espacios
+    const fraseProc = ex.frase.replace("___", `<span id="live-text" class="lapiz-sufijo" style="background:rgba(0,0,0,0.08); padding:0 4px; border-radius:3px; min-width:1.5rem; display:inline;">___</span>`);
+
+    area.innerHTML = `
+        <p style="font-size:1.4rem; margin-bottom:30px; line-height:1.4;">${fraseProc}</p>
+        <div id="opt-grid" style="display:grid; gap:10px; grid-template-columns:repeat(auto-fit, minmax(100px, 1fr));"></div>
+    `;
     container.appendChild(area);
+
     const liveText = document.getElementById('live-text');
+    const optGrid = document.getElementById('opt-grid');
+
     ex.opciones.forEach(opt => {
-        const btn = document.createElement('button'); btn.className = 'token'; btn.innerText = opt;
-        btn.onclick = () => { document.querySelectorAll('.token').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); selectedToken = opt; liveText.innerText = opt; playSound('tick'); };
-        document.getElementById('opt-grid').appendChild(btn);
+        const btn = document.createElement('button');
+        btn.className = 'token';
+        btn.innerText = opt;
+        
+        btn.onclick = () => {
+            // 1. Visual en botones
+            document.querySelectorAll('.token').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            
+            // 2. ESCRIBIR EN EL HUECO (Esta es la parte que faltaba)
+            selectedToken = opt;
+            liveText.innerText = opt;
+            liveText.style.color = "var(--primary)";
+            liveText.style.background = "rgba(0,0,0,0.04)";
+            
+            playSound('tick');
+        };
+        optGrid.appendChild(btn);
     });
+
+    // 3. Lógica de validación del botón principal
     document.getElementById('btn-main-action').onclick = () => {
-        if (selectedToken === ex.correcta) { liveText.style.color = "var(--success)"; playSound('success'); prepararSiguiente(); }
-        else { playSound('error'); document.getElementById('ex-message').innerText = "❌ Saiatu berriro"; }
+        const msg = document.getElementById('ex-message');
+        if (!selectedToken) {
+            msg.innerText = "Hautatu aukera bat";
+            return;
+        }
+
+        if (selectedToken === ex.correcta) {
+            msg.innerText = "✨ Oso ondo!";
+            msg.style.color = "var(--success)";
+            liveText.style.color = "var(--success)";
+            liveText.style.background = "rgba(42, 157, 143, 0.2)";
+            playSound('success');
+            prepararSiguiente(); // Para avanzar en la batería
+        } else {
+            msg.innerText = "❌ Saiatu berriro";
+            msg.style.color = "var(--error)";
+            liveText.style.color = "var(--error)";
+            liveText.style.background = "rgba(231, 111, 81, 0.2)";
+            playSound('error');
+        }
     };
 }
 
 function renderInput(ex, container) {
     const area = document.createElement('div'); area.style = "text-align:center; padding:20px; flex-grow:1; display:flex; flex-direction:column; justify-content:center;";
-    const fraseProc = ex.frase.replace("___", `<span id="live-text" class="lapiz-sufijo" style="background:rgba(0,0,0,0.08); padding:0 2px; border-radius:3px; min-width:1.5rem; display:inline;">___</span>`);
+    const fraseProc = ex.frase.replace(/(\S+)___/, (match, p1) => {
+    return `<span class="palabra-con-sufijo">${p1}<span id="live-text" class="lapiz-sufijo" style="background:rgba(0,0,0,0.08); padding:0 2px; border-radius:3px; min-width:1.5rem; display:inline;">___</span></span>`;
+});
     area.innerHTML = `<p style="font-size:1.5rem; margin-bottom:30px; line-height:1; letter-spacing:-0.5px; white-space:nowrap;">${fraseProc}</p><input type="text" id="hidden-input" style="position:absolute; opacity:0; pointer-events:none;" autocomplete="off"><p style="color:#666; font-style:italic; font-size:0.9rem;">${ex.ayuda || "Osatu..."}</p>`;
     container.appendChild(area);
     const input = document.getElementById('hidden-input'); const live = document.getElementById('live-text');
