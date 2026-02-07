@@ -1,0 +1,69 @@
+:root { 
+    --paper: #fffef0; --line: #e1e9ef; --margin: #ffadad; 
+    --primary: #264653; --success: #2a9d8f; --error: #e76f51; --accent: #e9c46a; 
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body { margin: 0; background: #d1d8e0; font-family: 'Segoe UI', sans-serif; height: 100dvh; overflow: hidden; display: flex; justify-content: center; }
+
+#notebook {
+    background: var(--paper);
+    /* Dibujamos las líneas azules (horizontales) y la roja (vertical) juntas */
+    background-image: 
+        linear-gradient(90deg, transparent 24px, var(--margin) 24px, var(--margin) 26px, transparent 26px),
+        linear-gradient(var(--line) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 30px;
+    background-attachment: local; /* Clave: el fondo se desplaza con el contenido */
+    
+    width: 100%;
+    max-width: 600px;
+    height: 100%;
+    position: relative;
+    padding: 60px 20px 40px 80px;
+    overflow-y: auto;
+}
+
+
+#tab-btn { position: fixed; top: 20px; right: 0; background: var(--primary); color: white; padding: 12px 20px; border: none; border-radius: 15px 0 0 15px; z-index: 100; cursor: pointer; font-weight: bold; }
+#sidebar { position: fixed; top: 0; right: 0; width: 280px; height: 100%; background: white; z-index: 200; transform: translateX(100%); transition: 0.3s; padding: 20px; box-shadow: -5px 0 15px rgba(0,0,0,0.1); }
+#sidebar.open { transform: translateX(0); }
+
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 15px; }
+.exam-sheet { background: white; width: 100%; max-width: 500px; max-height: 92vh; border-radius: 20px; padding: 20px; display: flex; flex-direction: column; position: relative; }
+#ex-body { display: flex; flex-direction: column; flex-grow: 1; overflow: hidden; }
+
+.drag-grid { display: flex; gap: 10px; margin-bottom: 10px; flex-shrink: 0; flex-wrap: wrap; }
+.column-wrapper { flex: 1; min-width: 120px; display: flex; flex-direction: column; }
+.target-box { min-height: 70px; background: #f9fafb; border: 2px dashed #ccc; border-radius: 12px; padding: 8px; margin-top: 4px; }
+.pool-zone { background: #fff3a0; border-radius: 12px; padding: 12px; overflow-y: auto; flex-grow: 1; border: 2px solid #eddb6d; min-height: 120px; }
+
+.token { background: white; padding: 10px; border-radius: 8px; border: 1px solid #ddd; cursor: pointer; font-weight: bold; display: inline-block; margin: 4px; font-size: 0.9rem; }
+.token.selected { outline: 3px solid var(--accent); transform: scale(1.05); }
+.token-error { border: 2px solid var(--error) !important; background: #fee2e2; }
+.token-success { border: 2px solid var(--success) !important; background: #d1fae5; }
+.highlight-dest { border: 2px solid var(--accent); background: rgba(233, 196, 106, 0.1); }
+
+.footer-exercise { border-top: 1px solid #eee; padding-top: 15px; margin-top: 10px; flex-shrink: 0; }
+#ex-message { margin-bottom: 8px; font-weight: bold; text-align: center; min-height: 1.2em; }
+.btn-check { background: var(--primary); color: white; border: none; padding: 16px; border-radius: 12px; width: 100%; font-weight: bold; cursor: pointer; }
+.close-icon { position: absolute; top: 15px; right: 20px; cursor: pointer; font-size: 22px; color: #999; }
+
+.post-it { background: #fff3a0; padding: 15px; border: none; box-shadow: 3px 3px 10px rgba(0,0,0,0.1); cursor: pointer; font-weight: bold; margin: 20px auto; display: block; width: fit-content; max-width: 90%; }
+.caja-simplificada { background: #ffd1d1; border-radius: 4px; padding: 0 4px; border: 1px dashed #e76f51; cursor: pointer; }
+
+@media (max-width: 480px) {
+    .column-wrapper { flex: 1 1 100%; }
+    #notebook { padding: 50px 10px 20px 50px; }
+}
+#live-text {
+    padding: 0 5px;
+    transition: color 0.3s ease;
+    font-family: 'Courier New', Courier, monospace; /* O una fuente tipo handwriting */
+}
+.lapiz-sufijo {
+    font-family: 'Gochi Hand', cursive !important;
+    color: #555 !important; /* Gris grafito */
+    font-size: 1.1em; /* Un pelín más grande para compensar la caligrafía */
+    letter-spacing: 0.5px;
+    text-shadow: 0.5px 0.5px 1px rgba(0,0,0,0.1); /* Efecto de presión de grafito */
+}
