@@ -64,13 +64,22 @@ body {
     top: 0;
     right: 0;
     width: 280px;
-    height: 100%;
+    height: 100dvh; /* Ocupa el 100% de la altura visual */
     background: white;
     z-index: 200;
     transform: translateX(100%);
-    transition: 0.3s;
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 20px;
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+    
+    /* ESTO ES LA CLAVE */
+    display: flex;
+    flex-direction: column; 
+}
+/* El botón de cerrar se queda abajo, siempre visible */
+#sidebar .btn-check {
+    flex-shrink: 0;     /* Impide que el botón se encoja o desaparezca */
+    margin-top: 15px;
 }
 
 #sidebar.open {
@@ -366,10 +375,11 @@ body {
 
 /* Contenedor de la lista de temas */
 #links-container {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    flex-grow: 1;       /* Ocupa todo el espacio sobrante */
+    overflow-y: auto;   /* Activa el scroll interno */
+    margin-top: 15px;
+    padding-right: 5px; /* Espacio para que la barra de scroll no pise el texto */
+    scrollbar-width: thin; /* Barra de scroll fina en navegadores modernos */
 }
 
 /* Cada ítem del índice */
