@@ -64,26 +64,39 @@ body {
     top: 0;
     right: 0;
     width: 280px;
-    height: 100dvh; /* Ocupa el 100% de la altura visual */
+    height: 100dvh;
+    /* <--- USA ESTA para evitar que el botón "Itxi" desaparezca en móviles */
     background: white;
     z-index: 200;
     transform: translateX(100%);
     transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 20px;
-    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-    
-    /* ESTO ES LA CLAVE */
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
 }
+
 /* El botón de cerrar se queda abajo, siempre visible */
 #sidebar .btn-check {
-    flex-shrink: 0;     /* Impide que el botón se encoja o desaparezca */
+    flex-shrink: 0;
+    /* Impide que el botón se encoja o desaparezca */
     margin-top: 15px;
+}
+
+#sidebar>.btn-check:last-child {
+    flex-shrink: 0;
+    margin-top: 15px;
+    background: #666;
+    /* El gris que tenías para cerrar */
 }
 
 #sidebar.open {
     transform: translateX(0);
+}
+
+#sidebar-tools button:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
 }
 
 .overlay {
@@ -115,20 +128,74 @@ body {
     flex-grow: 1;
     overflow: hidden;
 }
+
 /* Ajuste para que las frases largas no se corten */
 #ex-body p {
-    white-space: normal !important; /* Permite saltos de línea normales */
+    white-space: normal !important;
+    /* Permite saltos de línea normales */
     word-wrap: break-word;
     overflow-wrap: break-word;
     text-align: center;
     padding: 0 10px;
 }
 
+/* Efecto de 'imán' para las piezas del Sort */
+#ex-body .pool-zone .token {
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ccc;
+    animation: slideIn 0.2s ease-out;
+}
+
+@media (max-width: 480px) {
+    .exam-sheet {
+        padding: 12px;
+        /* Menos espacio en los bordes */
+    }
+
+    /* Carril de respuesta más compacto */
+    .pool-zone {
+        padding: 8px;
+        min-height: 60px !important;
+        gap: 4px !important;
+        /* Palabras más juntas */
+    }
+
+    /* Tokens versión "mini" para móvil */
+    .token {
+        padding: 6px 10px;
+        /* Reducimos el tamaño del botón */
+        font-size: 0.85rem;
+        /* Texto un pelín más pequeño */
+        margin: 2px;
+        /* Menos separación entre palabras */
+    }
+
+    #ex-title {
+        font-size: 0.95rem;
+        /* Título más discreto */
+        margin-bottom: 8px;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* Mantenemos el no-wrap SOLO para la palabra que tiene el sufijo */
 .palabra-con-sufijo {
     display: inline-block;
-    white-space: nowrap; /* Esto evita que el sufijo se separe de su raíz */
+    white-space: nowrap;
+    /* Esto evita que el sufijo se separe de su raíz */
 }
+
 .drag-grid {
     display: flex;
     gap: 10px;
@@ -173,6 +240,8 @@ body {
     display: inline-block;
     margin: 4px;
     font-size: 0.9rem;
+    white-space: nowrap; /* Evita que una palabra larga se parta ella misma */
+    flex-shrink: 1;      /* Permite que se encojan un poco si es necesario */
 }
 
 .token.selected {
@@ -289,6 +358,9 @@ body {
     #notebook {
         padding: 50px 10px 20px 50px;
     }
+    .close-icon {
+        top: 2px;
+    }
 }
 
 #live-text {
@@ -375,11 +447,15 @@ body {
 
 /* Contenedor de la lista de temas */
 #links-container {
-    flex-grow: 1;       /* Ocupa todo el espacio sobrante */
-    overflow-y: auto;   /* Activa el scroll interno */
+    flex-grow: 1;
+    /* Ocupa todo el espacio sobrante */
+    overflow-y: auto;
+    /* Activa el scroll interno */
     margin-top: 15px;
-    padding-right: 5px; /* Espacio para que la barra de scroll no pise el texto */
-    scrollbar-width: thin; /* Barra de scroll fina en navegadores modernos */
+    padding-right: 5px;
+    /* Espacio para que la barra de scroll no pise el texto */
+    scrollbar-width: thin;
+    /* Barra de scroll fina en navegadores modernos */
 }
 
 /* Cada ítem del índice */
@@ -427,6 +503,7 @@ body {
 .link-item.file:active {
     background: var(--accent);
 }
+
 .active-tema {
     background: var(--accent) !important;
     color: var(--primary) !important;
