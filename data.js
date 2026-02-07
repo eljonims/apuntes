@@ -1,81 +1,110 @@
 const libroData = [
     {
-        id: "intro",
-        titulo: "1. Dominando las Subordinadas",
-        texto: `Primero, <b>clasifica</b> los tipos de frases para calentar motores:
-                [EX:drag1]
-                <br>Ahora, elige el nexo correcto para la completiva sustantiva:
-                [EX:choice1]
-                <br>Por último, demuestra que sabes escribirlo tú mismo:
-                [EX:input1]
-                [EX:choice-nork]`,
+        id: "sarrera",
+        titulo: "Ongi Etorri!",
+        texto: "Este es tu cuaderno de euskera. Usa el botón <b>GAIAK</b> para explorar las lecciones. Tu progreso se guardará automáticamente.",
+        tipo: "none"
+    },
+    {
+        id: "unidad_piloto",
+        titulo: "Unidad Prototipo: El Sistema Compuesto",
+        texto: `
+            <p>Bienvenido a tu cuaderno interactivo. Primero, probemos la <b>simplificación</b>. 
+            Imagina que toda esta frase es solo una pieza:</p>
+            
+            <div style="background:rgba(255,255,255,0.4); padding:15px; border-radius:8px; border:1px solid #ccc; line-height:2;">
+                Nik <span class="caja-gramatical caja-adj" onclick="simplificar(this, 'HORI')">jendeak esaten duena</span> badakit.
+                <br>
+                <small><i>(Yo sé <span>lo que dice la gente</span>)</i></small>
+            </div>
+            
+            <p>Al tocar la caja, verás que "lo que dice la gente" se resume en <b>HORI</b> (Eso). 
+            Ahora, vamos a practicar con una batería completa de ejercicios:</p>
+
+            [EX:reto_drag]
+
+            <p>Una vez dominada la clasificación, pasamos a la precisión del sufijo. 
+            Recuerda que a lápiz escribimos lo que completamos.</p>
+        `,
         ejercicios: [
             {
-                id: "drag1",
-                pregunta: "Clasifica las frases",
+                id: "reto_drag",
+                pregunta: "Reto 1: Clasificación",
                 tipo: "drag",
                 items: [
-                    { t: "Etorriko naiz", c: "principal" },
-                    { t: "...dela esan du", c: "subordinada" }
+                    { t: "Etorriko da", c: "principal" },
+                    { t: "Gose naiz", c: "principal" },
+                    { t: "...dela esan du", c: "subordinada" },
+                    { t: "...pentsatzen dudalako", c: "subordinada" },
+                    { t: "Autobusa", c: "" },      // Distractor (se queda en pool)
+                    { t: "Mendian", c: "" }        // Distractor (se queda en pool)
                 ]
             },
             {
-                id: "choice1",
-                pregunta: "Elige el nexo",
+                id: "reto_choice",
+                pregunta: "Reto 2: Elección de Nexo",
                 tipo: "choice",
-                frase: "Pentsatzen dut egia de___",
-                opciones: ["la", "nik", "en"],
-                correcta: "la"
+                frase: "Badakit etorriko de___",
+                opciones: ["-la", "-en", "-nik"],
+                correcta: "-la"
             },
             {
-                id: "input1",
-                pregunta: "Escribe el sufijo correcto",
+                id: "reto_input",
+                pregunta: "Reto 3: Producción Escrita",
                 tipo: "input",
-                frase: "Ez dut uste egia de___",
-                ayuda: "Pista: es una oración negativa",
-                correcta: "nik"
-            },
-            {
-    id: "choice-nork",
-    pregunta: "Nork kasua: Singularra ala Plurala?",
-    tipo: "choice",
-    frase: "Gizon___ liburua ekarri du (El hombre ha traído el libro)",
-    opciones: ["ak", "ek"],
-    correcta: "ak"
-}
+                frase: "Ez dugu uste egia de___",
+                ayuda: "Pista: Oración negativa",
+                correcta: "-nik"
+            }
         ]
     },
     {
-    id: "relativas-intro",
-    titulo: "2. Oraciones Relativas (-en)",
-    texto: `En euskera, para describir un objeto usamos el sufijo <b>-(e)n</b> al final del verbo. 
-            Es como meter una frase entera dentro de un adjetivo.<br><br>
-            
-            <div style="line-height: 2.5; background: rgba(255,255,255,0.5); padding: 15px; border-radius: 8px; border: 1px solid var(--line);">
-                1. <span class="caja-gramatical caja-adj" onclick="simplificar(this, 'Urdina')">Itsasoan bizi den</span> balea handia da.<br>
-                <small><i>(La ballena <span class="caja-gramatical">que vive en el mar</span> es grande)</i></small>
-                <br><br>
-                2. <span class="caja-gramatical caja-adj" onclick="simplificar(this, 'Zahar')">Atzo erosi genuen</span> ogia gogorra dago.<br>
-                <small><i>(El pan <span class="caja-gramatical">que compramos ayer</span> está duro)</i></small>
-            </div>
-            
-            <p>Al tocar las cajas, verás que toda la frase se reduce a un simple adjetivo: 
-            <b>Urdina</b> (Azul) o <b>Zahar</b> (Viejo). ¡Esa es la magia!</p>
-            
-            [EX:relativas_drag]`,
+    id: "ejercicio-simple",
+    titulo: "2. Práctica de Sustitución",
+    texto: `Prueba la unión de estilos: toca la caja verde para ver cómo se convierte en <b>ESO</b> y vuelve a su color original.
+            <br><br>
+            <span class="caja-gramatical caja-sus" onclick="simplificar(this, 'ESO')">Que el euskera es un idioma antiguo</span> es una realidad.
+            <br><br>
+            [EX:bateria_simple]`,
     ejercicios: [
         {
-            id: "relativas_drag",
-            pregunta: "¿Qué palabra sustituye a cada caja?",
-            tipo: "drag",
-            items: [
-                { t: "Mendian dabilen (que anda en el monte)", c: "Mendizale" },
-                { t: "Jaten ez duen (que no come)", c: "Argala" },
-                { t: "Gaur", c: "" }, // Distractor
-                { t: "Mutila", c: "" } // Distractor
-            ]
+            id: "bateria_simple",
+            pregunta: "¿Qué palabra falta?",
+            tipo: "input",
+            frase: "Euskara zaharra de___",
+            ayuda: "Sufijo para frases afirmativas",
+            correcta: "la"
+        }
+    ]
+},
+{
+    id: "conceptos-clave",
+    titulo: "Conceptos Fundamentales",
+    texto: `
+        <p>En euskera es vital entender qué es el 
+        <span class="caja-gramatical caja-adv caja-simplificada" 
+              data-orig="El sujeto de un verbo transitivo (el que hace una acción sobre algo)" 
+              onclick="simplificar(this, 'CASO NORK')">CASO NORK</span>.
+        </p>
+        
+        <p>Y no debemos confundirlo con el 
+        <span class="caja-gramatical caja-sus caja-simplificada" 
+              data-orig="El sujeto de un verbo intransitivo (ser, estar, ir...)" 
+              onclick="simplificar(this, 'CASO NOR')">CASO NOR</span>.
+        </p>
+        
+        <p><small><i>* Toca los conceptos resaltados si necesitas ver la definición completa.</i></small></p>
+        
+        [EX:bateria_conceptos]`,
+    ejercicios: [
+        {
+            id: "bateria_conceptos",
+            pregunta: "¿Qué caso es?",
+            tipo: "choice",
+            frase: "Ni mendira joan naiz (Yo he ido al monte) -> Yo es caso ___",
+            opciones: ["NOR", "NORK"],
+            correcta: "NOR"
         }
     ]
 }
-
 ];
