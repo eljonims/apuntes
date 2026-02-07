@@ -131,5 +131,36 @@ const libroData = [
                 ]
             }
         ]
+    },
+    {
+        id: "sintaxia-nork",
+        titulo: "📁 Sintaxia: Ordena",
+        hijos: [
+            {
+                id: "orden-nork",
+                titulo: "📄 Ordenando el NORK",
+                texto: `
+                En euskera, el orden suele ser libre, pero el estándar es <b>Sujeto + Objeto + Verbo</b>.
+                <br><br>
+                Prueba a ordenar estas piezas. Recuerda: quien hace la acción lleva el "pegamento" <b>-ak</b>.
+                [EX:sort_nork_1]`,
+                ejercicios: [
+                    {
+                        id: "sort_nork_1",
+                        pregunta: "Ordena: 'El gato ha comido el pescado'",
+                        tipo: "sort",
+                        fraseCorrecta: "Katuak arraina jan du",
+                        ayuda: "(Katuak = El gato / arraina = el pescado / jan du = ha comido)"
+                    },
+                    {
+                        id: "sort_nork_2",
+                        pregunta: "Ordena: 'Yo he comprado el pan'",
+                        tipo: "sort",
+                        fraseCorrecta: "Nik ogia erosi dut",
+                        ayuda: "(Nik = Yo / ogia = el pan / erosi dut = he comprado)"
+                    }
+                ]
+            }
+        ]
     }
 ];
