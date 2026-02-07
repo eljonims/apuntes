@@ -222,8 +222,10 @@ body {
 
 /* Estilo Base: Cuando está expandida (A) */
 .caja-gramatical {
-    display: inline-block; /* ¡ESTA ES LA CLAVE! */
-    transition: transform 0.3s ease; /* Para que el encogido sea suave */
+    display: inline-block;
+    /* ¡ESTA ES LA CLAVE! */
+    transition: transform 0.3s ease;
+    /* Para que el encogido sea suave */
     vertical-align: middle;
     padding: 2px 4px;
     border-radius: 4px;
@@ -252,7 +254,7 @@ body {
 /* ESTILO CUANDO ESTÁ SIMPLIFICADA (A + B) */
 /* Este selector tiene más fuerza y "pisa" los colores de arriba */
 .caja-gramatical.caja-simplificada {
-  
+
     font-family: 'Gochi Hand', cursive;
     transform: scale(0.95) !important;
 }
@@ -361,8 +363,6 @@ body {
 .link-item {
     padding: 12px 15px;
     background: #f8f9fa;
-    border-radius: 10px;
-    border-left: 4px solid var(--primary);
     color: var(--primary);
     font-weight: bold;
     cursor: pointer;
@@ -374,4 +374,38 @@ body {
     background: var(--paper);
     transform: translateX(5px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.link-item.folder::before {
+    content: '▶ ';
+    display: inline-block;
+    transition: 0.2s;
+    font-size: 0.7rem;
+}
+
+.link-item.folder.open::before {
+    transform: rotate(90deg);
+}
+
+.link-item.file {
+    border-left: 2px solid var(--accent);
+    background: rgba(255, 255, 255, 0.5);
+    margin-top: 2px;
+}
+
+#links-container {
+    overflow-y: auto;
+    max-height: 80vh;
+    scrollbar-width: thin;
+    /* Para un scroll más fino */
+}
+
+/* Estilo para resaltar la coincidencia (opcional) */
+.link-item.file:active {
+    background: var(--accent);
+}
+.active-tema {
+    background: var(--accent) !important;
+    color: var(--primary) !important;
+    border-left: 4px solid var(--primary) !important;
 }
