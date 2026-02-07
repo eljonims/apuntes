@@ -148,25 +148,60 @@ function encontrarTemaProfundo(id, lista = libroData) {
     return null;
 }
 
-// Modifica tu loadTema para que use esta nueva búsqueda
+// Convierte el árbol de carpetas en una lista plana de temas (solo archivos)
+function obtenerListaPlana(lista = libroData, acumulado = []) {
+    lista.forEach(item => {
+        if (item.hijos) obtenerListaPlana(item.hijos, acumulado);
+        else acumulado.push(item);
+    });
+    return acumulado;
+}
+
 function loadTema(id) {
-    const tema = encontrarTemaProfundo(id); // <--- Cambio clave
+    const tema = encontrarTemaProfundo(id);
     if (!tema) return;
 
     localStorage.setItem('ultimoTemaVisitado', id);
-
+    
+    // 1. Empezamos con el texto limpio
     let htmlFinal = tema.texto || "";
+
+    // 2. ¡TU BLOQUE VITAL! Sustituimos marcadores por Post-its
     if (tema.ejercicios) {
         tema.ejercicios.forEach((ex, index) => {
             const marcador = `[EX:${ex.id}]`;
-            const btnHTML = `<button class="post-it" onclick="openEx('${id}', '${ex.id}')" style="transform: rotate(${index % 2 === 0 ? -1.5 : 1.5}deg)">📝 ARIKETA: ${ex.pregunta.substring(0, 25)}...</button>`;
+            // Usamos tema.id en lugar de id para ser más explícitos
+            const btnHTML = `<button class="post-it" onclick="openEx('${tema.id}', '${ex.id}')" style="transform: rotate(${index % 2 === 0 ? -1.5 : 1.5}deg)">📝 ARIKETA: ${ex.pregunta.substring(0, 25)}...</button>`;
             htmlFinal = htmlFinal.replace(marcador, btnHTML);
         });
     }
 
-    document.getElementById('page-content').innerHTML = `<h1>${tema.titulo}</h1><div>${htmlFinal}</div>`;
+    // 3. Calculamos la navegación (Siguiente/Anterior)
+    const temasPlanos = obtenerListaPlana();
+    const idxActual = temasPlanos.findIndex(t => t.id === id);
+    let navHtml = `<div class="nav-pagination">`;
+    
+    if (idxActual > 0) {
+        navHtml += `<button class="btn-nav" onclick="loadTema('${temasPlanos[idxActual-1].id}')">⬅ ${temasPlanos[idxActual-1].titulo}</button>`;
+    } else { navHtml += `<span></span>`; }
+
+    if (idxActual < temasPlanos.length - 1) {
+        navHtml += `<button class="btn-nav" onclick="loadTema('${temasPlanos[idxActual+1].id}')">${temasPlanos[idxActual+1].titulo} ➡</button>`;
+    }
+    navHtml += `</div>`;
+
+    // 4. Inyectamos TODO en la página
+    document.getElementById('page-content').innerHTML = `
+        <h1>${tema.titulo}</h1>
+        <div>${htmlFinal}</div>
+        ${navHtml}
+    `;
+    
     document.getElementById('notebook').scrollTop = 0;
+    renderIndice(document.getElementById('search-bar').value);
 }
+
+
 
 // --- AUDIO ---
 async function playSound(type) {
@@ -267,6 +302,12 @@ function renderDrag(ex, container) {
         else if (err > 0) { document.getElementById('ex-message').innerText = "❌ Errorea"; playSound('error'); }
         else { playSound('success'); prepararSiguiente(); }
     };
+    if (ex.ayuda) {
+        const pAyuda = document.createElement('p');
+        pAyuda.className = "ayuda-texto"; // Usaremos una clase CSS para que quede chulo
+        pAyuda.innerText = ex.ayuda;
+        container.appendChild(pAyuda);
+    }
 }
 
 function renderChoice(ex, container) {
@@ -330,6 +371,12 @@ function renderChoice(ex, container) {
             playSound('error');
         }
     };
+    if (ex.ayuda) {
+        const pAyuda = document.createElement('p');
+        pAyuda.className = "ayuda-texto"; // Usaremos una clase CSS para que quede chulo
+        pAyuda.innerText = ex.ayuda;
+        container.appendChild(pAyuda);
+    }
 }
 
 function renderInput(ex, container) {
@@ -373,6 +420,12 @@ function renderInput(ex, container) {
             }, 1200);
         }
     };
+    if (ex.ayuda) {
+        const pAyuda = document.createElement('p');
+        pAyuda.className = "ayuda-texto"; // Usaremos una clase CSS para que quede chulo
+        pAyuda.innerText = ex.ayuda;
+        container.appendChild(pAyuda);
+    }
 }
 function renderSort(ex, container) {
     const area = document.createElement('div');
@@ -424,6 +477,12 @@ function renderSort(ex, container) {
             setTimeout(() => carril.classList.remove('shake'), 300);
         }
     };
+    if (ex.ayuda) {
+        const pAyuda = document.createElement('p');
+        pAyuda.className = "ayuda-texto"; // Usaremos una clase CSS para que quede chulo
+        pAyuda.innerText = ex.ayuda;
+        container.appendChild(pAyuda);
+    }
 }
 
 // --- CIERRE Y ÉXITO ---
