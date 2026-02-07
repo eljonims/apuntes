@@ -5,14 +5,18 @@ let currentIdx = 0;
 
 window.onload = () => {
     if (typeof libroData !== 'undefined') {
-        renderIndice();
-        
-        // Intentamos recuperar el último ID guardado
+        // 1. Recuperamos el ID guardado
         const ultimoTema = localStorage.getItem('ultimoTemaVisitado');
         
-        // Si existe y el tema aún está en la data, lo cargamos. 
-        // Si no, cargamos el tema "sarrera".
-        if (ultimoTema && libroData.some(t => t.id === ultimoTema)) {
+        // 2. Si existe, forzamos la apertura de sus carpetas antes de renderizar
+        if (ultimoTema) {
+            abrirRamasHastaTema(ultimoTema);
+        }
+        
+        renderIndice();
+        
+        // 3. Cargamos el contenido en el cuaderno
+        if (ultimoTema && encontrarTemaProfundo(ultimoTema)) {
             loadTema(ultimoTema);
         } else {
             loadTema("sarrera");
@@ -20,38 +24,130 @@ window.onload = () => {
     }
 };
 
-// --- NAVEGACIÓN ---
+// Nueva función para marcar como 'true' las carpetas padre en el estado global
+function abrirRamasHastaTema(targetId, lista = libroData) {
+    for (const tema of lista) {
+        if (tema.id === targetId) return true; // Encontrado
+        if (tema.hijos) {
+            if (abrirRamasHastaTema(targetId, tema.hijos)) {
+                carpetaStates[tema.id] = true; // Si mi hijo es el target, yo me abro
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+// Recuperamos el estado de las carpetas o creamos uno nuevo
+let carpetaStates = JSON.parse(localStorage.getItem('carpetaStates')) || {};
 function renderIndice(filtro = "") {
     const container = document.getElementById('links-container');
-    if (!container) return;
-    
-    container.innerHTML = ""; // Limpiamos para redibujar
-    
-    const temasFiltrados = libroData.filter(t => 
-        t.titulo.toLowerCase().includes(filtro.toLowerCase())
-    );
+    container.innerHTML = `
+        <div style="display:flex; gap:5px; margin-bottom:15px; position: sticky; top: 0; background: white; z-index: 10; padding-bottom: 10px;">
+            <button class="btn-check" style="padding:5px; font-size:0.7rem;" onclick="expandirTodo(true)">Expandir</button>
+            <button class="btn-check" style="padding:5px; font-size:0.7rem; background:#888;" onclick="expandirTodo(false)">Contraer</button>
+        </div>
+    `;
 
-    temasFiltrados.forEach(t => {
-        const div = document.createElement('div');
-        div.className = 'link-item'; // <--- ESTO ES CLAVE para el formato
-        div.innerText = t.titulo;
-        div.onclick = () => {
-            loadTema(t.id);
-            if (document.getElementById('sidebar').classList.contains('open')) {
-                toggleMenu();
-            } // Cierra el menú en móvil al elegir
-        };
-        container.appendChild(div);
+    libroData.forEach(tema => {
+        const nodo = crearNodo(tema, 0, filtro);
+        if (nodo) container.appendChild(nodo);
     });
 }
-function filtrarTemas() { renderIndice(document.getElementById('search-bar').value); }
+
+function crearNodo(tema, nivel = 0, filtro = "") {
+    const visibleSubtemas = tema.hijos ? tema.hijos.map(h => crearNodo(h, nivel + 1, filtro)).filter(n => n !== null) : [];
+    const coincidePropio = tema.titulo.toLowerCase().includes(filtro);
+    
+    if (filtro && !coincidePropio && visibleSubtemas.length === 0) return null;
+
+    const div = document.createElement('div');
+    div.style.marginLeft = `${nivel * 12}px`;
+    
+    if (tema.hijos) {
+        // --- LÓGICA DE CARPETA ---
+        const isExp = carpetaStates[tema.id] || false;
+        div.innerHTML = `<div class="link-item folder ${isExp ? 'open' : ''}">${tema.titulo}</div>`;
+        const childContainer = document.createElement('div');
+        childContainer.style.display = isExp ? 'block' : 'none';
+        
+        div.firstChild.onclick = () => {
+            const nowOpen = childContainer.style.display === 'none';
+            childContainer.style.display = nowOpen ? 'block' : 'none';
+            div.firstChild.classList.toggle('open', nowOpen);
+            carpetaStates[tema.id] = nowOpen;
+            localStorage.setItem('carpetaStates', JSON.stringify(carpetaStates));
+        };
+        
+        visibleSubtemas.forEach(nodoHijo => childContainer.appendChild(nodoHijo));
+        div.appendChild(childContainer);
+    } else {
+        // --- LÓGICA DE ARCHIVO (Aquí van las líneas) ---
+        const idActual = localStorage.getItem('ultimoTemaVisitado'); // 1. Recuperamos el ID
+        const claseActiva = (tema.id === idActual) ? 'active-tema' : ''; // 2. Comparamos
+        
+        div.innerHTML = `<div class="link-item file ${claseActiva}">${tema.titulo}</div>`;
+        
+        div.firstChild.onclick = () => {
+            loadTema(tema.id);
+            // Al hacer clic, redibujamos el índice para que el resaltado cambie de sitio
+            renderIndice(document.getElementById('search-bar').value); 
+            if (window.innerWidth < 768) toggleMenu();
+        };
+    }
+    return div;
+}
+
+function expandirTodo(expandir) {
+    libroData.forEach(t => { if (t.hijos) carpetaStates[t.id] = expandir; });
+    localStorage.setItem('carpetaStates', JSON.stringify(carpetaStates));
+    renderIndice();
+}
+
+function filtrarTemas() {
+    const texto = document.getElementById('search-bar').value.toLowerCase();
+
+    // Si hay texto, calculamos qué carpetas deben abrirse
+    if (texto.length > 0) {
+        libroData.forEach(tema => {
+            if (tema.hijos && buscarRecursivo(tema, texto)) {
+                carpetaStates[tema.id] = true; // Abrimos la carpeta si contiene el resultado
+            }
+        });
+    }
+    renderIndice(texto);
+}
+
+// Función auxiliar para saber si un texto está dentro de una carpeta o sus hijos
+function buscarRecursivo(tema, texto) {
+    if (tema.titulo.toLowerCase().includes(texto)) return true;
+    if (tema.hijos) {
+        return tema.hijos.some(hijo => buscarRecursivo(hijo, texto));
+    }
+    return false;
+}
+
 function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); }
 
+// Función para encontrar un tema en cualquier nivel del árbol
+
+function encontrarTemaProfundo(id, lista = libroData) {
+    for (const item of lista) {
+        if (item.id === id) return item;
+        if (item.hijos) {
+            const encontrado = encontrarTemaProfundo(id, item.hijos);
+            if (encontrado) return encontrado;
+        }
+    }
+    return null;
+}
+
+// Modifica tu loadTema para que use esta nueva búsqueda
+
 function loadTema(id) {
-    const tema = libroData.find(t => t.id === id);
+    const tema = encontrarTemaProfundo(id); // <--- Cambio clave
     if (!tema) return;
 
-    // GUARDAR EN LOCAL STORAGE
     localStorage.setItem('ultimoTemaVisitado', id);
 
     let htmlFinal = tema.texto || "";
@@ -64,11 +160,7 @@ function loadTema(id) {
     }
 
     document.getElementById('page-content').innerHTML = `<h1>${tema.titulo}</h1><div>${htmlFinal}</div>`;
-    
-    // Scroll al inicio del cuaderno al cambiar de tema
     document.getElementById('notebook').scrollTop = 0;
-
-    if(document.getElementById('sidebar').classList.contains('open')) toggleMenu();
 }
 
 // --- AUDIO ---
@@ -82,17 +174,30 @@ async function playSound(type) {
         osc.frequency.setValueAtTime(type === 'success' ? 523 : (type === 'error' ? 150 : 800), audioCtx.currentTime);
         gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
         osc.start(); osc.stop(audioCtx.currentTime + 0.2);
-    } catch(e) {}
+    } catch (e) { }
 }
 
 // --- MOTOR GENERATIVO ---
 function openEx(temaId, exId) {
-    const tema = libroData.find(t => t.id === temaId);
+    // 1. Buscamos el tema en cualquier profundidad de las carpetas
+    const tema = encontrarTemaProfundo(temaId);
+    if (!tema || !tema.ejercicios) return;
+
+    // 2. Buscamos en qué posición de la lista está el ejercicio que clicamos
+    // Aquí es donde usamos el famoso startIdx que comentabas
     const startIdx = tema.ejercicios.findIndex(e => e.id === exId);
+
+    if (startIdx === -1) return; // Por si acaso no lo encuentra
+
+    // 3. Cargamos la batería desde ese punto en adelante
     currentBateria = tema.ejercicios.slice(startIdx);
     currentIdx = 0;
+
+    // 4. Preparamos la interfaz
     document.getElementById('exercise-overlay').style.display = 'flex';
     document.querySelector('.footer-exercise').style.display = "block";
+
+    // 5. ¡Lanzamos el primero!
     lanzarSiguiente();
 }
 
@@ -101,7 +206,7 @@ function lanzarSiguiente() {
     const body = document.getElementById('ex-body');
     const title = document.getElementById('ex-title');
     const btn = document.getElementById('btn-main-action');
-    
+
     body.innerHTML = "";
     document.getElementById('ex-message').innerText = "";
     btn.innerText = "EGIAZTATU";
@@ -132,15 +237,15 @@ function renderDrag(ex, container) {
     cats.forEach(cat => {
         const wrap = document.createElement('div'); wrap.className = 'column-wrapper';
         wrap.innerHTML = `<small style="font-weight:bold;color:#666;font-size:0.7rem;">${cat.toUpperCase()}</small><div id="box-${cat}" class="target-box"></div>`;
-        wrap.onclick = () => { if(selectedToken) { document.getElementById(`box-${cat}`).appendChild(selectedToken); limpiarSeleccion(); playSound('tick'); } };
+        wrap.onclick = () => { if (selectedToken) { document.getElementById(`box-${cat}`).appendChild(selectedToken); limpiarSeleccion(); playSound('tick'); } };
         grid.appendChild(wrap);
     });
     const pool = document.createElement('div'); pool.id = 'pool'; pool.className = 'pool-zone';
-    pool.onclick = () => { if(selectedToken) { pool.appendChild(selectedToken); limpiarSeleccion(); } };
+    pool.onclick = () => { if (selectedToken) { pool.appendChild(selectedToken); limpiarSeleccion(); } };
     container.appendChild(grid); container.appendChild(pool);
     ex.items.forEach(it => {
         const span = document.createElement('div'); span.className = 'token'; span.innerText = it.t; span.dataset.cat = it.c;
-        span.onclick = (e) => { e.stopPropagation(); if(selectedToken === span) limpiarSeleccion(); else { limpiarSeleccion(); selectedToken = span; span.classList.add('selected'); resaltar(span.parentElement.id); playSound('tick'); } };
+        span.onclick = (e) => { e.stopPropagation(); if (selectedToken === span) limpiarSeleccion(); else { limpiarSeleccion(); selectedToken = span; span.classList.add('selected'); resaltar(span.parentElement.id); playSound('tick'); } };
         pool.appendChild(span);
     });
     document.getElementById('btn-main-action').onclick = () => {
@@ -184,41 +289,41 @@ function renderInput(ex, container) {
     container.onclick = () => input.focus(); input.focus();
     input.oninput = () => { live.innerText = input.value || "___"; };
     document.getElementById('btn-main-action').onclick = () => {
-    const msg = document.getElementById('ex-message');
-    const inputField = document.getElementById('hidden-input');
-    const visualText = document.getElementById('live-text'); // <--- La definimos aquí de nuevo
-    const respuesta = inputField.value.trim().toLowerCase();
-    
-    if (respuesta === ex.correcta.toLowerCase()) {
-        msg.innerText = "✨ Oso ondo!"; 
-        msg.style.color = "var(--success)";
-        visualText.style.color = "var(--success)";
-        visualText.style.background = "rgba(42, 157, 143, 0.2)";
-        playSound('success'); 
-        prepararSiguiente(); // Usamos la lógica de batería secuencial
-    } else {
-        msg.innerText = "❌ Saiatu berriro"; 
-        msg.style.color = "var(--error)";
-        visualText.style.color = "var(--error)";
-        visualText.style.background = "rgba(231, 111, 81, 0.2)";
-        playSound('error');
-        
-        // Reset automático tras el fallo
-        setTimeout(() => {
-            inputField.value = ""; 
-            visualText.innerText = "___"; 
-            visualText.style.color = "var(--primary)";
-            visualText.style.background = "rgba(0,0,0,0.08)";
-            msg.innerText = "";
-            inputField.focus();
-        }, 1200);
-    }
-};
+        const msg = document.getElementById('ex-message');
+        const inputField = document.getElementById('hidden-input');
+        const visualText = document.getElementById('live-text'); // <--- La definimos aquí de nuevo
+        const respuesta = inputField.value.trim().toLowerCase();
+
+        if (respuesta === ex.correcta.toLowerCase()) {
+            msg.innerText = "✨ Oso ondo!";
+            msg.style.color = "var(--success)";
+            visualText.style.color = "var(--success)";
+            visualText.style.background = "rgba(42, 157, 143, 0.2)";
+            playSound('success');
+            prepararSiguiente(); // Usamos la lógica de batería secuencial
+        } else {
+            msg.innerText = "❌ Saiatu berriro";
+            msg.style.color = "var(--error)";
+            visualText.style.color = "var(--error)";
+            visualText.style.background = "rgba(231, 111, 81, 0.2)";
+            playSound('error');
+
+            // Reset automático tras el fallo
+            setTimeout(() => {
+                inputField.value = "";
+                visualText.innerText = "___";
+                visualText.style.color = "var(--primary)";
+                visualText.style.background = "rgba(0,0,0,0.08)";
+                msg.innerText = "";
+                inputField.focus();
+            }, 1200);
+        }
+    };
 }
 
 // --- CIERRE Y ÉXITO ---
 function mostrarFelicitacion() {
-   // Lanzar confeti con seguridad y por encima de todo
+    // Lanzar confeti con seguridad y por encima de todo
     if (typeof confetti === 'function') {
         confetti({
             particleCount: 150,
@@ -231,26 +336,26 @@ function mostrarFelicitacion() {
     }
     const body = document.getElementById('ex-body');
     const footer = document.querySelector('.footer-exercise');
-    body.innerHTML = `<div style="text-align:center; padding:40px; animation: popIn 0.5s ease;"><div style="font-size:4rem;">🏆</div><h2 class="lapiz-sufijo" style="font-size:3rem; color:var(--success);">Biba zu!</h2><p>Bateria osatuta</p><p id="count-msg" style="font-size:0.8rem; color:#999; margin-top:20px;">Cerrando en 3...</p></div>`;
+    body.innerHTML = `<div style="text-align:center; padding:40px; animation: popIn 0.5s ease;"><div style="font-size:4rem;">🏆</div><h2 class="lapiz-sufijo" style="font-size:3rem; color:var(--success);">Bikain!</h2><p>Bateria osatuta</p><p id="count-msg" style="font-size:0.8rem; color:#999; margin-top:20px;">Cerrando en 3...</p></div>`;
     footer.style.display = "none";
     let c = 3;
-    const t = setInterval(() => { c--; if(c>0) document.getElementById('count-msg').innerText = `Cerrando en ${c}...`; else { clearInterval(t); closeEx(); } }, 1000);
+    const t = setInterval(() => { c--; if (c > 0) document.getElementById('count-msg').innerText = `Cerrando en ${c}...`; else { clearInterval(t); closeEx(); } }, 1000);
 }
 
-function resaltar(id) { document.querySelectorAll('.target-box, .pool-zone').forEach(b => { if(b.id !== id) b.classList.add('highlight-dest'); }); }
+function resaltar(id) { document.querySelectorAll('.target-box, .pool-zone').forEach(b => { if (b.id !== id) b.classList.add('highlight-dest'); }); }
 function limpiarSeleccion() { selectedToken = null; document.querySelectorAll('.token').forEach(t => t.classList.remove('selected', 'token-error', 'token-success')); document.querySelectorAll('.target-box, .pool-zone').forEach(b => b.classList.remove('highlight-dest')); }
 function closeEx() { document.getElementById('exercise-overlay').style.display = 'none'; document.getElementById('ex-body').innerHTML = ""; limpiarSeleccion(); }
 function simplificar(el, txt) {
-    if(!el.dataset.orig) { 
+    if (!el.dataset.orig) {
         // Guardamos el texto original
-        el.dataset.orig = el.innerHTML; 
-        el.innerText = txt; 
-        el.classList.add('caja-simplificada'); 
-        playSound('tick'); 
-    } else { 
+        el.dataset.orig = el.innerHTML;
+        el.innerText = txt;
+        el.classList.add('caja-simplificada');
+        playSound('tick');
+    } else {
         // Restauramos el HTML original (que incluye los <span> y clases internas)
-        el.innerHTML = el.dataset.orig; 
-        delete el.dataset.orig; 
-        el.classList.remove('caja-simplificada'); 
+        el.innerHTML = el.dataset.orig;
+        delete el.dataset.orig;
+        el.classList.remove('caja-simplificada');
     }
 }
