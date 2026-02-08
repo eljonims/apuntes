@@ -40,11 +40,18 @@
 
     <div id="exercise-overlay" class="overlay">
         <div class="exam-sheet">
+            <!-- Botón de cierre -->
             <span onclick="closeEx()" class="close-icon">✕</span>
+
             <h3 id="ex-title"></h3>
+
+            <!-- Aquí el JS inyecta el motor -->
             <div id="ex-body"></div>
+
             <div class="footer-exercise">
-                <div id="ex-message"></div>
+                <!-- El mensaje ahora tiene un sitio fijo para evitar saltos -->
+                <div id="ex-message"
+                    style="height: 1.5rem; margin-bottom: 10px; font-weight: bold; text-align: center;"></div>
                 <button id="btn-main-action" class="btn-check">EGIAZTATU</button>
             </div>
         </div>
