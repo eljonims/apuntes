@@ -534,3 +534,136 @@ body {
     background: var(--accent);
     transform: translateY(-2px);
 }
+
+
+.frase-traduccion {
+    cursor: pointer;
+    position: relative;
+    padding-right: 25px; 
+    border-bottom: 1px solid transparent; /* Reserva el espacio para que no "salte" al activar */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 4px;
+}
+
+/* Indicador visual discreto */
+.frase-traduccion::after {
+    content: ' ⇄';
+    position: absolute;
+    right: 5px;
+    font-size: 0.8rem;
+    opacity: 0.3; /* Muy tenue cuando no se usa */
+    color: var(--primary);
+}
+
+.frase-traduccion:hover {
+    background-color: rgba(0, 0, 0, 0.03); /* Resaltado casi imperceptible al pasar el ratón */
+}
+
+/* ESTADO TRADUCIDO: Solo color y fondo ligero */
+.traduccion-activa {
+    color: #4a5568 !important; /* Gris azulado serio */
+    background-color: rgba(66, 153, 225, 0.08); /* Azul muy pálido */
+    font-style: italic;
+}
+
+.traduccion-activa::after {
+    opacity: 0.8; /* El símbolo resalta un poco más al estar activo */
+}
+/* Bloqueo de seguridad al acertar */
+.bloqueado { pointer-events: none; opacity: 0.7; transition: opacity 0.3s; }
+
+/* Estilo para las frases traducibles */
+.frase-traduccion {
+    cursor: pointer; position: relative; padding-right: 25px;
+    border-bottom: 1px dashed rgba(0,0,0,0.2); transition: 0.2s;
+}
+.frase-traduccion::after {
+    content: ' ⇄'; position: absolute; right: 5px; opacity: 0.3; font-size: 0.8rem;
+}
+.traduccion-activa { background: rgba(66, 153, 225, 0.1); color: #2b6cb0; font-style: italic; }
+
+/* Ayuda de ejercicios */
+.ayuda-texto {
+    color: #888; font-size: 0.85rem; font-style: italic; text-align: center;
+    margin-top: 15px; padding: 10px; background: rgba(0,0,0,0.02);
+    border-radius: 8px; border-left: 3px solid var(--accent);
+}
+
+/* Animación de error */
+.shake { animation: shake 0.3s ease-in-out; }
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+/* Bloqueo para que no toquen nada al acertar */
+.bloqueado {
+    pointer-events: none;
+    opacity: 0.7;
+    filter: grayscale(0.2);
+    transition: all 0.4s ease;
+}
+
+/* Animación de sacudida cuando fallan */
+.shake {
+    animation: shake 0.3s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes shake {
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    20%, 80% { transform: translate3d(2px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+/* Estilo para las frases traducibles (Minimalista) */
+.frase-traduccion {
+    cursor: pointer;
+    position: relative;
+    padding-right: 22px;
+    border-bottom: 1px dashed rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+
+.frase-traduccion::after {
+    content: ' ⇄';
+    position: absolute;
+    right: 0;
+    opacity: 0.3;
+    font-size: 0.8rem;
+}
+
+.traduccion-activa {
+    background: rgba(42, 157, 143, 0.08); /* Color suave basado en tu --success */
+    color: var(--success);
+    font-style: italic;
+    border-radius: 4px;
+}
+
+/* Ajuste del sidebar para que no empuje el contenido */
+#sidebar {
+    display: flex;
+    flex-direction: column;
+}
+
+#links-container {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.lapiz-sufijo {
+    font-family: 'Gochi Hand', cursive !important;
+    color: #4a4a4a; /* Gris grafito */
+    font-size: 1.2em;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+/* Añade esto a tu style.css */
+canvas {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Para que no bloquee los clics */
+    z-index: 9999 !important; /* Por encima del overlay (1000) */
+}
