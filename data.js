@@ -659,7 +659,467 @@ const libroData = [
                 ]
             }
         ]
+    },
+    {
+        id: "ejemplo-traduccion",
+        titulo: "📄 Frases de Práctica",
+        texto: `
+        <p>Toca las frases para ver su significado en castellano:</p>
+        
+        <div style="line-height:2.5;">
+            1. <span class="frase-traduccion" onclick="traducir(this, 'El chico ha venido')">Mutila etorri da.</span><br>
+            2. <span class="frase-traduccion" onclick="traducir(this, 'He comprado el pan')">Ogia erosi dut.</span><br>
+            3. <span class="frase-traduccion" onclick="traducir(this, '¿Dónde estás?')">Non zaude?</span>
+        </div>
+
+        <p>Incluso puedes meter cajas dentro de una frase traducible:</p>
+        <div class="frase-traduccion" onclick="traducir(this, 'Sé que vendrás')">
+            Badakit <span class="caja-gramatical caja-sus" onclick="event.stopPropagation(); simplificar(this, 'HORI')">etorriko zarela</span>.
+        </div>
+    `
+    },
+    {
+        id: "ejemplo-combinado",
+        titulo: "📄 Análisis Profundo",
+        texto: `
+        <p>Toca la frase para traducirla, o la caja para analizar su gramática:</p>
+        
+        <div class="frase-traduccion" onclick="traducir(this, 'Dice que el euskera es muy antiguo')">
+            <span class="caja-gramatical caja-sus" onclick="simplificar(this, 'HORI', event)">
+                Euskara oso zaharra dela
+            </span> dio.
+        </div>
+    `
+    },
+    {
+        id: "anidado-pro",
+        titulo: "📄 Análisis por capas",
+        texto: `
+        <div class="caja-gramatical caja-sus" onclick="simplificar(this, 'ESO', event)" style="padding:20px;">
+            <!-- La frase está DENTRO de la caja -->
+            <span class="frase-traduccion" onclick="traducir(this, 'Que vengas mañana', event)">
+                Bihar etortzea
+            </span>
+        </div>
+        <p>Toca el borde de la caja para ver su función (ESO) o el texto para ver su traducción.</p>
+    `
+    },
+    {
+        id: "completivas-intro",
+        titulo: "📄 Las Completivas (ESO)",
+        texto: `
+        <p>Traduce estas frases para ver la diferencia entre la afirmación y la duda:</p>
+        
+        <div class="bloque-ejemplos">
+            <span class="frase-traduccion" onclick="traducir(this, 'Sé que es verdad')">Egia dela badakit.</span>
+            <br>
+            <span class="frase-traduccion" onclick="traducir(this, 'No creo que sea verdad')">Ez dut uste egia denik.</span>
+        </div>
+
+        <p>Fíjate que en ambos casos, lo resaltado funciona como un sustantivo:</p>
+        <div>
+            Pienso <span class="caja-gramatical caja-sus" onclick="simplificar(this, 'HORI', event)">egia dela</span>.
+        </div>
+    `
+    },
+    {
+        id: "ejemplo-limpio",
+        titulo: "📄 Ejemplo de Lectura",
+        texto: `
+        <p>Prueba el nuevo diseño táctil:</p>
+        <p><span class="frase-traduccion" onclick="traducir(this, '¿Cómo estás?')">Zer moduz zaude?</span></p>
+    `
+    },
+    {
+        id: "ayuda-vacio",
+        titulo: "⚠️ ¡Libro vacío!",
+        texto: `
+                <p>Parece que todavía no has añadido temas a tu <b>data.js</b>.</p>
+                <div style="background:#fff3cd; padding:15px; border-radius:8px; border:1px solid #ffeeba;">
+                    <h3>Guía rápida de sintaxis:</h3>
+                    <ul>
+                        <li><b>Caja gramatical:</b> <code>&lt;span class="caja-gramatical caja-sus" onclick="simplificar(this, 'ESO', event)"&gt;Tu texto&lt;/span&gt;</code></li>
+                        <li><b>Traducción:</b> <code>&lt;span class="frase-traduccion" onclick="traducir(this, 'Traducción')&gt;Tu frase&lt;/span&gt;</code></li>
+                        <li><b>Ejercicios:</b> Añade <code>[EX:id_ejercicio]</code> en el texto.</li>
+                    </ul>
+                </div>
+            `
+    },
+    {
+        id: "oraciones-compuestas",
+        titulo: "📁 Oraciones Compuestas (Perpaus Elkartuak)",
+        hijos: [
+            {
+                id: "compuestas-concepto",
+                titulo: "📄 1. ¿Qué es una oración compuesta?",
+                texto: `
+                <p>Las oraciones compuestas (<i>perpaus elkartuak</i>) son las que se forman por la unión de dos o más sintagmas o proposiciones (<i>juntagaiak</i>).</p>
+                <p>Esta unión puede realizarse de tres formas diferentes que exploraremos en este capítulo:</p>
+                <ul>
+                    <li><b>Yuxtaposición</b> (Alborakuntza)</li>
+                    <li><b>Coordinación</b> (Juntadura)</li>
+                    <li><b>Subordinación</b> (Menderakuntza)</li>
+                </ul>
+                <p><small><i>Toca las frases para ver la traducción.</i></small></p>
+                [EX:bat_comp_1]
+            `,
+                ejercicios: [
+                    {
+                        id: "bat_comp_1",
+                        pregunta: "¿Cómo se llama la unión de dos proposiciones?",
+                        tipo: "choice",
+                        frase: "La unión forma una oración ___",
+                        opciones: ["Simple", "Compuesta", "Sintagma"],
+                        correcta: "Compuesta"
+                    }
+                ]
+            },
+            {
+                id: "compuestas-yuxtaposicion",
+                titulo: "📄 2. Yuxtaposición (Alborakuntza)",
+                texto: `
+                <p>Se produce cuando unimos proposiciones independientes directamente, sin nexos, usando solo signos de puntuación (, ; .).</p>
+                <p>Aunque no tengan nexo, existen relaciones de significado entre ellas:</p>
+                
+                <div class="bloque-ejemplos">
+                    <b>• Adición (Suma):</b><br>
+                    <span class="frase-traduccion" onclick="traducir(this, 'Sube, baja, no se está quieta')">Gora behera egiten da, ez da geldirik egoten.</span><br><br>
+                    
+                    <b>• Sucesión temporal:</b><br>
+                    <span class="frase-traduccion" onclick="traducir(this, 'Ahora quiere un videojuego; pronto le aburrirá')">Orain bideojoko berri bat nahi du; laster aspertu egingo du.</span><br><br>
+
+                    <b>• Contraposición:</b><br>
+                    <span class="frase-traduccion" onclick="traducir(this, 'Aita se ha ido a trabajar; yo me quedo en casa estudiando')">Aita lanera joan da; ni etxean geratzen naiz ikasten.</span><br><br>
+
+                    <b>• Consecuencia:</b><br>
+                    <span class="frase-traduccion" onclick="traducir(this, 'Ha aprobado todos los exámenes; ha estudiado')">Etsamina guztiak aprobatu ditu; ikasi egin du.</span>
+                </div>
+
+                <p>⚠️ <b>Atención:</b> Debe haber conexión lógica. No es yuxtaposición decir: <br>
+                <span class="frase-traduccion" onclick="traducir(this, 'Va a casa; manzanas traigo')">Etxera doa; sagarrak dakartzat.</span></p>
+                
+                [EX:bat_yuxta_1]
+                [EX:bat_yuxta_2]
+                [EX:bat_yuxta_3]
+            `,
+                ejercicios: [
+                    {
+                        id: "bat_yuxta_1",
+                        pregunta: "¿Qué tipo de relación hay aquí?",
+                        tipo: "choice",
+                        // 1. Usamos el hueco ___ para que el motor funcione
+                        // 2. Quitamos el span de traducción de aquí dentro
+                        frase: "Aita lanera joan da; ni hemen nago. ( ___ )",
+                        opciones: ["Suma", "Contraposición", "Consecuencia"],
+                        correcta: "Contraposición",
+                        // 3. Ponemos la traducción en la ayuda
+                        ayuda: "Traducción: Papá ha ido a trabajar; yo aquí estoy."
+                    },
+                    {
+                        id: "bat_yuxta_2",
+                        pregunta: "Ordena la famosa frase de Julio César (Vine, vi, vencí):",
+                        tipo: "sort",
+                        fraseCorrecta: "Etorri egin nintzen ikusi egin nuen irabazi egin nuen",
+                        ayuda: "En euskera: Etorri (Vine), ikusi (vi), irabazi (vencí)"
+                    },
+                    {
+                        id: "bat_yuxta_3",
+                        pregunta: "¿Qué relación lógica ves?",
+                        tipo: "choice",
+                        frase: "Etsamina guztiak aprobatu ditu; ikasi egin du. ( ___ )",
+                        opciones: ["Adición", "Contraposición", "Consecuencia"],
+                        correcta: "Consecuencia",
+                        ayuda: "(Ha aprobado todos los exámenes; Ha estudiado) \n Pista: Ha aprobado PORQUE ha estudiado." // <--- Traducción + Explicación
+                    }
+                ]
+            },
+            {
+                id: "compuestas-coordinacion",
+                titulo: "📄 3. Coordinación (Juntadura)",
+                texto: `
+                <p>Unimos proposiciones 
+                    <span class="caja-gramatical caja-adv caja-simplificada" 
+                        data-orig="independientes: cada frase tiene sentido por sí sola, no necesita una de la otra para entenderse completamente, aunque juntas suman más información" 
+                        onclick="simplificar(this, 'independientes')">
+                            independientes
+                    </span>
+                     mediante una <b>conjunción coordinante</b>. Cada oración sigue teniendo sentido pleno por separado.</p>
+                
+                <h3>Tipos de Coordinadas:</h3>
+                <ul>
+                    <li><b>Copulativas (ETA):</b> <span class="caja-gramatical caja-adv caja-simplificada" 
+                                  data-orig="Suma: Cada proposición suma o acumula nueva información <br>(esto Y esto otro Y ...)" 
+                                  onclick="simplificar(this, 'Suma')">Suma</span>. <br>
+                    <span class="frase-traduccion" onclick="traducir(this, 'Ana está en la cocina y ama se ha ido al bar')">Ana sukaldean dago eta ama tabernara joan da.</span></li>
+                    
+                    <li><b>Disyuntivas (EDO, ALA...):</b> <span class="caja-gramatical caja-adv caja-simplificada" 
+                                  data-orig="Opción: Cada frase expone una opción y de entre todas las opciones se puede elegir una <br>(esto O esto otro O ...)" 
+                                  onclick="simplificar(this, 'Opción')">Opción</span>.<br>
+                    <span class="frase-traduccion" onclick="traducir(this, 'Ir al cine o llamar a algún amigo')">Joan zinemara edo deitu lagunen bati.</span></li>
+                    
+                    <li><b>Adversativas (BAINA, BAIZIK...):</b> <span class="caja-gramatical caja-adv caja-simplificada" 
+                                  data-orig="Limitación: Indican contraposición al expresar una de las proposiciones una limitación de lo que dice la otra.<br> (es sabroso PERO no es sano. etc)" 
+                                  onclick="simplificar(this, 'Limitación')">Limitación</span>.<br>
+                    <span class="frase-traduccion" onclick="traducir(this, 'Me gusta mucho, pero es demasiado caro')">Asko gustatzen zait, baina garestiegia da.</span></li>
+                </ul>
+                
+                [EX:bat_coord_1]
+            `,
+                ejercicios: [
+                    {
+                        id: "bat_coord_1",
+                        pregunta: "Clasifica el nexo:",
+                        tipo: "drag",
+                        items: [
+                            { t: "ETA (Y)", c: "COPULATIVA" },
+                            { t: "EDO (O)", c: "DISYUNTIVA" },
+                            { t: "BAINA (Pero)", c: "ADVERSATIVA" },
+                            { t: "ALA (O - preguntas)", c: "DISYUNTIVA" }
+                        ]
+                    },
+                    {
+                        id: "bat_coord_2",
+                        pregunta: "Completa con el nexo 'pero':",
+                        tipo: "input",
+                        frase: "Polita da, ___ garestia.",
+                        ayuda: "Empieza por bai...",
+                        correcta: "baina"
+                    }
+                ]
+            },
+            {
+                id: "compuestas-subordinacion",
+                titulo: "📄 4. Subordinación (Menderakuntza)",
+                texto: `
+                <p>Una oración (<b>subordinada</b>) se inserta dentro de otra de mayor importancia (<b>principal</b>).</p>
+                <p>Se realiza añadiendo un <b>sufijo subordinante</b> al verbo de la subordinada.</p>
+
+                <div class="bloque-ejemplos">
+                    <span class="frase-traduccion" onclick="traducir(this, 'Aita ha dicho en la escuela que estoy enfermo en casa')">
+                    Aitak ni etxean gaixorik nagoela esan du eskolan.
+                    </span>
+                </div>
+
+                <p>Analicemos las piezas:<br>
+                • <b>Principal:</b> Aitak esan du eskolan.<br>
+                • <b>Subordinada:</b> Ni etxean gaixorik nago.<br>
+                • <b>Sufijo:</b> <span class="caja-gramatical caja-sus" onclick="simplificar(this, 'ESO', event)">-(e)la</span> (que...).</p>
+
+                [EX:bat_sub_mapa1]
+                
+            `,
+                ejercicios: [
+                    {
+                        id: "bat_sub_mapa1",
+                        pregunta: "¿A qué tipo pertenece cada ejemplo?",
+                        tipo: "drag",
+                        items: [
+                            { t: "Uste dut... (Creo que...)", c: "COMPLETIVA" },
+                            { t: "Nahi duelako... (Porque quiere)", c: "CAUSAL" },
+                            { t: "Ohea egiten ez baduzu... (Si no haces la cama)", c: "CONDICIONAL" }
+                        ]
+                    },
+                    {
+                        id: "bat_sub_mapa2",
+                        pregunta: "¿A qué tipo pertenece?",
+                        tipo: "choice",
+                        frase: "Etorri den neska. ___ ",
+                        opciones: ["Completiva", "Casual", "Relativo", "condicional"],
+                        correcta: "Relativo",
+                        ayuda: "La chica que ha venido.\n(La chica ESA, la chica LA CUAL ha venido)"
+                    },
+                    {
+                        id: "bat_sub_sort",
+                        pregunta: "Ordena: 'Voy a comprar el pan' (Final)",
+                        tipo: "sort",
+                        fraseCorrecta: "Ogia erostera noa",
+                        ayuda: "Ogia (pan) + erostera (a comprar) + noa (voy)"
+                    }
+                ]
+            },
+            {
+                id: "subordinadas-mapa-general",
+                titulo: "📄 5. Mapa de las Subordinadas",
+                texto: `
+        <p>En la subordinación (<i>menderakuntza</i>), una frase se pone al servicio de otra. Toca cada tipo para <b>revelar su explicación técnica</b>:</p>
+
+        <div class="bloque-subordinadas" style="display: flex; flex-direction: column; gap: 12px;">
+            
+            <!-- 1. COMPLETIVAS -->
+            <div>
+                <b>1. <span class="caja-gramatical caja-sus" onclick="simplificar(this, 'Osagarriak (Completivas): Funcionan como el objeto directo (la caja del ESO). Ejemplo: Uste dut...', event)">Osagarriak</span></b><br>
+                <span class="frase-traduccion" onclick="traducir(this, 'Creo que está trabajando')">Uste dut lanean ari dela.</span>
+            </div>
+
+            <!-- 2. INTERROGATIVAS INDIRECTAS -->
+            <div>
+                <b>2. <span class="caja-gramatical caja-sus" onclick="simplificar(this, 'Zehar-galderak (Interrogativas directas): Preguntas insertadas en otra frase. No llevan signos de interrogación. La pregunta se sobreentiende aunque no se hace como tal. Ejemplo: Dice A VER SI vendrás. la pregunta directa es: ¿vendrá?', event)">Zehar-galderak</span></b><br>
+                <span class="frase-traduccion" onclick="traducir(this, 'No sabemos dónde están')">Ez dakigu non dauden.</span>
+            </div>
+
+            <!-- 3. FINALES -->
+            <div>
+                <b>3. <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Helburuzkoak (Finales): Indican el objetivo o el PARA QUÉ de la acción.', event)">Helburuzkoak</span></b><br>
+                <span class="frase-traduccion" onclick="traducir(this, 'Voy a comprar el pan')">Ogia erostera noa.</span>
+            </div>
+
+            <!-- 4. CAUSALES -->
+            <div>
+                <b>4. <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Kausazkoak (Causativas): Explican el motivo o el PORQUÉ (Nexo -(e)lako).', event)">Kausazkoak</span></b><br>
+                <span class="frase-traduccion" onclick="traducir(this, 'No lo ha hecho porque no ha querido')">Nahi ez duelako ez du egin.</span>
+            </div>
+
+            <!-- 5. CONDICIONALES -->
+            <div>
+                <b>5. <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Baldintzazkoak (Condicionales): Establecen una condición indispensable (SI...). Nexo BA-.', event)">Baldintzazkoak</span></b><br>
+                <span class="frase-traduccion" onclick="traducir(this, 'Si no haces la cama, no saldrás de casa')">Ohea egiten ez baduzu, ez zara etxetik irtengo.</span>
+            </div>
+
+            <!-- 6. RELATIVO -->
+            <div>
+                <b>6. <span class="caja-gramatical caja-adj" onclick="simplificar(this, 'Erlatibozkoak (De relativo): Funcionan como un adjetivo (la caja del ESE). Nexo -(e)n.', event)">Erlatibozkoak</span></b><br>
+                <span class="frase-traduccion" onclick="traducir(this, 'La chica que ha venido es de Basauri')">Etorri den neska Basaurikoa da.</span>
+            </div>
+
+            <!-- 7. TEMPORALES -->
+            <div>
+                <b>7. <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Denborazkoak (Temporales): Sitúan la acción en el tiempo (antes, durante, después).', event)">Denborazkoak</span></b><br>
+                <span class="frase-traduccion" onclick="traducir(this, 'Después de cenar fuimos a casa')">Afaldu eta gero etxera joan ginen.</span>
+            </div>
+
+            <!-- 8. CONCESIVAS -->
+            <div>
+                <b>8. <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Kontzesiboak (Concesivas): Indican una dificultad que no impide la acción (A pesar de...).', event)">Kontzesiboak</span></b><br>
+                <span class="frase-traduccion" onclick="traducir(this, 'A pesar de llover, quieren ir a la playa')">Nahiz eta euria egin, hondartzara joan nahi dute.</span>
+            </div>
+
+            <!-- 9. MODALES -->
+            <div>
+                <b>9. <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Moduzkoak (Modales): Explican la MANERA o el modo (Como...). Nexo -(e)n bezala.', event)">Moduzkoak</span></b><br>
+                <span class="frase-traduccion" onclick="traducir(this, 'Lo hemos hecho como hemos podido')">Ahal izan dugun bezala egin dugu.</span>
+            </div>
+
+            <!-- 10. COMPARATIVAS -->
+            <div>
+                <b>10. <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Konparaziozkoak (Comparativas): Comparan dos elementos (más que, menos que, igual que).', event)">Konparaziozkoak</span></b><br>
+                <span class="frase-traduccion" onclick="traducir(this, 'Unai es más alto que Leire')">Unai Leire baino altuagoa da.</span>
+            </div>
+
+            <!-- 11. CONSECUTIVAS -->
+            <div>
+                <b>11. <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Ondoriozkoak (Consecutivas): Indican la consecuencia (Tan... que...). Nexo hain... non...', event)">Ondoriozkoak</span></b><br>
+                <span class="frase-traduccion" onclick="traducir(this, 'Es tan vergonzosa que no se atreve a nada')">Hain lotsatia da, non ez den ezertara ausartzen.</span>
+            </div>
+        </div>
+
+        <p style="margin-top:25px;"><i>¿Dudas con algún nexo? Prueba la batería de ejercicios de abajo.</i></p>
+        
+        [EX:bat_mapa_1]
+    `,
+                ejercicios: [
+                    {
+                        id: "bat_mapa_1",
+                        pregunta: "¿A qué categoría pertenece este nexo?",
+                        tipo: "choice",
+                        frase: "Uste dut etorriko ___ ",
+                        opciones: ["Completiva", "Causal", "Condicional", "Relativo"],
+                        correcta: "Completiva",
+                        ayuda: "Nexo: -dela (que...). Es la caja del ESO."
+                    },
+                    {
+                        id: "bat_mapa_2",
+                        pregunta: "¿A qué categoría pertenece este nexo?",
+                        tipo: "choice",
+                        frase: "Etorri den mutila  ___ ",
+                        opciones: ["Completiva", "Causal", "Condicional", "Relativo"],
+                        correcta: "Relativo",
+                        ayuda: "Nexo: -den (que...). Es la caja del ESE."
+                    },
+                    {
+                        id: "bat_mapa_3",
+                        pregunta: "¿A qué categoría pertenece este nexo?",
+                        tipo: "choice",
+                        frase: "badator, pozik jarriko naiz  ___ ",
+                        opciones: ["Completiva", "Causal", "Condicional", "Relativo"],
+                        correcta: "Condicional",
+                        ayuda: "Nexo: Ba- (Si...). Indica una condición."
+                    },
+                    {
+                        id: "bat_mapa_4",
+                        pregunta: "¿A qué categoría pertenece este nexo?",
+                        tipo: "choice",
+                        frase: "Gose delako etorri da  ___ ",
+                        opciones: ["Completiva", "Causal", "Condicional", "Relativo"],
+                        correcta: "Causal",
+                        ayuda: "Nexo: -delako (porque...). Indica el motivo."
+                    }
+                ]
+            },
+            {
+                id: "los-nexos-gramaticales",
+                titulo: "📄 6. Los Nexos Gramaticales",
+                texto: `
+        <p>Un nexo es una partícula que une palabras, sintagmas u oraciones. En euskera, un mismo nexo (como <b>"eta"</b>) puede tener diferentes "superpoderes" dependiendo de lo que una:</p>
+
+        <div class="bloque-ejemplos">
+            <b>1. Unir palabras:</b><br>
+            <span class="frase-traduccion" onclick="traducir(this, 'Jon y Bego han venido')">Jon eta Bego etorri dira.</span><br><br>
+            
+            <b>2. Unir sintagmas nominales:</b><br>
+            <span class="frase-traduccion" onclick="traducir(this, 'El padre de Jon y la madre de Bego han venido')">Jonen aita eta Begoren ama etorri dira.</span><br><br>
+            
+            <b>3. Unir oraciones completas:</b><br>
+            <span class="frase-traduccion" onclick="traducir(this, 'Jon se ha ido a trabajar y Bego se ha quedado en casa')">Jon lanera joan da eta Bego etxean geratu da.</span>
+        </div>
+
+        <h3 style="margin-top:20px;">Jerarquía de los Nexos</h3>
+        <p>Toca para ver la diferencia clave:</p>
+        <ul>
+            <li>
+                <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Juntagailua: Une elementos del mismo nivel (Coordinación). Ambas oraciones son independientes.', event)">Juntagailua</span>
+            </li>
+            <li>
+                <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Menderagailua: Une una oración principal con una subordinada (Subordinación). Una depende de la otra.', event)">Menderagailua</span>
+            </li>
+        </ul>
+
+        <h3>Más allá de la frase: El Orden del Texto</h3>
+        <p>Para que un texto no sea una selva de frases sueltas, usamos herramientas de organización superior:</p>
+        <div class="bloque-subordinadas">
+            <p><b>• <span class="caja-gramatical caja-adj" onclick="simplificar(this, 'Lokailuak: Conectores que dan coherencia y sentido al enlazar las frases del texto.', event)">Lokailuak</span></b> (Conectores textuales)</p>
+            <p><b>• <span class="caja-gramatical caja-adj" onclick="simplificar(this, 'Antolatzaileak: Palabras que estructuran el texto de forma ordenada y delimitan temas.', event)">Antolatzaileak</span></b> (Organizadores textuales)</p>
+        </div>
+
+        <p><i>¿Sabrías distinguir qué función cumple "eta" en cada caso? Pruébalo aquí abajo.</i></p>
+        [EX:bat_nexos_drag]
+        
+    `,
+                ejercicios: [
+                    {
+                        id: "bat_nexos_drag",
+                        pregunta: "Clasifica la función de 'ETA':",
+                        tipo: "drag",
+                        items: [
+                            { t: "Jon eta Bego", c: "Une Palabras" },
+                            { t: "Jonen aita eta Begoren ama", c: "Une Sintagmas" },
+                            { t: "Jon joan da eta Bego geratu da", c: "Une Oraciones" }
+                        ]
+                    },
+                    {
+                        id: "bat_nexos_input",
+                        pregunta: "¿Cómo se llama el nexo que une una principal con una subordinada?",
+                        tipo: "input",
+                        frase: "Se llama ___.",
+                        ayuda: "Empieza por mende...",
+                        correcta: "menderagailua"
+                    }
+                ]
+            }
+
+
+        ]
     }
+
 
 
 
