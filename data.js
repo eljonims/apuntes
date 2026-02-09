@@ -135,7 +135,7 @@ const libroData = [
                             id: "sub_id_1",
                             pregunta: "¿Cómo se llama el nexo en la subordinación?",
                             tipo: "choice",
-                            frase: "Se llama ___ ( ___ )",
+                            frase: "Se llama ___ ",
                             opciones: ["Juntagailua", "Menderagailua", "Lokailua"],
                             correcta: "Menderagailua",
                             ayuda: "Pista: El nexo 'domina' o hace que la frase sea 'mendeko'."
@@ -165,7 +165,7 @@ const libroData = [
                             id: "mapa_1",
                             pregunta: "¿Qué caja es la de Relativo?",
                             tipo: "choice",
-                            frase: "Es la caja del ___ ( ___ )",
+                            frase: "Es la caja del ___ ",
                             opciones: ["ESO", "ESE", "ENTONCES"],
                             correcta: "ESE",
                             ayuda: "Relativo = Adjetiva. Describe al sustantivo."
@@ -604,7 +604,7 @@ const libroData = [
                                     id: "prac_bata_choice",
                                     pregunta: "Uno es alto, el otro pequeño:",
                                     tipo: "choice",
-                                    frase: "___ oso altua da; ___ ordea, txiki-txikia. ( ___ )",
+                                    frase: "___ oso altua da; ___ ordea, txiki-txikia.",
                                     opciones: ["Bata / bestea", "Batetik / bestetik", "Bai / bai"],
                                     correcta: "Bata / bestea",
                                     ayuda: "Usamos el artículo (a) para contrastar sujetos concretos."
@@ -783,7 +783,7 @@ const libroData = [
                                     id: "adv_sino_4",
                                     pregunta: "¿Qué nexo pondrías aquí al inicio?",
                                     tipo: "choice",
-                                    frase: "Ez ditu erosketak igo, ___ garajean utzi ditu. ( ___ )",
+                                    frase: "Ez ditu erosketak igo, ___ garajean utzi ditu.",
                                     opciones: ["baizik eta", "baina", "edo"],
                                     correcta: "baizik eta",
                                     ayuda: "Cuando la frase es larga, preferimos ponerlo al inicio."
@@ -932,7 +932,7 @@ const libroData = [
                                     id: "dis_edo_1",
                                     pregunta: "¿Cuál elegirías para una pregunta?",
                                     tipo: "choice",
-                                    frase: "Nahiago duzu sagarra ___ udarea? ( ___ )",
+                                    frase: "Nahiago duzu sagarra ___ udarea?",
                                     opciones: ["edo", "ala", "eta"],
                                     correcta: "ala",
                                     ayuda: "Es una pregunta de elección."
@@ -999,7 +999,7 @@ const libroData = [
                                     id: "sub_intro_1",
                                     pregunta: "¿Cómo se llaman los nexos que se pegan al verbo?",
                                     tipo: "choice",
-                                    frase: "Se llaman ___ ( ___ )",
+                                    frase: "Se llaman ___ ",
                                     opciones: ["Juntagailuak", "Menderagailuak", "Lokailuak"],
                                     correcta: "Menderagailuak",
                                     ayuda: "Mende = subordinación / dependencia."
@@ -1084,7 +1084,7 @@ const libroData = [
                                     id: "adv_lug_1",
                                     pregunta: "¿Cómo se dice 'al sitio donde' (Dirección)?",
                                     tipo: "choice",
-                                    frase: "Gurasoak bizi ziren ___ ( ___ )",
+                                    frase: "Gurasoak bizi ziren ___  ",
                                     opciones: ["herrira", "herrian", "herritik"],
                                     correcta: "herrira",
                                     ayuda: "Ir a un sitio = -ra."
@@ -1277,7 +1277,7 @@ const libroData = [
                                                     id: "comp_lakoa_1",
                                                     pregunta: "¿Cómo dirías 'lo de que cobran demasiado'?",
                                                     tipo: "choice",
-                                                    frase: "Gehiegi kobratzen dute___ egia da. ( ___ )",
+                                                    frase: "Gehiegi kobratzen dute___ egia da.",
                                                     opciones: ["lakoa", "lakoan", "larik"],
                                                     correcta: "lakoa",
                                                     ayuda: "Usamos el artículo -a al final para decir 'lo de que'."
@@ -1380,7 +1380,7 @@ const libroData = [
                                                     id: "inter_duel_1",
                                                     pregunta: "¿Sabes si ha venido? (Duda)",
                                                     tipo: "choice",
-                                                    frase: "Badakizu etorri de___? ( ___ )",
+                                                    frase: "Badakizu etorri de___?",
                                                     opciones: ["la", "n", "nik"],
                                                     correcta: "n",
                                                     ayuda: "Si es una pregunta sobre la veracidad, usamos -n."
@@ -1686,7 +1686,7 @@ const libroData = [
                                                     id: "rel_teo_corr_1",
                                                     pregunta: "¿Cuál es el orden correcto en euskera?",
                                                     tipo: "choice",
-                                                    frase: "Se coloca ___ ( ___ )",
+                                                    frase: "Se coloca ___ ",
                                                     opciones: ["Descripción + Nombre", "Nombre + Descripción"],
                                                     correcta: "Descripción + Nombre",
                                                     ayuda: "Igual que 'Nire etxea' o 'Bideko etxea'."
@@ -1777,7 +1777,7 @@ const libroData = [
                                                     id: "rel_adv_1",
                                                     pregunta: "¿Qué sufijo usarías para 'el libro comprado'?",
                                                     tipo: "choice",
-                                                    frase: "Erosi___ liburua. ( ___ )",
+                                                    frase: "Erosi___ liburua.",
                                                     opciones: ["tako", "la", "nik"],
                                                     correcta: "tako",
                                                     ayuda: "Participio + tako/riko para adjetivar."
@@ -1863,7 +1863,7 @@ const libroData = [
                                                     id: "rel_ch_2",
                                                     pregunta: "¿Qué declinación manda en el relativo?",
                                                     tipo: "choice",
-                                                    frase: "Manda la de la oración ___ ( ___ )",
+                                                    frase: "Manda la de la oración ___ ",
                                                     opciones: ["Principal (Antecedente)", "Subordinada", "Ninguna"],
                                                     correcta: "Principal (Antecedente)",
                                                     ayuda: "El antecedente impone su sufijo al final de todo el bloque."
