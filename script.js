@@ -220,13 +220,19 @@ function loadTema(id) {
     if (!tema) return;
 
     localStorage.setItem('ultimoTemaVisitado', id);
-
     let htmlFinal = tema.texto || "";
 
-    if (tema.ejercicios) {
-        tema.ejercicios.forEach((ex, index) => {
-            const marcador = `[EX:${ex.id}]`;
-            const btnHTML = `<button class="post-it" onclick="openEx('${tema.id}', '${ex.id}')" style="transform: rotate(${index % 2 === 0 ? -1.5 : 1.5}deg)">📝 ARIKETA: ${ex.pregunta.substring(0, 25)}...</button>`;
+    // Buscamos si hay baterías grupales
+    if (tema.ejercicios && Array.isArray(tema.ejercicios[0])) {
+        tema.ejercicios.forEach((grupo, gIdx) => {
+            const marcador = `[BATERIA:${gIdx}]`;
+            // Usamos el primer ejercicio del grupo para el título del Post-it
+            const primerEx = grupo[0];
+            const btnHTML = `
+                <button class="post-it" onclick="openEx('${tema.id}', ${gIdx})" 
+                        style="transform: rotate(${gIdx % 2 === 0 ? -1.5 : 1.5}deg)">
+                    📝 RETO ${gIdx + 1}: ${primerEx.pregunta.substring(0, 25)}...
+                </button>`;
             htmlFinal = htmlFinal.replace(marcador, btnHTML);
         });
     }
@@ -234,26 +240,14 @@ function loadTema(id) {
     const temasPlanos = obtenerListaPlana();
     const idxActual = temasPlanos.findIndex(t => t.id === id);
     let navHtml = `<div class="nav-pagination">`;
-
-    if (idxActual > 0) {
-        navHtml += `<button class="btn-nav" onclick="loadTema('${temasPlanos[idxActual - 1].id}')">⬅ ${temasPlanos[idxActual - 1].titulo}</button>`;
-    } else { navHtml += `<span></span>`; }
-
-    if (idxActual < temasPlanos.length - 1) {
-        navHtml += `<button class="btn-nav" onclick="loadTema('${temasPlanos[idxActual + 1].id}')">${temasPlanos[idxActual + 1].titulo} ➡</button>`;
-    }
+    if (idxActual > 0) navHtml += `<button class="btn-nav" onclick="loadTema('${temasPlanos[idxActual - 1].id}')">⬅ ${temasPlanos[idxActual - 1].titulo}</button>`;
+    else navHtml += `<span></span>`;
+    if (idxActual < temasPlanos.length - 1) navHtml += `<button class="btn-nav" onclick="loadTema('${temasPlanos[idxActual + 1].id}')">${temasPlanos[idxActual + 1].titulo} ➡</button>`;
     navHtml += `</div>`;
 
-    const pageContent = document.getElementById('page-content');
-    if (pageContent) {
-        pageContent.innerHTML = `<h1>${tema.titulo}</h1><div>${htmlFinal}</div>${navHtml}`;
-    }
-
-    const notebook = document.getElementById('notebook');
-    if (notebook) notebook.scrollTop = 0;
-
-    const searchBar = document.getElementById('search-bar');
-    renderIndice(searchBar ? searchBar.value : "");
+    document.getElementById('page-content').innerHTML = `<h1>${tema.titulo}</h1><div>${htmlFinal}</div>${navHtml}`;
+    document.getElementById('notebook').scrollTop = 0;
+    renderIndice(document.getElementById('search-bar') ? document.getElementById('search-bar').value : "");
 }
 
 async function playSound(type) {
@@ -286,14 +280,13 @@ async function playSound(type) {
     } catch (e) { console.log("Audio bloqueado o no soportado"); }
 }
 
-function openEx(temaId, exId) {
+// 2. ABRIR BATERÍA (Ahora por índice de grupo)
+function openEx(temaId, grupoIdx) {
     const tema = encontrarTemaProfundo(temaId);
-    if (!tema || !tema.ejercicios) return;
+    if (!tema || !tema.ejercicios || !tema.ejercicios[grupoIdx]) return;
 
-    const startIdx = tema.ejercicios.findIndex(e => e.id === exId);
-    if (startIdx === -1) return;
-
-    currentBateria = tema.ejercicios.slice(startIdx);
+    // Cargamos SOLO ese grupo de ejercicios
+    currentBateria = tema.ejercicios[grupoIdx];
     currentIdx = 0;
 
     document.getElementById('exercise-overlay').style.display = 'flex';
@@ -343,29 +336,28 @@ function validar(esCorrecto, elementoResaltar = null) {
 
 
 function lanzarSiguiente() {
+    if (currentIdx >= currentBateria.length) {
+        mostrarFelicitacion(); // Al terminar el grupo, ¡Copa y Confeti!
+        return;
+    }
     const ex = currentBateria[currentIdx];
     const body = document.getElementById('ex-body');
     const title = document.getElementById('ex-title');
     const btn = document.getElementById('btn-main-action');
-    const msg = document.getElementById('ex-message');
 
-    // Limpieza de estados anteriores
     body.innerHTML = "";
     body.classList.remove('bloqueado');
-    if (msg) {
-        msg.innerText = "";
-        msg.style.color = "";
-    }
+    document.getElementById('ex-message').innerText = "";
 
-    // CLONACIÓN DE SEGURIDAD: Borra eventos de ejercicios previos
+    // Clonación de seguridad para limpiar eventos
     const nuevoBtn = btn.cloneNode(true);
     btn.parentNode.replaceChild(nuevoBtn, btn);
     nuevoBtn.innerText = "EGIAZTATU";
     nuevoBtn.className = "btn-check";
 
+    // El contador ahora dice "1 / 3" si el grupo tiene 3 ejercicios
     title.innerHTML = `${ex.pregunta} <small style="float:right; opacity:0.5;">${currentIdx + 1} / ${currentBateria.length}</small>`;
 
-    // Enrutador de motores
     if (ex.tipo === 'drag') renderDrag(ex, body);
     else if (ex.tipo === 'choice') renderChoice(ex, body);
     else if (ex.tipo === 'input') renderInput(ex, body);
