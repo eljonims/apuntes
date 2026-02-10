@@ -382,16 +382,7 @@ body {
     /* O una fuente tipo handwriting */
 }
 
-.lapiz-sufijo {
-    font-family: 'Gochi Hand', cursive !important;
-    color: #555 !important;
-    /* Gris grafito */
-    font-size: 1.1em;
-    /* Un pelín más grande para compensar la caligrafía */
-    letter-spacing: 0.5px;
-    text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.1);
-    /* Efecto de presión de grafito */
-}
+
 
 /* 1. Estado del botón cuando se activa el modo "Siguiente" */
 .btn-next-active {
@@ -775,6 +766,8 @@ body {
         /* Le damos un poco más de cuerpo al trazo */
         letter-spacing: 1px;
         /* Separamos las letras para que no se peguen */
+        font-weight: 600 !important;
+        -webkit-text-stroke: 0.2px; /* Un truco para engordar letras finas */
     }
 
     /* También subimos un poco el texto de la frase para que respire */
@@ -795,4 +788,22 @@ canvas {
     /* Para que no bloquee los clics */
     z-index: 9999 !important;
     /* Por encima del overlay (1000) */
+}
+@media (max-width: 600px) {
+    /* Forzamos un tamaño que no dependa de escalas del sistema */
+    .caja-gramatical, 
+    .caja-simplificada,
+    .frase-traduccion {
+        font-size: 18px !important; 
+        line-height: 1.6 !important;
+        display: block; /* Para que ocupen todo el ancho y se lean como párrafos */
+        margin: 10px 0;
+        padding: 12px;
+    }
+
+    /* Si el texto de los temas también se ve pequeño */
+    .tema-texto-cuerpo p, 
+    .tema-texto-cuerpo li {
+        font-size: 17px !important;
+    }
 }
