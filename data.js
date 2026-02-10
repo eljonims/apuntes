@@ -150,7 +150,7 @@ const libroData = [
         <p>Toca cada tipo para <b>revelar su función</b> antes de pasar a estudiarlas a fondo:</p>
         <div class="bloque-subordinadas" style="display: flex; flex-direction: column; gap: 10px;">
             <div><b>1. <span class="caja-gramatical caja-sus" onclick="simplificar(this, 'Completivas: Funcionan como el objeto directo (la caja del ESO).', event)">Osagarriak</span></b></div>
-            <div><b>2. <span class="caja-gramatical caja-sus" onclick="simplificar(this, 'Interrogativas: Preguntas insertadas en otra frase. No llevan signos de interrogación.', event)">Zehar-galderak</span></b></div>
+            <div><b>2. <span class="caja-gramatical caja-sus" onclick="simplificar(this, 'Interrogativas indirectas: Preguntas insertadas en otra frase. No llevan signos de interrogación.', event)">Zehar-galderak</span></b></div>
             <div><b>3. <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Finales: Indican el objetivo o para qué se hace la acción.', event)">Helburuzkoak</span></b></div>
             <div><b>4. <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Causales: Explican el motivo o el porqué.', event)">Kausazkoak</span></b></div>
             <div><b>5. <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Condicionales: Establecen una condición (Si...).', event)">Baldintzazkoak</span></b></div>
