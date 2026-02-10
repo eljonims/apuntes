@@ -1940,12 +1940,695 @@ const libroData = [
                         ]
                     },
                     {
-                        id: "subordinadas-adverviales (relativas)",
-                        titulo: "📁 subordinadas-adverbiales",
+                        id: "subordinadas-adverbiales",
+                        titulo: "📁 Oraciones Subordinadas Adverbiales",
                         hijos: [
+                            {
+                                id: "adv-temporales",
+                                titulo: "📁 Temporales (Denborazkoak)",
+                                hijos: [
 
+
+                                ]
+                            },
+                            { id: "adv-modales", titulo: "📁 Modales (Moduzkoak)", hijos: [] },
+                            { //finales
+                                id: "adv-finales",
+                                titulo: "📁 Finales (Helburuzkoak)",
+                                hijos: [
+                                    {
+                                        id: "adv-finales-tema",
+                                        titulo: "📄 Finales: Zertara vs Zertarako",
+                                        texto: `
+        <p>Las oraciones finales indican el objetivo o la intención de una acción. En euskera, la clave es saber si te mueves hacia un objetivo o si indicas el uso de algo.</p>
+
+        <h3>1. Zertara? ➔ -t(z)era (¿A qué?)</h3>
+        <p>Se usa con verbos de <b>movimiento</b> (<i>joan, etorri, irten...</i>). Es la meta de tu desplazamiento.</p>
+        
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Voy a tomar un café')">Kafe bat har<b>tzera</b> noa.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Vamos a nadar')">Igeri egi<b>tera</b> goaz.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'He venido a estar contigo')">Zurekin ego<b>tera</b> etorri naiz.</span></p>
+        </div>
+
+        <div class="bloque-subordinadas">
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Morfología: Verbo en participio + -t(z)e + sufijo -ra (hacia). Indica movimiento físico hacia una actividad.', event)">¿Por qué termina en -ra?</span></p>
+        </div>
+
+        [BATERIA:0]
+
+        <h3>2. Zertarako? ➔ -t(z)eko (¿Para qué?)</h3>
+        <p>Indica la <b>finalidad</b> o utilidad de algo. Suele ir con verbos como <i>izan, erosi, erabili, balio izan...</i></p>
+        
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Para limpiar el coche es')">Autoa garbi<b>tzeko</b> da.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Las cosas son para usarlas')">Gauzak erabil<b>tzeko</b> dira.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Eso no vale para estudiar')">Horrek ez du ikas<b>teko</b> balio.</span></p>
+        </div>
+
+        <div class="bloque-subordinadas">
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Morfología: Verbo en participio + -t(z)e + sufijo -ko (de). Indica la característica o destino de un objeto.', event)">¿Por qué termina en -ko?</span></p>
+        </div>
+
+        [BATERIA:1]
+
+        <h3>3. Entrenamiento de Traducción</h3>
+        <p>Prueba con estas frases antes de pulsar para ver la solución:</p>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Paseatzera joan da.')">Se ha ido a pasear.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Nik ez dut txisteak kontatzeko balio.')">Yo no valgo para contar chistes.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Kutxa hori gauzak gordetzeko erabiltzen dut.')">Esa caja la utilizo para guardar cosas.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Zuekin hitz egitera etorri naiz.')">He venido a hablar con vosotros.</span></p>
+        </div>
+
+        [BATERIA:2]
+    `,
+                                        ejercicios: [
+                                            [ // BATERIA 0: Zertara
+                                                {
+                                                    id: "fin_1",
+                                                    pregunta: "Completa el movimiento: 'Voy a casa a estudiar'",
+                                                    tipo: "input",
+                                                    frase: "Etxera joan da ikas<b>te</b>___",
+                                                    correcta: "ra",
+                                                    ayuda: "Es un movimiento hacia la actividad de estudiar."
+                                                },
+                                                {
+                                                    id: "fin_2",
+                                                    pregunta: "Ordena: 'Vete a comprar el pan'",
+                                                    tipo: "sort",
+                                                    fraseCorrecta: "Zoaz ogia erostera",
+                                                    ayuda: "Zoaz (vete) + ogia (el pan) + erostera (a comprar)"
+                                                }
+                                            ],
+                                            [ // BATERIA 1: Zertarako
+                                                {
+                                                    id: "fin_3",
+                                                    pregunta: "Completa la utilidad: 'Esto es para jugar'",
+                                                    tipo: "input",
+                                                    frase: "Hori jolas<b>te</b>___ da.",
+                                                    correcta: "ko",
+                                                    ayuda: "Indica para qué sirve el objeto."
+                                                },
+                                                {
+                                                    id: "fin_4",
+                                                    pregunta: "¿Cuál elegirías? '¿Para qué vale esto?'",
+                                                    tipo: "choice",
+                                                    frase: "Zertarako balio du honek? Kristalak garbi___.",
+                                                    opciones: ["tzeko", "tzera"],
+                                                    correcta: "tzeko",
+                                                    ayuda: "Con el verbo 'balio izan' siempre usamos -tzeko."
+                                                }
+                                            ],
+                                            [ // BATERIA 2: Mix Final
+                                                {
+                                                    id: "fin_5",
+                                                    pregunta: "Traduce: 'Voy a casa a cenar'",
+                                                    tipo: "input",
+                                                    frase: "Etxera noa afal<b>tzea</b>___",
+                                                    correcta: "ra",
+                                                    ayuda: "Movimiento = Zertara"
+                                                },
+                                                {
+                                                    id: "fin_6",
+                                                    pregunta: "Ordena: 'Esto es para hacer un regalo'",
+                                                    tipo: "sort",
+                                                    fraseCorrecta: "Hau opari bat egiteko da",
+                                                    ayuda: "Hau (esto) + opari bat (un regalo) + egiteko da (es para hacer)"
+                                                }
+                                            ]
+                                        ]
+                                    },
+                                    {
+                                        id: "adv-finales-estructuras",
+                                        titulo: "📄 Finales: Estructura y Negación",
+                                        texto: `
+        <p>Ya sabemos distinguir entre <b>Zertara</b> y <b>Zertarako</b>. Ahora vamos a ver cómo se ordenan las palabras y cómo negar estas frases.</p>
+
+        <h3>1. La Negación (Ez... -t(z)eko / Ez... -t(z)era)</h3>
+        <p>Para indicar que algo <b>no</b> es para un fin, o que vamos a <b>no</b> hacer algo, el <b>ez</b> se coloca justo antes del verbo final:</p>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Me ha dicho que no vaya')">Ez joa<b>teko</b> esan dit.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Nos han dicho que no nos acerquemos')">Ez hurbil<b>tzeko</b> esan digute.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Yo no valgo para contar chistes')">Nik <b>ez</b> dut txisteak konta<b>tzeko</b> balio.</span></p>
+        </div>
+
+        [BATERIA:0]
+
+        <h3>2. El orden en las respuestas (Zertarako?)</h3>
+        <p>Cuando respondemos a una pregunta, a menudo omitimos el resto de la frase y nos centramos en el nexo:</p>
+        <div class="bloque-ejemplos">
+            <p><b>• ¿Para qué vale esto?</b><br>
+            <span class="frase-traduccion" onclick="traducir(this, 'Zertarako balio du honek? Kristalak garbitzeko.')">Kristalak garbi<b>tzeko</b>.</span></p>
+            <p><b>• ¿A qué has venido?</b><br>
+            <span class="frase-traduccion" onclick="traducir(this, 'Zertara etorri zara? Zuekin hitz egitera.')">Zuekin hitz egi<b>tera</b>.</span></p>
+        </div>
+
+        <div class="bloque-subordinadas">
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Orden: El elemento final (tzeko/tzera) suele ir inmediatamente antes del verbo principal (balio, erabili, joan) porque es el Galdegaia (el foco de la frase).', event)">¿Por qué va al final?</span></p>
+        </div>
+
+        [BATERIA:1]
+
+        <h3>3. Otros verbos de finalidad: Erabili</h3>
+        <p>Además de "balio izan" (valer para), usamos mucho <b>erabili</b> (usar para):</p>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Esa caja la utilizo para guardar cosas')">Kutxa hori gauzak gordi<b>tzeko</b> erabiltzen dut.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'He comprado este ordenador para hacer trabajos')">Ordenagailu hau idazlanak egi<b>teko</b> erosi dut.</span></p>
+        </div>
+
+        [BATERIA:2]
+    `,
+                                        ejercicios: [
+                                            [ // BATERIA 0: Negación
+                                                {
+                                                    id: "fin_neg_1",
+                                                    pregunta: "Completa la negación: 'No vale para estudiar'",
+                                                    tipo: "input",
+                                                    frase: "Horrek <b>ez</b> du ikas<b>te</b>___ balio.",
+                                                    correcta: "ko",
+                                                    ayuda: "Utilidad negativa = -tzeko"
+                                                },
+                                                {
+                                                    id: "fin_neg_2",
+                                                    pregunta: "Ordena: 'Nos han dicho que no nos acerquemos'",
+                                                    tipo: "sort",
+                                                    fraseCorrecta: "Ez hurbiltzeko esan digute",
+                                                    ayuda: "Ez + hurbiltzeko (finalidad) + esan digute (nos han dicho)"
+                                                }
+                                            ],
+                                            [ // BATERIA 1: Respuestas cortas
+                                                {
+                                                    id: "fin_resp_1",
+                                                    pregunta: "¿A qué has venido? (Hitz egitera):",
+                                                    tipo: "input",
+                                                    frase: "Zuekin hitz egi___ etorri naiz.",
+                                                    correcta: "tera",
+                                                    ayuda: "He venido A HABLAR (movimiento)."
+                                                }
+                                            ],
+                                            [ // BATERIA 2: Erabili y Balio
+                                                {
+                                                    id: "fin_erab_1",
+                                                    pregunta: "¿Qué nexo pide 'erabili' (usar)?",
+                                                    tipo: "choice",
+                                                    frase: "Kutxa hau gauzak gorde___ erabiltzen dut.",
+                                                    opciones: ["tzeko", "teko", "tzera", "tera"],
+                                                    correcta: "tzeko",
+                                                    ayuda: "Usar ALGO PARA algo = -t(z)eko"
+                                                },
+                                                {
+                                                    id: "fin_erab_2",
+                                                    pregunta: "Ordena: 'Yo no valgo para contar chistes'",
+                                                    tipo: "sort",
+                                                    fraseCorrecta: "Nik ez dut txisteak kontatzeko balio",
+                                                    ayuda: "Nik + ez dut + txisteak kontatzeko (finalidad) + balio (valgo)"
+                                                }
+                                            ]
+                                        ]
+                                    },
+                                    {
+                                        id: "adv-finales-regla-definitiva",
+                                        titulo: "💡 Guía Definitiva: ¿Cuándo poner la 'Z'?",
+                                        texto: `
+        <p>Para no equivocarte nunca, fíjate en cómo termina el verbo en el diccionario. Hay tres grupos claros:</p>
+
+        <h3>1. Verbos terminados en -i (Sin Z)</h3>
+        <p>- Quitamos la -<b>i</b> <br/>- Añadimos -<b>teko </b>/ -<b>tera</b> <br/>(<b>sin</b> Z):</p>
+        <div class="bloque-subordinadas">
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'IKUSI ➔ Ikus + teko = IKUSTEKO', event)">Ikusi</span></p>
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'EROSI ➔ Eros + teko = EROSTEKO', event)">Erosi</span></p>
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'IBILI ➔ Ibil + teko = IBILTEKO', event)">Ibili</span></p>
+        </div>
+
+        <h3>2. Verbos terminados en -N</h3>
+        <p><p>- Quitamos la -<b>n</b><br/>- Añadimos -<b>teko</b> / -<b>tera</b><br/>(<b>Sin</b> Z):</p>
+        <div class="bloque-subordinadas">
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'JAN ➔ Jateko / Jatera', event)">Jan</span></p>
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'EGIN ➔ Egiteko / Egitera', event)">Egin</span></p>
+        </div>
+
+        <h3>3. Verbos en -TU / -DU (Con Z)</h3>
+        <p><p>- Quitamos el -<b>tu</b>/-<b>du</b><br/>- Añadimos -<b>tzeko</b> / -<b>tzera</b><br/>(<b>Con</b> Z):</p>
+        <div class="bloque-subordinadas">
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'AFALDU ➔ Afal + tzeko = AFALTZEKO', event)">Afaldu</span></p>
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'GARBITU ➔ Garbi + tzeko = GARBITZEKO', event)">Garbitu</span></p>
+        </div>
+
+        [BATERIA:0]
+    `,
+                                        ejercicios: [
+                                            [
+                                                {
+                                                    id: "final_v2_1",
+                                                    pregunta: "Verbo IKUSI. ¿Para qué sirve?",
+                                                    tipo: "input",
+                                                    frase: "Telebista ikus___ da.",
+                                                    correcta: "teko",
+                                                    ayuda: "Termina en -i, quitas la 'i' y elige -teko o -tzeko."
+                                                },
+                                                {
+                                                    id: "final_v2_2",
+                                                    pregunta: "Verbo AFALDU. ¿A qué vas?",
+                                                    tipo: "input",
+                                                    frase: "Etxera noa afal___.",
+                                                    correcta: "tzera",
+                                                    ayuda: "Termina en -du, se convierte en -tze<b>ra</>."
+                                                },
+                                                {
+                                                    id: "final_v2_3",
+                                                    pregunta: "Verbo JAN. ¿A qué vas?",
+                                                    tipo: "choice",
+                                                    frase: "Ogia ja___ noa.",
+                                                    opciones: ["tera", "tzera"],
+                                                    correcta: "tera",
+                                                    ayuda: "Termina en -n, usa -tera."
+                                                }
+                                            ]
+                                        ]
+                                    }
+                                ]
+                            },
+                            { id: "adv-causales", titulo: "📁 Causales (Kausazkoak)", hijos: [] },
+                            { id: "adv-concesivas", titulo: "📁 Concesivas (Kontzesiboak)", hijos: [] },
+                            { //condicionales
+                                id: "adv-condicionales",
+                                titulo: "📁 Condicionales (Baldintzazkoak)",
+                                hijos: [
+                                    {
+                                        id: "adv-condicionales-clon-1",
+                                        titulo: "📄 Condicionales: Introducción y nexo BA-",
+                                        texto: `
+        <p>Como ya se ha dicho previamente, las oraciones condicionales son las oraciones en las que se expresa una condición (<b>baldintza</b>), imprescindible para que se pueda cumplir una consecuencia (<b>ondorioa</b>).</p>
+        <p>La consecuencia (ondorioa) es la oración principal y la condición (baldintza), es la oración subordinada. Lo más frecuente es colocar primero la oración subordinada (baldintza) y después la principal (ondorioa).</p>
+
+        <h3>Tipos de oraciones condicionales</h3>
+        <div class="bloque-ejemplos">
+            <p><b>• Reales o no hipotéticas:</b> La acción tiene muchas posibilidades de llevarse a cabo.<br>
+            <span class="frase-traduccion" onclick="traducir(this, 'Si hace buen tiempo, iremos al monte.')">Giro ona egiten <b>ba</b>du, mendira joango gara.</span></p>
+            
+            <p><b>• Hipotéticas (orainaldia - geroaldia):</b> Tienen pocas posibilidades de llevarse a cabo.<br>
+            <span class="frase-traduccion" onclick="traducir(this, 'Si hiciera buen tiempo, iríamos al monte.')">Giro ona egingo <b>ba</b>lu, mendira joango ginateke.</span></p>
+            
+            <p><b>• Hipotéticas irreales en pasado:</b> Es imposible que se lleve a cabo (ya pasó el momento).<br>
+            <span class="frase-traduccion" onclick="traducir(this, 'Si hubiera hecho buen tiempo, habríamos ido al monte.')">Giro ona egin izan <b>ba</b>lu, mendira joango ginen.</span></p>
+        </div>
+
+        <h3>Formas de construcción</h3>
+        <ul>
+            <li><b>Con el verbo conjugado:</b> Usando el sufijo "ba-" o la forma "baldin ba-".</li>
+            <li><b>Con el verbo sin conjugar (participio):</b> Usando "-z gero", "ezik/ezean", "-t(z)ekotan" o "-t(z)era".</li>
+        </ul>
+
+        <hr>
+
+        <h3>El prefijo Ba-</h3>
+        <p>Es el que más se usa. Se une al auxiliar o al verbo sintético de la subordinada:</p>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Si estudias, aprobarás la asignatura.')">Ikasten <b>ba</b>duzu, ikasgaia aprobatuko duzu.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Si estás formal, te compraré algo.')">Formal <b>ba</b>zabiltza, zerbait erosiko dizut.</span></p>
+        </div>
+
+        <div class="bloque-subordinadas">
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Fijarse en que entre la subordinada y la principal va una coma.', event)">Nota de puntuación</span></p>
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Cuando la subordinada es negativa se añade la partícula ez antes del verbo auxiliar o sintético con el prefijo ba-.', event)">Nota sobre la negación</span></p>
+        </div>
+
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Si no estudias, no aprobarás la asignatura.')">Ikasten ez <b>ba</b>duzu, ez duzu ikasgaia aprobatuko.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Si no estás formal, no te compraré nada.')">Formal ez <b>ba</b>zabiltza, ez dizut ezer erosiko.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, '¿Y tú que vas a hacer si te preguntan?')">Eta zuk zer egingo duzu galdetzen <b>ba</b>dizute?</span></p>
+        </div>
+
+        <h3>Ejemplos en otros tipos de condicionales:</h3>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Si estudiara, aprobaría la asignatura.')">Ikasiko <b>ba</b>lu, ikasgaia aprobatuko luke.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Si hubieras estudiado, habrías aprobado la asignatura.')">Ikasi izan <b>ba</b>zenu, ikasgaia aprobatuko zenuen.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Si estuviera atento en clase, sabría qué hay que hacer.')">Klasean adi <b>ba</b>lego, zer egin behar den jakingo luke.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Si fueras a las reuniones, te enterarías de todo.')">Batzarretara <b>ba</b>zindoaz, denetaz jabetuko zenuke.</span></p>
+        </div>
+
+        <h3>Remarcar con "Baldin"</h3>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Si le ves, díselo.')">Ikusten <b>baldin ba</b>duzu, esaiozu.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Si lo supieras, no lo preguntarías.')"><b>Baldin ba</b>zeneki, ez zenuke galdetuko.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Si no le ves, llámale.')">Ikusten ez <b>baldin ba</b>duzu, deiozu.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Si no lo supieras, lo preguntarías.')">Ez <b>baldin ba</b>zeneki, galdetuko zenuke.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Si ves la película, ya sé que mañana me la contarás.')"><b>Baldin</b> pelikula ikusten <b>ba</b>duzu, badakit bihar kontatuko dizudala.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Si hoy no ves la película, mañana iré contigo a verla.')"><b>Baldin eta</b> gaur ez baduzu pelikula ikusten, bihar zurekin joango naiz ikustera.</span></p>
+        </div>
+
+        [BATERIA:0]
+    `,
+                                        ejercicios: [
+                                            [
+                                                {
+                                                    id: "cond_clon_1",
+                                                    pregunta: "Completa la condición negativa real:",
+                                                    tipo: "input",
+                                                    frase: "Ikasten ez ___duzu, ez duzu aprobatuko.",
+                                                    correcta: "ba",
+                                                    ayuda: "ez + ba + auxiliar"
+                                                },
+                                                {
+                                                    id: "cond_clon_2",
+                                                    pregunta: "Traduce la condición hipotética de 'Izan' (Si hubieras...):",
+                                                    tipo: "input",
+                                                    frase: "Ikasi izan ___zenu, aprobatuko zenuen.",
+                                                    correcta: "ba",
+                                                    ayuda: "Izan + ba + zenu"
+                                                },
+                                                {
+                                                    id: "cond_clon_3",
+                                                    pregunta: "Ordena la frase de la película con énfasis:",
+                                                    tipo: "sort",
+                                                    fraseCorrecta: "Baldin eta gaur ez baduzu pelikula ikusten",
+                                                    ayuda: "Baldin eta + gaur + ez baduzu..."
+                                                }
+                                            ]
+                                        ]
+                                    },
+                                    {
+                                        id: "adv-condicionales-clon-2",
+                                        titulo: "📄 Condicionales: Estructura -z gero",
+                                        texto: `
+        <p>Esta estructura también se usa para construir oraciones subordinadas condicionales. Para ello, se añade <b>"-z gero"</b> al participio verbal de la condicional y sólo se usa para oraciones afirmativas.</p>
+        
+        <div class="bloque-subordinadas">
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Dependiendo del dialecto en vez de -z gero se usa ezketino, o -z gerotan.', event)">Variantes dialectales</span></p>
+        </div>
+
+        <p>Como se trata de una forma que va con el verbo sin conjugar, éste no indica ni persona ni tiempo verbales concretos, por lo que se puede utilizar del mismo modo en los tres tipos diferentes de condicionales:</p>
+
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Si tú vives de una forma saludable, vivirás más tiempo. (Zu era osasungarrian bizitzen bazara...)')">Zu era osasungarrian <b>biziz gero</b>, denbora gehiago biziko zara.</span></p>
+            
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Si él viviera de forma saludable, viviría más tiempo. (Bera era osasungarrian biziko balitz...)')">Bera era osasungarrian <b>biziz gero</b>, denbora gehiago biziko litzateke.</span></p>
+            
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Si hubiera vivido de forma saludable, habría vivido más tiempo. (Bera era osasungarrian bizi izan balitz...)')">Bera era osasungarrian <b>biziz gero</b>, denbora gehiago biziko zen.</span></p>
+        </div>
+
+        <h3>Particularidades fonéticas</h3>
+        <p>Cuando el participio del verbo de la subordinada condicional acaba en consonante, se añade <b>"-ez gero"</b>:</p>
+        
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Si estás largo tiempo tumbada al sol, vas a coger dolor de cabeza.')">Denbora luzean eguzkitan etzanda <b>egonez gero</b>, buruko mina hartuko duzu.</span></p>
+        </div>
+
+        <p>A veces, a esta estructura se añade <b>"behin"</b> al inicio de la frase condicional:</p>
+
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Si lo haces, hazlo bien. (Una vez que se hace, hacerlo bien).')"><b>Behin eginez gero</b>, ondo egin.</span></p>
+        </div>
+
+        [BATERIA:0]
+    `,
+                                        ejercicios: [
+                                            [
+                                                {
+                                                    id: "cond_zgero_1",
+                                                    pregunta: "Completa con la forma adecuada (vocal): 'Si vives...'",
+                                                    tipo: "input",
+                                                    frase: "Era osasungarrian bizi___ gero, ondo egongo zara.",
+                                                    correcta: "z",
+                                                    ayuda: "Bizi termina en vocal."
+                                                },
+                                                {
+                                                    id: "cond_zgero_2",
+                                                    pregunta: "Completa con la forma adecuada (consonante): 'Si estás...'",
+                                                    tipo: "input",
+                                                    frase: "Etzanda egon___ gero...",
+                                                    correcta: "ez",
+                                                    ayuda: "Egon termina en consonante (n)."
+                                                },
+                                                {
+                                                    id: "cond_zgero_3",
+                                                    pregunta: "Ordena la expresión de 'hacerlo bien':",
+                                                    tipo: "sort",
+                                                    fraseCorrecta: "Behin eginez gero ondo egin",
+                                                    ayuda: "Behin (una vez) + eginez gero (hecho) + ondo egin (hazlo bien)"
+                                                }
+                                            ]
+                                        ]
+                                    },
+                                    {
+                                        id: "adv-condicionales-clon-3",
+                                        titulo: "📄 Condicionales: Ezik / Ezean",
+                                        texto: `
+        <p>Estos dos términos también se añaden al participio verbal para construir oraciones subordinadas condicionales, igual que con <b>"-z gero"</b>. Pero mientras que "-z gero" se usa para formar condicionales afirmativas, <b>"ezik"</b> y <b>"ezean"</b> se usan para formar condicionales negativas:</p>
+        
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Si no te cuidas tú mismo, nadie te va a cuidar. (A no ser que te cuides...)')">Zeure burua zaindu <b>ezik</b>, inork ez zaitu zainduko.</span></p>
+            
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Si no lees el libro, no entenderás la película. (A no ser que leas...)')">Liburua irakurri <b>ezean</b>, ez duzu pelikula ulertuko.</span></p>
+        </div>
+
+        <p>A veces se quita el verbo para construir expresiones del siguiente tipo:</p>
+
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Si no hay otra cosa, trabajaré en el bar. (A falta de otra cosa...)')">Besterik <b>ezean</b>, tabernan lan egingo dut.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'A falta de agua, beberemos vino.')">Urik <b>ezean</b>, ardoa edango dugu.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'A falta de pan, comeremos tortas.')">Ogirik <b>ezean</b>, opilak jango ditugu.</span></p>
+        </div>
+
+        <h3>El caso de "Izan ezik"</h3>
+        <p>Igual que con los demás verbos, con "izan" el uso de "ezik" y "ezean" se realiza del mismo modo:</p>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, '¿Quién es esa? Si no es Miren, será Ane.')">Nor da hori? Miren <b>izan ezik</b>, Ane izango da.</span></p>
+        </div>
+
+        <p>Lo que ha ocurrido con "izan ezik", es que con el tiempo ha pasado a significar <b>"excepto"</b>:</p>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Excepto tú, todos los demás fuera de aquí.')">Zu <b>izan ezik</b>, gainerako guztiak alde hemendik.</span></p>
+        </div>
+
+        <div class="bloque-subordinadas">
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Fijarse en que el sintagma que va antes de izan ezik toma la marca que le corresponde para ir en concordancia con la oración principal.', event)">Nota sobre concordancia</span></p>
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Esto es así excepto con el caso nork o ergativo, con el que se puede usar el caso nor. Ej: Zu izan ezik / zuk izan ezik.', event)">Excepción del caso Nork</span></p>
+        </div>
+
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Excepto por aquí, podéis ir por el sitio que queráis.')">Hemendik <b>izan ezik</b>, nahi duzun lekutik joan zaitezkete.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Excepto tú, no lo entiende nadie.')">Zu <b>izan ezik / zuk izan ezik</b>, ez du inork ulertzen.</span></p>
+        </div>
+
+        [BATERIA:0]
+    `,
+                                        ejercicios: [
+                                            [
+                                                {
+                                                    id: "cond_ezik_1",
+                                                    pregunta: "Completa la condición negativa: 'Si no lees...'",
+                                                    tipo: "input",
+                                                    frase: "Liburua irakurri ___ , ez duzu ulertuko.",
+                                                    correcta: "ezean",
+                                                    ayuda: "Usa ezean o ezik."
+                                                },
+                                                {
+                                                    id: "cond_ezik_2",
+                                                    pregunta: "Traduce 'A falta de pan':",
+                                                    tipo: "input",
+                                                    frase: "Ogirik ___ , opilak jango ditugu.",
+                                                    correcta: "ezean",
+                                                    ayuda: "Expresión: [Sustantivo] + ezean."
+                                                },
+                                                {
+                                                    id: "cond_ezik_3",
+                                                    pregunta: "Ordena: 'Excepto por aquí...'",
+                                                    tipo: "sort",
+                                                    fraseCorrecta: "Hemendik izan ezik nahi duzun lekutik",
+                                                    ayuda: "Hemendik (por aquí) + izan ezik (excepto)"
+                                                }
+                                            ]
+                                        ]
+                                    },
+                                    {
+                                        id: "adv-condicionales-clon-4",
+                                        titulo: "📄 Condicionales: Estructura -t(z)ekotan",
+                                        texto: `
+        <p>Esta forma también se usa para construir oraciones condicionales con el verbo sin conjugar. Pero esta forma, además de indicar una condición, tiene un significado añadido de <b>"intención de elegir una opción"</b>, estando implícita la opción contraria:</p>
+        
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'De hacerlo yo, lo haría así; de otra forma, no lo haría.')">Neuk <b>egitekotan</b>, honela egingo nuke; bestela, ez nuke egingo.</span></p>
+        </div>
+
+        <p>Cuando la condicional es negativa, se pone <b>"ez"</b> antes del verbo sin conjugar:</p>
+
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Creo que tienes que pintar la pared de color claro; de no hacerlo así, el salón quedará demasiado oscuro.')">Horma kolore argiaz margotu behar duzula uste dut; horrela <b>ez egitekotan</b>, egongela ilun gehiegi geratuko da.</span></p>
+        </div>
+
+        <div class="bloque-subordinadas">
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Según el dialecto, se pueden usar otras formas derivadas de esta como -t(z)ekoz, t(z)ez gero, o t(z)ez gerotan.', event)">Variantes dialectales</span></p>
+        </div>
+
+        [BATERIA:0]
+    `,
+                                        ejercicios: [
+                                            [
+                                                {
+                                                    id: "cond_tekotan_1",
+                                                    pregunta: "Completa la intención (EGIN): 'De hacerlo yo...'",
+                                                    tipo: "input",
+                                                    frase: "Neuk egi___ , honela egingo nuke.",
+                                                    correcta: "tekotan",
+                                                    ayuda: "Egin termina en consonante, añadimos -tekotan."
+                                                },
+                                                {
+                                                    id: "cond_tekotan_2",
+                                                    pregunta: "Traduce la negación: 'De no hacerlo así...'",
+                                                    tipo: "input",
+                                                    frase: "Horrela ___ egitekotan, ilun geratuko da.",
+                                                    correcta: "ez",
+                                                    ayuda: "La negación se pone antes del verbo."
+                                                },
+                                                {
+                                                    id: "cond_tekotan_3",
+                                                    pregunta: "Ordena la frase de la pared:",
+                                                    tipo: "sort",
+                                                    fraseCorrecta: "Horrela ez egitekotan egongela ilun geratuko da",
+                                                    ayuda: "De no hacerlo así (Horrela ez egitekotan) + el salón (egongela) + quedará oscuro (ilun geratuko da)."
+                                                }
+                                            ]
+                                        ]
+                                    },
+                                    {
+                                        id: "adv-condicionales-clon-5",
+                                        titulo: "📄 Condicionales: Expresiones Especiales",
+                                        texto: `
+        <h3>Expresiones con significado condicional:</h3>
+
+        <p><b>• Hobe izan ba- ...</b></p>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Sería mejor si estuvieras callado.')">Hobe zenuke isilik egongo <b>bazina</b>.</span></p>
+        </div>
+
+        <div class="bloque-subordinadas">
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Fijarse en que hobe va con la forma nor - nork del verbo izan.', event)">Nota sobre Hobe</span></p>
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'También se puede usar con el verbo de la subordinada condicional en forma nominalizada. Ej: Hobe zenuke zu isilik egotea.', event)">Variante nominalizada</span></p>
+        </div>
+
+        <p><b>• Nahiago / gurago izan ba- ...</b></p>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Habría preferido si tu hermana no hubiese venido.')">Nahiago nukeen zure ahizpa etorri izan ez <b>balitz</b>.</span></p>
+        </div>
+
+        <div class="bloque-subordinadas">
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Recordar que cuando el sujeto es el mismo en las dos oraciones, en la principal y en la subordinada, el verbo de la subordinada condicional se pone en participio.', event)">Nota sobre mismo sujeto</span></p>
+        </div>
+
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Yo habría preferido no ir.')">Neuk ez joan nahiago nukeen.</span></p>
+        </div>
+
+        <p><b>• -t(z)era:</b></p>
+        <p>Esta nominalización de la subordinada condicional se usa para construir condicionales hipotéticas en pasado (alegiazko baldintzak iraganekoan):</p>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'De haber sabido que Koldo estaba allí, yo no habría ido.')">Koldo han zegoela jaki<b>tera</b>, ni ez nintzatekeen joango.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Si hubiera sabido que Koldo estaba allí, yo no habría ido.')">Koldo han zegoela jakin izan <b>banu</b>, ni ez nintzatekeen joango.</span></p>
+        </div>
+
+        [BATERIA:0]
+    `,
+                                        ejercicios: [
+                                            [
+                                                {
+                                                    id: "cond_esp_1",
+                                                    pregunta: "Completa la expresión: 'Sería mejor si...'",
+                                                    tipo: "input",
+                                                    frase: "Hobe zenuke isilik egongo ba___.",
+                                                    correcta: "zina",
+                                                    ayuda: "Usa la forma condicional de 'izan' para 'zu' (bazina)."
+                                                },
+                                                {
+                                                    id: "cond_esp_2",
+                                                    pregunta: "Traduce la forma nominalizada: 'De haber sabido...'",
+                                                    tipo: "input",
+                                                    frase: "Koldo han zegoela jaki___...",
+                                                    correcta: "tera",
+                                                    ayuda: "Jakin termina en consonante (n), usamos -tera."
+                                                },
+                                                {
+                                                    id: "cond_esp_3",
+                                                    pregunta: "Ordena: 'Habría preferido no ir'",
+                                                    tipo: "sort",
+                                                    fraseCorrecta: "Neuk ez joan nahiago nukeen",
+                                                    ayuda: "Sujeto + ez + participio + nahiago nukeen."
+                                                }
+                                            ]
+                                        ]
+                                    },
+                                    {
+                                        id: "adv-condicionales-clon-6",
+                                        titulo: "📄 Condicionales: Conectores y Nexos",
+                                        texto: `
+        <p>Se trata del uso de conectores disyuntivos (<b>lokailu hautakariak</b>) para construir oraciones subordinadas condicionales.</p>
+        <p>Estos conectores disyuntivos expresan una elección (<i>hautaketa edo aukeraketa</i>) y se pueden traducir por las conjunciones disyuntivas <b>"o"</b> y <b>"u"</b>.</p>
+
+        <p><b>• Bestela / bertzenaz / bestenaz:</b></p>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Ven aquí, si no verás lo que es bueno.')">Etorri ona; <b>bestela</b>, ikusiko duzu zer den ona.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Dámelo, de lo contrario sabrás lo que es bueno.')">Emaidazu; <b>bestenaz</b>, jakingo duzu zer den ona.</span></p>
+        </div>
+
+        <p><b>• Osterantzean:</b></p>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Espero que nos ayude, de no ser así no lo conseguiremos.')">Lagun diezagun espero dut; <b>osterantzean</b>, ez dugu lortuko.</span></p>
+        </div>
+
+        <p><b>• Ezpabere:</b></p>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Ve rápido, de lo contrario se va a enfadar.')">Joan azkar; <b>ezpabere</b>, haserretuko da.</span></p>
+        </div>
+        <div class="bloque-subordinadas">
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Procede de ez bada ere y se usa sobre todo en dialecto vizcaíno.', event)">Nota sobre Ezpabere</span></p>
+        </div>
+
+        <p><b>• Ezpere:</b></p>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Hazlo bien, si no lo harás de nuevo.')">Ondo egin; <b>ezpere</b>, berriro egingo duzu.</span></p>
+        </div>
+
+        [BATERIA:0]
+    `,
+                                        ejercicios: [
+                                            [
+                                                {
+                                                    id: "cond_lok_1",
+                                                    pregunta: "Completa el conector: 'Ven aquí, si no...'",
+                                                    tipo: "input",
+                                                    frase: "Etorri ona; ___ , ikusiko duzu.",
+                                                    correcta: "bestela",
+                                                    ayuda: "Es el conector más común para 'si no'."
+                                                },
+                                                {
+                                                    id: "cond_lok_2",
+                                                    pregunta: "¿Qué significa 'ezpabere'?",
+                                                    tipo: "choice",
+                                                    frase: "Se traduce por ___ ",
+                                                    opciones: ["De lo contrario", "Además", "Porque"],
+                                                    correcta: "De lo contrario",
+                                                    ayuda: "Procede de 'ez bada ere'."
+                                                },
+                                                {
+                                                    id: "cond_lok_3",
+                                                    pregunta: "Ordena la frase de la ayuda:",
+                                                    tipo: "sort",
+                                                    fraseCorrecta: "Lagun diezagun espero dut osterantzean ez dugu lortuko",
+                                                    ayuda: "Espero que nos ayude (Lagun diezagun espero dut) + de lo contrario (osterantzean)..."
+                                                }
+                                            ]
+                                        ]
+                                    }
+
+                                ]//📄
+                            },
+                            { id: "adv-consecutivas", titulo: "📁 Consecutivas (Ondoriozkoak)", hijos: [] },
+                            { id: "adv-comparativas", titulo: "📁 Comparativas (Konparaziozkoak)", hijos: [] }
                         ]
                     },
+
+
 
 
                 ]
