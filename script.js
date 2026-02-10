@@ -222,11 +222,10 @@ function loadTema(id) {
     localStorage.setItem('ultimoTemaVisitado', id);
     let htmlFinal = tema.texto || "";
 
-    // Buscamos si hay baterías grupales
+    // 1. Lógica de Baterías Grupales (Post-its)
     if (tema.ejercicios && Array.isArray(tema.ejercicios[0])) {
         tema.ejercicios.forEach((grupo, gIdx) => {
             const marcador = `[BATERIA:${gIdx}]`;
-            // Usamos el primer ejercicio del grupo para el título del Post-it
             const primerEx = grupo[0];
             const btnHTML = `
                 <button class="post-it" onclick="openEx('${tema.id}', ${gIdx})" 
@@ -237,18 +236,50 @@ function loadTema(id) {
         });
     }
 
+    // 2. Generación de Navegación "Anterior / Siguiente"
     const temasPlanos = obtenerListaPlana();
     const idxActual = temasPlanos.findIndex(t => t.id === id);
+    
     let navHtml = `<div class="nav-pagination">`;
-    if (idxActual > 0) navHtml += `<button class="btn-nav" onclick="loadTema('${temasPlanos[idxActual - 1].id}')">⬅ ${temasPlanos[idxActual - 1].titulo}</button>`;
-    else navHtml += `<span></span>`;
-    if (idxActual < temasPlanos.length - 1) navHtml += `<button class="btn-nav" onclick="loadTema('${temasPlanos[idxActual + 1].id}')">${temasPlanos[idxActual + 1].titulo} ➡</button>`;
+    
+    // Botón AURREKOA (Anterior)
+    if (idxActual > 0) {
+        const prev = temasPlanos[idxActual - 1];
+        navHtml += `
+            <button class="btn-nav" onclick="loadTema('${prev.id}')">
+                <span class="nav-label">⬅ AURREKOA</span>
+                <span class="nav-title">${prev.titulo}</span>
+            </button>`;
+    } else {
+        navHtml += `<span></span>`; // Espacio vacío para mantener el equilibrio en PC
+    }
+
+    // Botón HURRENGOA (Siguiente)
+    if (idxActual < temasPlanos.length - 1) {
+        const next = temasPlanos[idxActual + 1];
+        navHtml += `
+            <button class="btn-nav" onclick="loadTema('${next.id}')">
+                <span class="nav-label">HURRENGOA ➡</span>
+                <span class="nav-title">${next.titulo}</span>
+            </button>`;
+    }
+
     navHtml += `</div>`;
 
-    document.getElementById('page-content').innerHTML = `<h1>${tema.titulo}</h1><div>${htmlFinal}</div>${navHtml}`;
+    // 3. Renderizado final en el DOM
+    document.getElementById('page-content').innerHTML = `
+        <h1>${tema.titulo}</h1>
+        <div class="tema-texto-cuerpo">${htmlFinal}</div>
+        ${navHtml}
+    `;
+
+    // Reset de scroll y refresco del índice
     document.getElementById('notebook').scrollTop = 0;
-    renderIndice(document.getElementById('search-bar') ? document.getElementById('search-bar').value : "");
+    if (document.getElementById('search-bar')) {
+        renderIndice(document.getElementById('search-bar').value);
+    }
 }
+
 
 async function playSound(type) {
     try {
@@ -303,7 +334,7 @@ function validar(esCorrecto, elementoResaltar = null) {
             msg.innerText = "✨ Oso ondo!";
             msg.style.color = "var(--success)";
         }
-        
+
         // 2. Resaltar el texto (si existe live-text)
         if (elementoResaltar) {
             elementoResaltar.style.color = "var(--success)";
@@ -313,7 +344,7 @@ function validar(esCorrecto, elementoResaltar = null) {
         // 3. BLOQUEO: Bloqueamos el CUERPO del ejercicio, pero NO el botón
         // Así el usuario no puede cambiar su respuesta pero sí puede dar a "Siguiente"
         if (body) body.classList.add('bloqueado');
-        
+
         playSound('success');
         prepararSiguiente(); // Esto cambia el texto del botón y su función
     } else {
@@ -404,7 +435,7 @@ function renderDrag(ex, container) {
         wrap.onclick = () => {
             if (selectedToken) {
                 document.getElementById(`box-${cat}`).appendChild(selectedToken);
-                limpiarSeleccionYDestinos(); 
+                limpiarSeleccionYDestinos();
                 playSound('tick');
             }
         };
@@ -412,13 +443,13 @@ function renderDrag(ex, container) {
     });
 
     const pool = document.createElement('div'); pool.id = 'pool'; pool.className = 'pool-zone';
-    pool.onclick = () => { 
-        if (selectedToken) { 
-            pool.appendChild(selectedToken); 
-            limpiarSeleccionYDestinos(); 
-        } 
+    pool.onclick = () => {
+        if (selectedToken) {
+            pool.appendChild(selectedToken);
+            limpiarSeleccionYDestinos();
+        }
     };
-    
+
     container.appendChild(grid);
     container.appendChild(pool);
 
@@ -453,22 +484,22 @@ function renderDrag(ex, container) {
     document.getElementById('btn-main-action').onclick = () => {
         const tokens = document.querySelectorAll('.token');
         let err = 0, pend = 0;
-        
+
         tokens.forEach(t => {
             const pid = t.parentElement.id;
-            if (pid === 'pool') { 
-                if (t.dataset.cat !== "") pend++; 
-            } else if (pid !== `box-${t.dataset.cat}`) { 
-                err++; 
-                t.classList.add('token-error'); 
-            } else { 
-                t.classList.add('token-success'); 
-                t.classList.remove('token-error'); 
+            if (pid === 'pool') {
+                if (t.dataset.cat !== "") pend++;
+            } else if (pid !== `box-${t.dataset.cat}`) {
+                err++;
+                t.classList.add('token-error');
+            } else {
+                t.classList.add('token-success');
+                t.classList.remove('token-error');
             }
         });
 
         const msg = document.getElementById('ex-message');
-        if (pend > 0) { 
+        if (pend > 0) {
             if (msg) { msg.innerText = "⚠️ Pieza falta"; msg.style.color = "orange"; }
             return;
         }
@@ -493,7 +524,7 @@ function limpiarSeleccionYDestinos() {
 
     // 3. ¡LIMPIAMOS EL MENSAJE! (Haciéndolo aquí, ahorras líneas en los onclick)
     const msg = document.getElementById('ex-message');
-    if (msg) msg.innerText = ""; 
+    if (msg) msg.innerText = "";
 }
 function renderChoice(ex, container) {
     const area = document.createElement('div');
@@ -521,7 +552,7 @@ function renderChoice(ex, container) {
         btn.onclick = () => {
             // Limpieza de mensajes de error al cambiar de opción
             const msg = document.getElementById('ex-message');
-            if (msg) msg.innerText = ""; 
+            if (msg) msg.innerText = "";
 
             optGrid.querySelectorAll('.token').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
@@ -540,7 +571,7 @@ function renderChoice(ex, container) {
     // 2. VALIDACIÓN: Delegamos en la función centralizada
     document.getElementById('btn-main-action').onclick = () => {
         const msg = document.getElementById('ex-message');
-        
+
         // Verificación previa si no han elegido nada
         if (!selectedTokenLocal) {
             if (msg) { msg.innerText = "Hautatu aukera bat"; msg.style.color = "orange"; }
@@ -553,9 +584,9 @@ function renderChoice(ex, container) {
 }
 
 function renderInput(ex, container) {
-    const area = document.createElement('div'); 
+    const area = document.createElement('div');
     area.style = "text-align:center; padding:20px; flex-grow:1; display:flex; flex-direction:column; justify-content:center;";
-    
+
     // Regex para detectar la palabra pegada a los guiones y crear el efecto lápiz
     const fraseProc = ex.frase.replace(/(\S*)___/, (match, p1) => {
         return `<span class="palabra-con-sufijo">${p1}<span id="live-text" class="lapiz-sufijo" style="background:rgba(0,0,0,0.08); padding:0 2px; border-radius:3px; min-width:1.5rem; display:inline;">___</span></span>`;
@@ -563,27 +594,40 @@ function renderInput(ex, container) {
 
     area.innerHTML = `
         <p style="font-size:1.5rem; margin-bottom:30px; line-height:1.4;">${fraseProc}</p>
-        <input type="text" id="hidden-input" style="position:absolute; opacity:0; pointer-events:none;" autocomplete="off">
+        <input type="text" id="hidden-input" enterkeyhint="done" style="position:absolute; opacity:0; pointer-events:none;" autocomplete="off">
     `;
     container.appendChild(area);
 
-    const input = document.getElementById('hidden-input'); 
-    
-    // Autofocus para que el teclado salga solo
-    setTimeout(() => input.focus(), 100);
-    container.onclick = () => input.focus(); 
+    const input = document.getElementById('hidden-input');
 
-    input.oninput = () => { 
+    // Autofocus para que el teclado salga solo
+    setTimeout(() => {
+        input.focus();
+        // Forzamos que el contenedor del ejercicio se vea arriba del todo
+        area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+    container.onclick = () => input.focus();
+
+    input.oninput = () => {
         const msg = document.getElementById('ex-message');
         const live = document.getElementById('live-text'); // Búsqueda dinámica para evitar 'null'
-        
+
         if (msg) msg.innerText = ""; // Limpiamos mensaje de error al escribir
-        
+
         // Solo escribimos si el elemento existe en pantalla (protección null)
         if (live) {
-            live.innerText = input.value || "___"; 
+            live.innerText = input.value || "___";
             live.style.color = "var(--primary)";
             live.style.background = "rgba(0,0,0,0.08)";
+        }
+    };
+    // Detectar la tecla "Enter" (Intro/Ir en el móvil)
+    input.onkeydown = (e) => {
+        if (e.key === 'Enter') {
+            // Quitamos el foco para que el teclado se esconda solo
+            input.blur();
+            // Disparamos el clic del botón de corregir
+            document.getElementById('btn-main-action').click();
         }
     };
 
@@ -591,7 +635,7 @@ function renderInput(ex, container) {
     document.getElementById('btn-main-action').onclick = () => {
         const respuesta = input.value.trim().toLowerCase();
         const esCorrecto = respuesta === ex.correcta.toLowerCase();
-        
+
         // Llamamos a la función validar
         validar(esCorrecto, document.getElementById('live-text'));
     };
@@ -620,7 +664,7 @@ function renderSort(ex, container) {
         token.onclick = () => {
             // 1. Limpiamos el mensaje de error al mover cualquier palabra
             const msg = document.getElementById('ex-message');
-            if (msg) msg.innerText = ""; 
+            if (msg) msg.innerText = "";
 
             // 2. Lógica de movimiento
             if (token.parentElement === opciones) carril.appendChild(token);
@@ -636,7 +680,7 @@ function renderSort(ex, container) {
     // 3. VALIDACIÓN: Delegamos en la función centralizada
     document.getElementById('btn-main-action').onclick = () => {
         const respuesta = Array.from(carril.children).map(t => t.innerText).join(" ");
-        
+
         // Llamamos a validar. Ella se encarga del mensaje, el sonido y el bloqueo.
         validar(respuesta === ex.fraseCorrecta);
     };
