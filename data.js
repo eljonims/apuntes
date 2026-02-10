@@ -256,7 +256,7 @@ const libroData = [
                             [ // BATERIA 0
                                 {
                                     id: "rep_la_completo",
-                                    pregunta: "Completa con el nexo de enumeración: 'Erosketak dire___'",
+                                    pregunta: "Completa con el nexo de enumeración:",
                                     tipo: "input",
                                     frase: "Etxea dela, lana dela, erosketak dire___",
                                     correcta: "la",
@@ -267,7 +267,7 @@ const libroData = [
                                     pregunta: "¿Cómo se dice 'tanto de día como de noche'?",
                                     tipo: "sort",
                                     fraseCorrecta: "Nahiz egunez nahiz gauez",
-                                    ayuda: "Nahiz + A + Nahiz + B"
+                                    ayuda: "Nahiz + A + nahiz + B (fíjate bien: una está en mayúscula)"
                                 }
                             ],
                             [ // BATERIA 1
@@ -275,15 +275,15 @@ const libroData = [
                                     id: "rep_nola_hala",
                                     pregunta: "Completa la comparación: Tanto hombre como mujer",
                                     tipo: "input",
-                                    frase: "___ gizon ___ emakume",
-                                    correcta: "nola hala",
+                                    frase: "Nola gizon ___ emakume.",
+                                    correcta: "hala",
                                     ayuda: "Usa: nola... hala..."
                                 },
                                 {
                                     id: "rep_nor_choice",
                                     pregunta: "Si unos vienen en coche y otros a pie:",
                                     tipo: "choice",
-                                    frase: "___ oinez, ___ autoz... ",
+                                    frase: "___ oinez, nor autoz... ",
                                     opciones: ["Nor", "Edo", "Baina"],
                                     correcta: "Nor"
                                 }
@@ -604,7 +604,7 @@ const libroData = [
                                     id: "prac_bata_choice",
                                     pregunta: "Uno es alto, el otro pequeño:",
                                     tipo: "choice",
-                                    frase: "___ oso altua da; ___ ordea, txiki-txikia.",
+                                    frase: "[ --- ] oso altua da; [ --- ] ordea, txiki-txikia. ( ___ )",
                                     opciones: ["Bata / bestea", "Batetik / bestetik", "Bai / bai"],
                                     correcta: "Bata / bestea",
                                     ayuda: "Usamos el artículo (a) para contrastar sujetos concretos."
