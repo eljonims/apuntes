@@ -316,17 +316,26 @@ body {
 /* Estilo Base: Cuando está expandida (A) */
 .caja-gramatical {
     display: inline-block;
-    /* ¡ESTA ES LA CLAVE! */
-    transition: transform 0.3s ease;
-    /* Para que el encogido sea suave */
-    vertical-align: middle;
-    padding: 2px 4px;
-    border-radius: 4px;
-    transition: all 0.5s ease;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 1.1rem; /* Aumentamos el tamaño base */
+    line-height: 1.4;  /* Mejoramos el espacio entre líneas */
     cursor: pointer;
-    font-family: 'Gochi Hand', cursive;
-    border: 1px dashed #e76f51;
+    transition: all 0.2s ease;
+    margin: 2px 0;
+    font-weight: 500;
 }
+
+/* 📱 Optimización específica para MÓVIL */
+@media (max-width: 600px) {
+    .caja-gramatical {
+        font-size: 1.2rem; /* Todavía un poco más grande en móviles */
+        padding: 8px 12px;  /* Más área de toque */
+        display: block;    /* En móvil, que ocupen su propia línea si son largas */
+        text-align: center;
+    }
+}
+
 
 /* Colores por tipo (A) */
 .caja-adj {
