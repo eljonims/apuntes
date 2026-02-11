@@ -30,7 +30,7 @@ const libroData = [
                     ]
                 ]
             },
-            {
+            {//📄 yuxtaposición
                 id: "compuestas-yuxtaposicion",
                 titulo: "📄 2. Yuxtaposición (Alborakuntza)",
                 texto: `
@@ -74,7 +74,7 @@ const libroData = [
                     ]
                 ]
             },
-            {
+            {//📄 coordinación
                 id: "compuestas-coordinacion",
                 titulo: "📄 3. Coordinación (Juntadura)",
                 texto: `
@@ -106,7 +106,7 @@ const libroData = [
                     ]
                 ]
             },
-            {
+            {//📄 subordinación
                 id: "compuestas-subordinacion",
                 titulo: "📄 4. Subordinación (Menderakuntza)",
                 texto: `
@@ -143,7 +143,7 @@ const libroData = [
                     ]
                 ]
             },
-            {
+            {//📄 subordinadas mapa
                 id: "subordinadas-mapa-general",
                 titulo: "📄 5. Mapa de las Subordinadas",
                 texto: `
@@ -173,7 +173,7 @@ const libroData = [
                     ]
                 ]
             },
-            {
+            {//📄 nexos gramaticales
                 id: "los-nexos-gramaticales",
                 titulo: "📄 6. Nexos, Lokailuak y Antolatzaileak",
                 texto: `
@@ -202,7 +202,7 @@ const libroData = [
                     ]
                 ]
             },
-            {
+            {//📁 Oraciones yuxtapuestas
                 id: "oraciones-yuxtapuestas",
                 titulo: "📁 Oraciones yuxtapuestas",
                 hijos: [
@@ -623,7 +623,7 @@ const libroData = [
 
                 ]
             },
-            {
+            {//📁 Oraciones coordinadas
                 id: "oraciones-coordinadas",
                 titulo: "📁 Oraciones coordinadas",
                 hijos: [
@@ -950,7 +950,7 @@ const libroData = [
                     }
                 ]
             },
-            {
+            {//📁 Oraciones subordinadas
                 id: "oraciones-subordinadas",
                 titulo: "📁 Oraciones subordinadas",
                 hijos: [
@@ -2210,7 +2210,433 @@ const libroData = [
                                 ]
                             },
                             { id: "adv-causales", titulo: "📁 Causales (Kausazkoak)", hijos: [] },
-                            { id: "adv-concesivas", titulo: "📁 Concesivas (Kontzesiboak)", hijos: [] },
+                            {//concesivas
+                                id: "adv-concesivas",
+                                titulo: "📁 Concesivas (Kontzesiboak)",
+                                hijos: [
+                                    {
+                                        id: "adv-concesivas-clon-1",
+                                        titulo: "📄 Oraciones concesivas I",
+                                        texto: `
+        <p><b>Aunque, a pesar de...</b></p>
+        <p>Las oraciones subordinadas concesivas indican un obstáculo o impedimento (<i>oztopo, eragozpena</i>) para que se lleve a cabo la acción de la oración principal. Aunque este impedimento no es suficiente para que la acción principal no se lleve a cabo.</p>
+
+        <h3>Arren</h3>
+        <p>Se puede usar con el verbo de la oración subordinada concesiva conjugado, o con el verbo sin conjugar.</p>
+
+        <div class="bloque-subordinadas">
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Si se usa con el verbo sin conjugar se utilizará el participio seguido de arren: [verbo participio] + arren.', event)">Verbo sin conjugar</span></p>
+        </div>
+
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque haga mucho frío, saldremos por la tarde.')">Hotz handia egin <b>arren</b>, arratsaldean kaleratuko gara.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque tú vayas, él estará allí.')">Zu joan <b>arren</b>, bera han egongo da.</span></p>
+        </div>
+
+        <div class="bloque-subordinadas">
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Si se usa conjugado, se pone el sufijo -(e)n en el auxiliar (perifrástico) o en el propio verbo (sintético), seguido de arren.', event)">Verbo conjugado</span></p>
+        </div>
+
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque haga mucho frío, saldremos a la tarde.')">Hotz handia egiten dezan <b>arren</b>, arratsaldean kaleratuko gara.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque tú vayas, él estará allí.')">Zu zoazen <b>arren</b>, bera han egongo da.</span></p>
+        </div>
+
+        <h3>Negación en las concesivas</h3>
+        <p>En caso de que la subordinada concesiva sea negativa, se pone la partícula de negación <b>"ez"</b> antes de "arren":</p>
+
+        <div class="bloque-ejemplos">
+            <p><i>Con verbo sin conjugar:</i></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque no haga buen tiempo, saldremos por la tarde.')">Eguraldi ona izan <b>ez arren</b>, arratsaldean kaleratuko gara.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque tú no vayas, él estará allí.')">Zu joan <b>ez arren</b>, bera han egongo da.</span></p>
+            <br>
+            <p><i>Con verbo conjugado:</i></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque no haga buen tiempo, saldremos por la tarde.')">Eguraldi ona izango dezan <b>ez arren</b>, arratsaldean kaleratuko gara.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque no vayas (tú), él estará allí.')">Zu zoazen <b>ez arren</b>, bera han egongo da.</span></p>
+        </div>
+
+        <div class="bloque-subordinadas">
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'También se puede usar colocando ez antes del verbo, pero lo más frecuente es ponerla antes de arren. Ej: Kaleratu ez arren.', event)">Nota sobre la posición de "ez"</span></p>
+        </div>
+
+        <h3>Versatilidad del participio</h3>
+        <p>La forma más usada es la que utiliza el verbo sin conjugar (participio), ya que puede indicar cualquier tiempo, persona o incluso subjuntivo según el contexto:</p>
+
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'A pesar de que la he presentado fuera de tiempo, me han cogido la matrícula.')">Garaiz kanpo aurkeztu <b>arren</b>, matrikula hartu didate.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque la presenté fuera de tiempo, me cogieron la matrícula.')">Garaiz kanpo aurkeztu <b>arren</b>, matrikula hartu zidaten.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque la presentaré fuera de tiempo, me cogerán la matrícula.')">Garaiz kanpo aurkeztu <b>arren</b>, matrikula hartuko didate.</span></p>
+        </div>
+
+        <h3>Otros ejemplos y Énfasis</h3>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque haga/he hecho mal el examen, aprobaré la asignatura.')">Azterketa txarto egin <b>arren</b>, irakasgaia aprobatuko dut.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque está enfermo, él irá a trabajar.')">Gaixorik dagoen <b>arren</b>, bera lanera joango da.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque se lo explicado una y mil veces, no lo entiende.')">Mila aldiz azaldu diodan <b>arren</b>, ez du ulertzen.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque haga mucho frío (énfasis), saldremos por la tarde.')">Hotz handia egin <b>arren ere</b>, arratsaldean kaleratuko gara.</span></p>
+        </div>
+
+        [BATERIA:0]
+    `,
+                                        ejercicios: [
+                                            [
+                                                {
+                                                    id: "conc_arren_1",
+                                                    pregunta: "Completa la concesiva con participio: 'Aunque haga frío...'",
+                                                    tipo: "input",
+                                                    frase: "Hotz handia egin ___ , kaleratuko gara.",
+                                                    correcta: "arren",
+                                                    ayuda: "Usa el nexo 'arren' después del participio."
+                                                },
+                                                {
+                                                    id: "conc_arren_2",
+                                                    pregunta: "Completa la negación más frecuente:",
+                                                    tipo: "input",
+                                                    frase: "Zu joan ___ arren, bera han egongo da.",
+                                                    correcta: "ez",
+                                                    ayuda: "La partícula negativa se suele poner justo antes de 'arren'."
+                                                },
+                                                {
+                                                    id: "conc_arren_3",
+                                                    pregunta: "Ordena la frase con énfasis (ere):",
+                                                    tipo: "sort",
+                                                    fraseCorrecta: "Hotz handia egin arren ere",
+                                                    ayuda: "Participio + arren + ere"
+                                                }
+                                            ]
+                                        ]
+                                    },
+                                    {
+                                        id: "adv-concesivas-clon-2",
+                                        titulo: "📄 Oraciones concesivas II",
+                                        texto: `
+        <h3>Nahiz eta</h3>
+        <p>Esta forma significa lo mismo que "arren", pero se coloca al <b>inicio</b> de la oración subordinada.</p>
+        <p>El verbo de la subordinada concesiva también puede ir conjugado o sin conjugar. La forma sin conjugar, con el participio verbal, es la que más frecuentemente se utiliza:</p>
+
+        <div class="bloque-subordinadas">
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Estructura: Nahiz eta ... (oración subordinada) ... + verbo en participio, + ... (oración principal).', event)">Uso del participio</span></p>
+        </div>
+
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque tú vayas, él estará allí.')"><b>Nahiz eta</b> zu joan, bera han egongo da.</span></p>
+        </div>
+
+        <h3>Negación con Nahiz eta</h3>
+        <p>En caso de que la subordinada concesiva sea negativa, se pone la partícula de negación <b>"ez"</b> al final de la oración subordinada:</p>
+        
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque no tiene trabajo, vive muy bien.')"><b>Nahiz eta</b> lanik eduki <b>ez</b>, oso ondo bizi da.</span></p>
+        </div>
+
+        <div class="bloque-subordinadas">
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'También se puede usar colocando ez antes del verbo, pero lo más frecuente es ponerla después. Ej: Nahiz eta kaleratu ez.', event)">Nota sobre la posición de "ez"</span></p>
+        </div>
+
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque no salga, se queda tranquila en casa.')"><b>Nahiz eta</b> kaleratu <b>ez</b>, lasai geratzen da etxean.</span></p>
+        </div>
+
+        <h3>Formas conjugadas</h3>
+        <p>Mediante las formas conjugadas se introducen tiempos y personas. Se añade el sufijo <b>"-(e)n"</b> al final del auxiliar o del verbo sintético:</p>
+
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque se lo he explicado una y mil veces, no lo entiende.')"><b>Nahiz eta</b> mila aldiz azaldu dio<b>dan</b>, ez du ulertzen.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque está enfermo, él irá a trabajar.')"><b>Nahiz eta</b> gaixorik dagoe<b>n</b>, bera lanera joango da.</span></p>
+        </div>
+
+        <p>En caso de negación con verbo conjugado, se pone <b>"ez"</b> antes del auxiliar o del verbo sintético:</p>
+
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque no haga buen tiempo (subjuntivo), saldremos por la tarde.')"><b>Nahiz eta</b> eguraldi ona izango <b>ez</b> dezan, arratsaldean kaleratuko gara.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque tú no vayas, él estará allí.')"><b>Nahiz eta</b> zu <b>ez</b> zoazen, bera han egongo da.</span></p>
+        </div>
+
+        <h3>Versatilidad del participio</h3>
+        <p>Como ya se ha dicho anteriormente, la forma más usada es la que utiliza el verbo sin conjugar (participio), ya que puede indicar cualquier tiempo, persona o subjuntivo:</p>
+
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'A pesar de que la he presentado fuera de tiempo, me han cogido la matrícula.')"><b>Nahiz eta</b> garaiz kanpo aurkeztu, matrikula hartu didate.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque la presenté fuera de tiempo, me cogieron la matrícula.')"><b>Nahiz eta</b> garaiz kanpo aurkeztu, matrikula hartu zidaten.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque la presentaré fuera de tiempo, me cogerán la matrícula.')"><b>Nahiz eta</b> garaiz kanpo aurkeztu, matrikula hartuko didate.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque la presente (subjuntivo) fuera de tiempo, me cogerán la matrícula.')"><b>Nahiz eta</b> garaiz kanpo aurkeztu, matrikula hartuko didate.</span></p>
+        </div>
+
+        <h3>Otros ejemplos y variantes</h3>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque haga/he hecho mal el examen, aprobaré la asignatura.')"><b>Nahiz eta</b> azterketa txarto egin, irakasgaia aprobatuko dut.</span></p>
+        </div>
+
+        <div class="bloque-subordinadas">
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Además de nahiz eta, se usan otras como nahiz ta, nahiz da, nahi ta, nahizik, o simplemente nahiz; todas ellas al inicio.', event)">Variantes de Nahiz eta</span></p>
+        </div>
+
+        [BATERIA:0]
+    `,
+                                        ejercicios: [
+                                            [
+                                                {
+                                                    id: "conc_nahiz_1",
+                                                    pregunta: "Completa la concesiva inicial: 'Aunque tú vayas...'",
+                                                    tipo: "input",
+                                                    frase: "___ eta zu joan, bera han egongo da.",
+                                                    correcta: "Nahiz",
+                                                    ayuda: "Es el nexo que se coloca al inicio. Comiénzalo en mayúsculas"
+                                                },
+                                                {
+                                                    id: "conc_nahiz_2",
+                                                    pregunta: "Completa la negación más frecuente con Nahiz eta:",
+                                                    tipo: "input",
+                                                    frase: "Nahiz eta lanik eduki ___ , oso ondo bizi da.",
+                                                    correcta: "ez",
+                                                    ayuda: "La partícula negativa se suele poner al final de la subordinada."
+                                                },
+                                                {
+                                                    id: "conc_nahiz_3",
+                                                    pregunta: "Ordena la variante con verbo conjugado:",
+                                                    tipo: "sort",
+                                                    fraseCorrecta: "Nahiz eta gaixorik dagoen lanera joango da",
+                                                    ayuda: "Nahiz eta + gaixorik dagoen (aunque esté enfermo) + resto"
+                                                }
+                                            ]
+                                        ]
+                                    },
+                                    {
+                                        id: "adv-concesivas-clon-3",
+                                        titulo: "📄 Oraciones concesivas III",
+                                        texto: `
+        <h3>Ba- ... ere</h3>
+        <p>Esta estructura también se usa para formar oraciones subordinadas concesivas; aunque realmente se trate de una estructura utilizada para formar oraciones condicionales.</p>
+        <p>La partícula <b>"ba-"</b> se añade al auxiliar del verbo perifrástico, o al verbo sintético, de la subordinada concesiva a modo de prefijo. Después de estos verbos se coloca <b>"ere"</b>. Observar que el resto de componentes de la oración van antes de la estructura descrita.</p>
+
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque te hayan dicho que es muy fácil, no te fíes.')">Oso erraza dela esan <b>badizute ere</b>, ez fidatu.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque tenga tiempo, no lo voy a hacer.')">Denbora <b>badaukat ere</b>, ez dut egingo.</span></p>
+        </div>
+
+        <h3>Negación con ba- ... ere</h3>
+        <p>Cuando la subordinada concesiva es negativa, se pone la partícula negativa <b>"ez"</b> antes del prefijo verbal <b>"ba-"</b>:</p>
+
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'A pesar de que no ha sido fácil, lo hemos conseguido.')">Erraza izan <b>ez bada ere</b>, lortu dugu.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque no estés allí, iremos.')">Han <b>ez bazaude ere</b>, joango gara.</span></p>
+        </div>
+
+        <div class="bloque-subordinadas">
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'Fijarse en que esta estructura NO admite verbos sin conjugar, esto es, en participio sin auxiliar.', event)">Regla importante</span></p>
+        </div>
+
+        <h3>Significado concesivo en condicionales</h3>
+        <p>Como estructura condicional que es, puede ir con verbos en modo condicional:</p>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque fuera domingo, seguiría trabajando.')">Igandea izango <b>balitz ere</b>, lan egiten jarraituko luke.</span></p>
+        </div>
+
+        <h3>Otras estructuras condicionales (con participio)</h3>
+        <p>Estas estructuras se añaden al verbo de la subordinada en forma de participio:</p>
+
+        <ul>
+            <li><b>-z gero ere:</b>
+                <br><span class="frase-traduccion" onclick="traducir(this, 'Aunque me pagaran, no haría eso nunca.')">Ordaindu<b>z gero ere</b>, hori ez nuke inoiz egingo.</span>
+            </li>
+            <li><b>-t(z)ekotan ere:</b>
+                <br><span class="frase-traduccion" onclick="traducir(this, 'Aunque apruebes todo, no te vamos a comprar el móvil.')">Dena gaindi<b>tzekotan ere</b>, ez dizugu mugikorra erosiko.</span>
+            </li>
+            <li><b>ezik ere:</b>
+                <br><span class="frase-traduccion" onclick="traducir(this, 'Aunque hayas hecho todo bien, seguro que te dice que está mal.')">Dena ondo egin <b>ezik ere</b>, txarto dagoela esango dizu; ziur.</span>
+            </li>
+        </ul>
+
+        [BATERIA:0]
+    `,
+                                        ejercicios: [
+                                            [
+                                                {
+                                                    id: "conc_ba_ere_1",
+                                                    pregunta: "Completa la concesiva: 'Aunque tenga tiempo...'",
+                                                    tipo: "input",
+                                                    frase: "Denbora ___daukat ere, ez dut egingo.",
+                                                    correcta: "ba",
+                                                    ayuda: "Se añade como prefijo al verbo sintético."
+                                                },
+                                                {
+                                                    id: "conc_ba_ere_2",
+                                                    pregunta: "Completa la negación: 'Aunque no estés...'",
+                                                    tipo: "input",
+                                                    frase: "Han ___ bazaude ere, joango gara.",
+                                                    correcta: "ez",
+                                                    ayuda: "La negación va antes del prefijo ba-."
+                                                },
+                                                {
+                                                    id: "conc_ba_ere_3",
+                                                    pregunta: "Ordena la frase con -z gero ere:",
+                                                    tipo: "sort",
+                                                    fraseCorrecta: "Ordainduz gero ere hori ez nuke egingo",
+                                                    ayuda: "Participio + z gero + ere + consecuencia"
+                                                }
+                                            ]
+                                        ]
+                                    },
+                                    {
+                                        id: "adv-concesivas-clon-4",
+                                        titulo: "📄 Oraciones concesivas IV",
+                                        texto: `
+        <h3>-agatik ere</h3>
+        <p>Esta estructura se usa uniéndose al participio del verbo de la subordinada concesiva y se utiliza más frecuentemente en Iparralde:</p>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Por mucha crisis que haya, todos nos vamos de vacaciones.')">Krisi handia izan<b>agatik ere</b>, denok oporretara goaz.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Por muchas promesas que hagan, no las cumplen nunca.')">Promes ugari egin<b>agatik</b>, ez dituzte inoiz betetzen.</span></p>
+        </div>
+        <p>Cuando la subordinada es negativa, se pone <b>"ez"</b> antes o después del participio:</p>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Porque tú no estés, el mundo no se va a parar.')">Zu <b>ez egonagatik ere</b>, mundua ez da geldituko.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Por no entender esto ahora, no pasa nada.')">Hau orain ulertu <b>ezagatik ere</b>, ez da ezer gertatzen.</span></p>
+        </div>
+
+        <h3>-ta / -da ere</h3>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'A pesar de estar muy enfermo, no dejó de fumar.')">Oso gaixorik egon<b>da ere</b>, ez zuen erretzeari utzi.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque no le vio, sabía que era él.')"><b>Ez ikusita ere</b>, bera zela zekien.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'A pesar de no conocerle, le saludó.')">Ezagutu <b>ezta ere</b>, agurtu zuen.</span></p>
+        </div>
+
+        <h3>-rik / -ik ere</h3>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'A pesar de vivir cerca, no nos solemos ver.')">Hurbil bizi<b>rik ere</b>, ez dugu elkar ikusten.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque no vivimos lejos, no nos solemos ver.')">Urrun <b>ez bizirik ere</b>, ez dugu elkar ikusten.</span></p>
+        </div>
+
+        <h3>Gabe ere / barik ere</h3>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'A pesar de no haberlo usado, dice que está bien.')">Erabili <b>gabe ere</b>, ondo dagoela esaten du.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque no se lo ha contado, él lo ha adivinado.')">Kontatu <b>barik ere</b>, berak asmatu du.</span></p>
+        </div>
+
+        <h3>-la(rik) ere</h3>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque todos sabían lo que hizo, nadie dijo nada.')">Denek egin zuena zekite<b>la ere</b>, inork ez zuen ezer esan.</span></p>
+        </div>
+
+        <h3>...na ...la (Repetición)</h3>
+        <p>Se pone el verbo en relativo y luego en completiva:</p>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Sea lo que sea, estaremos preparados.')">Dena dela, prest egongo gara.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Te diga lo que te diga, nunca me haces caso.')">Esaten dizuda<b>na</b> esaten dizuda<b>la</b>, inoiz ez didazu jaramonik egiten.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Vengan las dificultades que vengan, juntos las superaremos.')">Datozen oztopoak datoze<b>la</b>, elkarrekin gaindituko ditugu.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Cueste lo que cueste, lo arreglaremos.')">Kosta ahala kosta, konponduko dugu.</span></p>
+        </div>
+
+        [BATERIA:0]
+    `,
+                                        ejercicios: [
+                                            [
+                                                {
+                                                    id: "conc_clon_4_1",
+                                                    pregunta: "Completa la forma de Iparralde: 'Izan... ere'",
+                                                    tipo: "input",
+                                                    frase: "Krisi handia izan___ ere...",
+                                                    correcta: "agatik",
+                                                    ayuda: "Sufijo -agatik"
+                                                },
+                                                {
+                                                    id: "conc_clon_4_2",
+                                                    pregunta: "Traduce: 'A pesar de vivir cerca...'",
+                                                    tipo: "input",
+                                                    frase: "Hurbil bizi___ ere...",
+                                                    correcta: "rik",
+                                                    ayuda: "Forma -rik/-ik ere"
+                                                },
+                                                {
+                                                    id: "conc_clon_4_3",
+                                                    pregunta: "Ordena: 'Cueste lo que cueste'",
+                                                    tipo: "sort",
+                                                    fraseCorrecta: "Kosta ahala kosta konponduko dugu",
+                                                    ayuda: "Expresión fija: Kosta ahala kosta"
+                                                }
+                                            ]
+                                        ]
+                                    },
+                                    {
+                                        id: "adv-concesivas-clon-5",
+                                        titulo: "📄 Oraciones concesivas V",
+                                        texto: `
+        <p>A continuación se indicarán otras formas de construir oraciones concesivas sin afectar al verbo de la subordinada:</p>
+
+        <h3>Gorabehera</h3>
+        <p>Se usa su significado de "adversidad" o "discrepancia":</p>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'A pesar del frío, salieron a la calle.')">Hotza <b>gorabehera</b>, kaleratu ziren.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'A pesar de lo que dije, habéis terminado haciéndolo.')">Esan nuena <b>gorabehera</b>, egiten bukatu duzue.</span></p>
+        </div>
+
+        <h3>-gatik ere</h3>
+        <p>Esta forma procede del caso "norengatik" y adquiere significado concesivo al añadirle "ere":</p>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'A pesar de la nieve, trajeron el correo.')">Elurra<b>gatik ere</b>, posta ekarri zuten.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'A pesar de todo, se llevan bien.')">Dena<b>gatik ere</b>, elkarrekin ondo moldatzen dira.</span></p>
+        </div>
+
+        <h3>Eta guztiz ere</h3>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Así y todo, merece la pena ir a verlo.')">Hala <b>eta guztiz ere</b>, merezi du joatea ikustera.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'A pesar de la distancia (y todo), siguen estando enamorados.')">Urruntasuna <b>eta guztiz ere</b>, elkar maiteminduta egoten jarraitzen dute.</span></p>
+        </div>
+        <div class="bloque-subordinadas">
+            <p>• <span class="caja-gramatical caja-adv" onclick="simplificar(this, 'De nuevo observamos cómo esta forma en realidad se trata de una coordinada adversativa.', event)">Nota gramatical</span></p>
+        </div>
+
+        <h3>...-ak ... (Repetición)</h3>
+        <p>Se añade el plural "-ak" al primer término y el segundo queda sin marca:</p>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Se diga lo que se diga, fue un hombre bueno; nunca le hizo daño a nadie.')">Esan<b>ak</b> esan, gizon ona zen; inoiz ez zion inori minik egin.</span></p>
+        </div>
+
+        <h3>Baina</h3>
+        <p>La subordinada se coloca después de la principal y "baina" al final de la frase:</p>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Aunque lo ha intentado, no lo ha conseguido.')">Ez du lortu, saiatu da <b>baina</b>.</span></p>
+        </div>
+
+        <h3>Estructuras disyuntivas (Hautakaria)</h3>
+        <p>Repetición del verbo en el contexto de una oración coordinada disyuntiva:</p>
+        <div class="bloque-ejemplos">
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Llevarlo ahora, o llevarlo después, me da igual.')">Orain eraman, edo gero eraman, berdin zait.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Lo hagas bien, o lo hagas mal, no te cambiará la nota.')">Ondo egin, nahiz txarto egin, ez dizu nota aldatuko.</span></p>
+            <p><span class="frase-traduccion" onclick="traducir(this, 'Esté contigo, o esté conmigo, él ganará la partida de mus.')">Zurekin egon, zein nirekin egon, berak mus-partida irabaziko du.</span></p>
+        </div>
+
+        [BATERIA:0]
+    `,
+                                        ejercicios: [
+                                            [
+                                                {
+                                                    id: "conc_clon_5_1",
+                                                    pregunta: "Completa la concesiva no verbal: 'A pesar del frío...'",
+                                                    tipo: "input",
+                                                    frase: "Hotza ___ , kaleratu ziren.",
+                                                    correcta: "gorabehera",
+                                                    ayuda: "Palabra que indica adversidad o discrepancia."
+                                                },
+                                                {
+                                                    id: "conc_clon_5_2",
+                                                    pregunta: "Traduce la repetición: 'Digan lo que digan' (Esan)",
+                                                    tipo: "input",
+                                                    frase: "Esan___ esan, gizon ona zen.",
+                                                    correcta: "ak",
+                                                    ayuda: "Se añade el plural -ak al primer término."
+                                                },
+                                                {
+                                                    id: "conc_clon_5_3",
+                                                    pregunta: "Ordena: 'Merece la pena ir a verlo así y todo'",
+                                                    tipo: "sort",
+                                                    fraseCorrecta: "Hala eta guztiz ere merezi du joatea",
+                                                    ayuda: "Hala + eta guztiz ere + resto de la frase"
+                                                }
+                                            ]
+                                        ]
+                                    }
+                                ] //📄
+                            },
                             { //condicionales
                                 id: "adv-condicionales",
                                 titulo: "📁 Condicionales (Baldintzazkoak)",
@@ -2300,7 +2726,7 @@ const libroData = [
                                                 },
                                                 {
                                                     id: "cond_clon_3",
-                                                    pregunta: "Ordena la frase de la película con énfasis:",
+                                                    pregunta: "Ordena la parte subordinada enfatizada:",
                                                     tipo: "sort",
                                                     fraseCorrecta: "Baldin eta gaur ez baduzu pelikula ikusten",
                                                     ayuda: "Baldin eta + gaur + ez baduzu..."
@@ -2310,7 +2736,7 @@ const libroData = [
                                     },
                                     {
                                         id: "adv-condicionales-clon-2",
-                                        titulo: "📄 Condicionales: Estructura -z gero",
+                                        titulo: "📄 Condicionales: Estructura -(e)z gero",
                                         texto: `
         <p>Esta estructura también se usa para construir oraciones subordinadas condicionales. Para ello, se añade <b>"-z gero"</b> al participio verbal de la condicional y sólo se usa para oraciones afirmativas.</p>
         
@@ -2621,7 +3047,7 @@ const libroData = [
                                         ]
                                     }
 
-                                ]//📄
+                                ]
                             },
                             { id: "adv-consecutivas", titulo: "📁 Consecutivas (Ondoriozkoak)", hijos: [] },
                             { id: "adv-comparativas", titulo: "📁 Comparativas (Konparaziozkoak)", hijos: [] }
